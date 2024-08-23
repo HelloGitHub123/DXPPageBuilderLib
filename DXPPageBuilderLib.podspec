@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "DXPPageBuilderLib"
-  spec.version      = "1.0.2"
+  spec.version      = "1.0.3"
   spec.summary      = "DXP PageBuilder Manager."
 
   # This description is used to generate tags and improve search results.
@@ -143,7 +143,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'ZFPlayer/AVPlayer', '~> 4.0'
   spec.dependency 'ZFPlayer/ijkplayer', '~> 4.0'
 
-  spec.static_framework = true
+  #spec.static_framework = true
 
   # spec.library   = "iconv"
   # spec.libraries = "iconv", "xml2"
