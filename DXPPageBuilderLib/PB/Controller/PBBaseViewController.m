@@ -49,9 +49,12 @@
 	[super viewWillAppear:animated];
 	
 	NSArray * viewcontrolls = self.navigationController.viewControllers;
-	if (viewcontrolls.count==1) {
+	if (viewcontrolls.count == 1) {
 		self.navigationItem.leftBarButtonItem = nil;
 		[self.navigationItem setHidesBackButton:YES];
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"IsHiddenTabbarView" object:@{@"count":@(0)}];
+	} else if (viewcontrolls.count >= 1) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"IsHiddenTabbarView" object:@{@"count":@(1)}];
 	}
 }
 
