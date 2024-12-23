@@ -7,8 +7,8 @@
 
 #import "DCMutiBalanceDashboardCell.h"
 #import "DCPB.h"
-#import "YYLabel.h"
-#import "YYText.h"
+#import <YYText/YYLabel.h>
+#import <YYText/YYText.h>
 #import <DXPCategoryLib/UIColor+Category.h>
 #import "HJDitoProgress.h"
 #import <SDWebImage/UIButton+WebCache.h>
