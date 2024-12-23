@@ -8,6 +8,7 @@
 #import "DCHotNewsViewCell.h"
 #import "DCPageModel.h"
 #import "TLVerticalScrollView.h"
+#import "UIImageView+PBSDWebImage.h"
 
 #define HotNewsViewHeight  36  // 整个 hotview 的高度
 #define LeftRightMarginSize  16  // 左右两侧距离屏幕的边距
@@ -92,7 +93,7 @@
     PicturesItem *picItem = [cellModel.props.pictures objectAtIndex:0];
     CGFloat width = picItem.height  > 0 ? HotNewsViewHeight /  picItem.height *  picItem.width : HotNewsViewHeight;
     NSURL *url = [NSURL URLWithString:picItem.src?:@""];
-    [self.noticeImgView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"news"]];
+    [self.noticeImgView dc_setImageWithURLString:picItem.src?:@"" placeholderImage:[UIImage imageNamed:@"news"]];
     
    
    [self.noticeImgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -153,7 +154,7 @@
     PicturesItem *picItem = [self.cellModel.props.pictures objectAtIndex:0];
     itemView.textLabel.text = dataItem.text;
     NSURL *url = [NSURL URLWithString:picItem.src];
-    [itemView.imgView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"nadata"]];
+    [itemView.imgView dc_setImageWithURLString:picItem.src placeholderImage:[UIImage imageNamed:@"nadata"]];
     itemView.rowIndex = index;
 }
 

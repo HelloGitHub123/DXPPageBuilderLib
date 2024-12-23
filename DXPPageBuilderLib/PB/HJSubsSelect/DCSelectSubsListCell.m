@@ -13,6 +13,7 @@
 #import <DXPManagerLib/HJImageManager.h>
 #import <DXPManagerLib/HJLanguageManager.h>
 #import "DCPB.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @interface DCSelectSubsListCell(){
     BOOL showStatusTag ;
@@ -100,7 +101,7 @@
     self.contentView.backgroundColor = DC_UIColorFromRGB(0xFFFFFF);
     
     _titleLab = [[UILabel alloc] initWithFrame:CGRectMake(30, 16, DC_DCP_SCREEN_WIDTH-100, 24)];
-    _titleLab.font = FONT_S(16);
+	_titleLab.font = [FontManager setNormalFontSize:16];
     _titleLab.textColor = DC_UIColorFromRGB(0x242424);
     [self.contentView addSubview:_titleLab];
     
@@ -134,8 +135,9 @@
     
     [_statusIV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.mas_equalTo(32);
-        make.top.mas_equalTo(12);
+//        make.top.mas_equalTo(12);
         make.leading.mas_equalTo(16);
+        make.centerY.equalTo(_bgView.mas_centerY);
     }];
     
     [_selectIV mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -145,7 +147,7 @@
     }];
     
     [_numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(32);
+        make.height.mas_equalTo(32).priorityHigh();  // 防止出现约束冲突
         make.top.mas_equalTo(12);
         make.leading.mas_equalTo(self.statusIV.mas_trailing).offset(8);
     }];
@@ -169,6 +171,9 @@
             make.bottom.mas_equalTo(self.lineView.mas_top).offset(-12);
         }];
     }else{
+        [_numberLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_equalTo(self.lineView.mas_top).offset(-12);
+        }];
     }
     
 }
@@ -281,6 +286,7 @@
             }
             [_paidFlagLabel mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.height.mas_equalTo(18);
+                make.top.mas_equalTo(_numberLabel.mas_bottom).offset(5);
             }];
             
         }else{//不展示预后付费，展示主副卡
@@ -290,17 +296,20 @@
                 _paidFlagLabel.text = [NSString stringWithFormat:@"  %@  ",primaryStr];
                 [_paidFlagLabel mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.height.mas_equalTo(18);
+                    make.top.mas_equalTo(_numberLabel.mas_bottom).offset(5);
                 }];
             }else if([model.primaryFlag isEqualToString:@"N"]){
                 primaryStr = [[HJLanguageManager shareInstance] getTextByKey:@"lb_supplementary"];
                 _paidFlagLabel.text = [NSString stringWithFormat:@"  %@  ",primaryStr];
                 [_paidFlagLabel mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.height.mas_equalTo(18);
+                    make.top.mas_equalTo(_numberLabel.mas_bottom).offset(5);
                 }];
             }else{
                 _paidFlagLabel.text = @"";
                 [_paidFlagLabel mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.height.mas_equalTo(0);
+                    make.top.mas_equalTo(_numberLabel.mas_bottom).offset(0);
                 }];
             }
         }
@@ -322,6 +331,7 @@
         _paidFlagLabel.textColor = DC_UIColorFromRGB(0x545454);
         [_paidFlagLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(18);
+            make.top.mas_equalTo(_numberLabel.mas_bottom).offset(5);
         }];
     }else if([model.serviceTypeCode isEqualToString:@"FIXED_LINE"]){
         _statusIV.image = DC_image(@"ic_fixed_line");
@@ -375,7 +385,7 @@
     if(!_numberLabel){
         _numberLabel = [[UILabel alloc] init];
         _numberLabel.textColor = [[HJTokenManager shareInstance] getColorByToken:@"ref-form-textColor"];
-        _numberLabel.font = FONT_BS(14);
+		_numberLabel.font = [FontManager setBoldFontSize:14];
     }
     return _numberLabel;
 }
@@ -393,7 +403,7 @@
 - (UILabel *)statusLabel{
     if(!_statusLabel){
         _statusLabel = [[UILabel alloc] init];
-        _statusLabel.font = FONT_BS(12);
+		_statusLabel.font = [FontManager setBoldFontSize:12];
         _statusLabel.layer.masksToBounds = YES;
         _statusLabel.layer.cornerRadius = 9;
     }
@@ -403,7 +413,7 @@
 - (UILabel *)paidFlagLabel{
     if(!_paidFlagLabel){
         _paidFlagLabel = [[UILabel alloc] init];
-        _paidFlagLabel.font = FONT_S(12);
+		_paidFlagLabel.font = [FontManager setNormalFontSize:12];
         _paidFlagLabel.layer.masksToBounds = YES;
         _paidFlagLabel.layer.cornerRadius = 9;
     }
@@ -414,7 +424,7 @@
     if (!_bundleNameLabel) {
         _bundleNameLabel = [[UILabel alloc] init];
         _bundleNameLabel.textColor = [[HJTokenManager shareInstance] getColorByToken:@"ref-form-textColor"];
-        _bundleNameLabel.font = FONT_BS(14);
+		_bundleNameLabel.font = [FontManager setBoldFontSize:14];
         _bundleNameLabel.numberOfLines = 0;
     }
     return _bundleNameLabel;
@@ -424,7 +434,7 @@
     if(!_viewMyHouseLabel){
         _viewMyHouseLabel = [[UILabel alloc] init];
         _viewMyHouseLabel.textColor = DC_UIColorFromRGB(0x0077A6);
-        _viewMyHouseLabel.font = FONT_BS(14);
+		_viewMyHouseLabel.font = [FontManager setBoldFontSize:14];
 		_viewMyHouseLabel.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_view_my_house"];
     }
     return _viewMyHouseLabel;

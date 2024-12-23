@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (UIColor *)getStateColorWithstate:(NSString *)state;
 
 + (BOOL)isContainSafariUrl:(NSString *)urlString;
+
++ (NSString *)getDateFormatAppByGCP:(NSString *)dateStr;
 @end
 
 NS_ASSUME_NONNULL_END

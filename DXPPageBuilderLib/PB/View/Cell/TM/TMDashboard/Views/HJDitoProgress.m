@@ -11,6 +11,7 @@
 #import <Masonry/Masonry.h>
 #import "DCPB.h"
 #import <DXPManagerLib/HJLanguageManager.h>
+#import <DXPFontManagerLib/FontManager.h>
 
 @implementation HJDitoProgressModel
 - (instancetype)init {
@@ -326,7 +327,7 @@
 	// 底部球类型文本
 	UILabel *botLbl = [self.bottomView viewWithTag:1];
 	botLbl.text = model.type;
-	botLbl.font = FONT_S(10);
+	botLbl.font = [FontManager setBoldFontSize:10];
 	botLbl.textColor = [UIColor colorWithHexString:titleColor alpha:titleColorOpacity];
 	
 	CGFloat val = 0;
@@ -365,7 +366,7 @@
         UILabel *totalLbl = [[UILabel alloc]init];
         _totalLbl = totalLbl;
         _totalLbl.textAlignment = NSTextAlignmentCenter;
-        totalLbl.font = FONT_S(12);
+		totalLbl.font = [FontManager setBoldFontSize:12];
         totalLbl.textColor = [UIColor colorWithHexString:@"#979797"];
     }
     return _totalLbl;
@@ -375,7 +376,7 @@
     if (!_useageLbl) {
         _useageLbl = [[UILabel alloc]init];
         _useageLbl.textAlignment = NSTextAlignmentCenter;
-        _useageLbl.font = FONT_BS(16);
+		_useageLbl.font = [FontManager setBoldFontSize:16];
         _useageLbl.textColor = [UIColor colorWithHexString:@"#242424"];
     }
     return _useageLbl;
@@ -384,7 +385,7 @@
 - (CAShapeLayer *)progressBgLayer {
     if (!_progressBgLayer) {
         _progressBgLayer = [CAShapeLayer layer];
-        _progressBgLayer.lineWidth = 9;
+        _progressBgLayer.lineWidth = 13; // 线宽
         _progressBgLayer.lineJoin = kCALineJoinRound;
         _progressBgLayer.lineCap = kCALineCapRound;
         _progressBgLayer.fillColor = [UIColor clearColor].CGColor;
@@ -395,7 +396,7 @@
 - (CAShapeLayer *)progressLayer {
     if (!_progressLayer) {
         _progressLayer = [CAShapeLayer layer];
-        _progressLayer.lineWidth = 9;
+        _progressLayer.lineWidth = 13; // 线宽
         _progressLayer.fillColor = [UIColor clearColor].CGColor;
         _progressLayer.strokeStart = 0.0;
         _progressLayer.lineJoin = kCALineJoinRound;
@@ -455,7 +456,7 @@
         bottomLbl.textAlignment = NSTextAlignmentCenter;
         bottomLbl.tag = 1;
 		bottomLbl.textColor = [UIColor colorWithHexString:@"#242424"];
-        bottomLbl.font = FONT_S(10);
+		bottomLbl.font = [FontManager setNormalFontSize:10];
         [_bottomView addSubview:bottomLbl];
         [bottomLbl mas_makeConstraints:^(MASConstraintMaker *make) {
 			
@@ -474,7 +475,7 @@
     if (!_buyBtn) {
         _buyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _buyBtn.hidden = YES;
-        [_buyBtn.titleLabel setFont:FONT_S(12)];
+		[_buyBtn.titleLabel setFont:[FontManager setNormalFontSize:12]];
         [_buyBtn addTarget:self action:@selector(buyAction) forControlEvents:UIControlEventTouchUpInside];
     }
     return _buyBtn;

@@ -14,6 +14,7 @@
 #import <YYText/YYText.h>
 #import "Masonry.h"
 #import "DCPB.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 static SJEdgeControlButtonItemTag const SJTestCustomItemTagVoice = 1001;
 static SJEdgeControlButtonItemTag const SJTestCustomItemTag = 103;
@@ -326,7 +327,7 @@ static SJEdgeControlButtonItemTag const SJTestCustomItemTag = 103;
 - (UILabel *)titleLab {
     if (!_titleLab) {
         _titleLab = [[UILabel alloc] init];
-		_titleLab.font = FONT_BS(18);
+		_titleLab.font = [FontManager setBoldFontSize:18];
         _titleLab.textColor = DC_UIColorFromRGB(0x3E3E3E);
         _titleLab.numberOfLines = 0;
         _titleLab.textAlignment = NSTextAlignmentLeft;
@@ -353,7 +354,7 @@ static SJEdgeControlButtonItemTag const SJTestCustomItemTag = 103;
         _tipsLab.textAlignment = NSTextAlignmentLeft;
         
         NSMutableAttributedString *attri_str = [[NSMutableAttributedString alloc] initWithString:self.picturesItem.videoDesc];
-        [attri_str setYy_font:FONT_S(14)];
+		[attri_str setYy_font:[FontManager setNormalFontSize:14]];
         [attri_str setYy_color:DC_UIColorFromRGB(0x3E3E3E)];
         [attri_str setYy_lineSpacing:7];
         _tipsLab.attributedText = attri_str;
@@ -368,7 +369,7 @@ static SJEdgeControlButtonItemTag const SJTestCustomItemTag = 103;
         [_operBtn setTitle:self.picturesItem.videoBtnName forState:UIControlStateNormal];
         [_operBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _operBtn.backgroundColor = DC_UIColorFromRGB(0xCE1126);
-		_operBtn.titleLabel.font = FONT_S(14);
+		_operBtn.titleLabel.font = [FontManager setNormalFontSize:14];
         _operBtn.layer.cornerRadius = 4;
         [_operBtn addTarget:self action:@selector(operBtnAction:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -382,12 +383,12 @@ static SJEdgeControlButtonItemTag const SJTestCustomItemTag = 103;
         _suspensionButton.layer.masksToBounds = YES;
         _suspensionButton.MoveEnable = YES;
         _suspensionButton.layer.cornerRadius = 10;
-		_suspensionButton.titleLabel.font = FONT_BS(14);
+		_suspensionButton.titleLabel.font = [FontManager setBoldFontSize:14];
         [_suspensionButton setTitleColor:DC_UIColorFromRGB(0x3e3e3e) forState:UIControlStateNormal];
         [_suspensionButton addTarget:self action:@selector(suspensionButtonClick:) forControlEvents:UIControlEventTouchUpInside];
 //        [_suspensionButton setImage:[UIImage imageNamed:@"ic_video_arrow"] forState:UIControlStateNormal];
     
-        CGSize size = [self.picturesItem.videoCTAName sizeWithAttributes:@{NSFontAttributeName:FONT_BS(14)}];
+		CGSize size = [self.picturesItem.videoCTAName sizeWithAttributes:@{NSFontAttributeName:[FontManager setBoldFontSize:14]}];
         [_suspensionButton setTitle:self.picturesItem.videoCTAName forState:UIControlStateNormal];
 //        [_suspensionButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -10 ,0, 10)];
 //        [_suspensionButton setImageEdgeInsets:UIEdgeInsetsMake(0, size.width + 8, 0, - size.width)];

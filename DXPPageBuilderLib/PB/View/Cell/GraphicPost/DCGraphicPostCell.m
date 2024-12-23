@@ -6,6 +6,9 @@
 //
 
 #import "DCGraphicPostCell.h"
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
+
 // ****************** Model ******************
 @implementation DCGraphicPostCellModel
 - (instancetype)initWithComponentModel:(DCPageCompositionContentModel *)componentModel {
@@ -20,7 +23,7 @@
     CGFloat horizontalOutterMargin = self.props.horizontalOutterMargin;
     if ([@"T" isEqualToString:self.props.floorStyle]) {
         CGFloat imgH = (DCP_SCREEN_WIDTH - 2*self.props.horizontalOutterMargin) / item.width * item.height;
-        CGFloat titleLblH = [item.desc hj_sizeContraintToSize:CGSizeMake((DCP_SCREEN_WIDTH - 2*self.props.horizontalOutterMargin) , MAXFLOAT) font:FONT_S(16)].height;
+		CGFloat titleLblH = [item.desc hj_sizeContraintToSize:CGSizeMake((DCP_SCREEN_WIDTH - 2*self.props.horizontalOutterMargin) , MAXFLOAT) font:[FontManager setNormalFontSize:16]].height;
         self.cellHeight = self.cellHeight + imgH + 12 + titleLblH;
     }else {
         // 根据图片判断高度
@@ -72,7 +75,7 @@
         PicturesItem *imgItem = [cellModel.props.pictures firstObject];
         // 图片
         NSURL *imgUrl = [NSURL URLWithString:imgItem.src];
-        [self.imgView sd_setImageWithURL:imgUrl];
+        [self.imgView dc_setImageWithURLString:imgItem.src];
         // 文字
         self.titleLbl.text = imgItem.desc;
         
@@ -121,10 +124,10 @@
                 make.height.equalTo(@(h));
             }];
             maxH = maxH + h + 20;
-            [imgV sd_setImageWithURL:[NSURL URLWithString:obj.src]];
+            [imgV dc_setImageWithURLString:obj.src];
             
             UILabel *desLbl = [UILabel new];
-            desLbl.font = FONT_S(16);
+			desLbl.font = [FontManager setNormalFontSize:16];
             desLbl.lineBreakMode = NSLineBreakByTruncatingTail;
             desLbl.numberOfLines = 0;
             desLbl.text = obj.desc;
@@ -184,7 +187,7 @@
     if (!_titleLbl) {
         _titleLbl = [[UILabel alloc]init];
         _titleLbl.numberOfLines = 0;
-        _titleLbl.font = FONT_S(16);
+		_titleLbl.font = [FontManager setNormalFontSize:16];
         _titleLbl.lineBreakMode = NSLineBreakByTruncatingTail;
     }
     return _titleLbl;

@@ -9,6 +9,8 @@
 #import "DCPageCompositionContentModel.h"
 #import <SDWebImage/SDWebImage.h>
 #import "DCPB.h"
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
 
 @implementation DCTabIconItemCell
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -29,7 +31,7 @@
     _titleLabel = nil;
 //    self.titleLabel.verticalAlignment = VerticalAlignmentMiddle;
     self.titleLabel.text = item.iconName;
-    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:item.src]];
+    [self.iconImageView dc_setImageWithURLString:item.src];
     self.contentView.backgroundColor = [UIColor redColor];
     [self.contentView addSubview:self.iconImageView];
     [self.contentView addSubview:self.titleLabel];
@@ -81,7 +83,7 @@
 //    [self.iconImageView autoSetDimensionsToSize:CGSizeMake(size.width, size.height)];
 //    [self.iconImageView autoAlignAxisToSuperviewAxis:ALAxisVertical];
 //    [self.iconImageView autoPinEdgeToSuperviewEdge:ALEdgeTop withInset:0];
-    [self.iconImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+    [self.iconImageView dc_setImageWithURLString:imageUrl];
     
 //    [self.titleLabel autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsMake(0, 0, 0, 0) excludingEdge:ALEdgeTop];
 //    [self.titleLabel autoSetDimension:ALDimensionHeight toSize:height];
@@ -135,7 +137,7 @@
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.textColor = [UIColor hjp_colorWithHex:@"2A2F38"];
-		_titleLabel.font = FONT_S(14);
+		_titleLabel.font = [FontManager setNormalFontSize:14];
 //        _titleLabel.verticalAlignment = VerticalAlignmentMiddle;
     }
     return _titleLabel;

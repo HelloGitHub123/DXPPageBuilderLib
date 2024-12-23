@@ -8,6 +8,8 @@
 #import "DCDitoIconCell.h"
 #import "DCTopLabel.h"
 #import "MJExtension.h"
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
 
 CGFloat paddingH = 8;
 CGFloat oneItemW = 92;
@@ -128,8 +130,7 @@ CGFloat indicatorMarginTop = 15.0;
     if([item.src isEqualToString:@"Icon_More"]) {
         iconImageView.image = [UIImage imageNamed:@"Icon_More"];
     } else{
-        NSURL *url = [NSURL URLWithString:[item.src stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];
-        [iconImageView sd_setImageWithURL:url];
+        [iconImageView dc_setImageWithURLString:[item.src stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];
     }
     [iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.mas_equalTo(58.0/375 * DCP_SCREEN_WIDTH);
@@ -145,7 +146,7 @@ CGFloat indicatorMarginTop = 15.0;
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = [UIColor hjp_colorWithHex:@"#3E3E3E"];
-    titleLabel.font = FONT_BS(12);
+	titleLabel.font = [FontManager setBoldFontSize:12];
     titleLabel.verticalAlignment = DCVerticalAlignmentMiddle;
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.trailing.leading.mas_equalTo(0);

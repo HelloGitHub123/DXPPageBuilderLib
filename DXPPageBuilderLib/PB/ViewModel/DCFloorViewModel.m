@@ -135,6 +135,8 @@ typedef NS_ENUM(NSUInteger,DCFloorCellDataType) {
                                   @"BroadbandAccount":@"DCBroadbandAccountCellModel",
 								  @"MutiBalanceDashboard":@"DCMutiBalanceDashboardCellModel",
                                   @"BundleDashboard":@"DCBundleDashboardCellModel",
+								  @"CustomizedComponent":@"DCCustomizedComponentCellModel",
+								  @"MarketingOfferListProd":@"DCMarketingOfferListCellModel"
     };
     
     

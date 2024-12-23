@@ -44,6 +44,7 @@
             if (!error) {
                 if ([DC_HTTP_Code isEqualToString:DC_HTTP_Success] && !DC_IsStrEmpty(DC_HTTP_Code)) {
 					DCSubsDetailModel *subDetailModel = [DCSubsDetailModel yy_modelWithDictionary:DC_HTTP_Data];
+					[[NSUserDefaults standardUserDefaults] setValue:subDetailModel.paidFlag forKey:@"UserPaidFlag"];
                     if(!DC_IsStrEmpty(subDetailModel.parentSubsId)) {
                         [DCPBManager sharedInstance].parentSubsId = subDetailModel.parentSubsId;
                         block(complete);

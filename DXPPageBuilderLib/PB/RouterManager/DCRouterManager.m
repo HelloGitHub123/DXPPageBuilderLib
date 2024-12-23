@@ -121,20 +121,44 @@ static DCRouterManager *manager = nil;
                       needLogin:(NSString *)needLogin {
     
     [self.routeAfterLoginParam removeAllObjects];
+	
+	BOOL isNeedLogin = ([[needLogin lowercaseString] isEqualToString:@"y"] || [[needLogin lowercaseString] isEqualToString:@"yes"]);
     
     if ([needLogin isEqualToString:@"Y"] && DC_IsStrEmpty([DXPPBDataManager shareInstance].signInResponseModel.token)) {
-        self.routeAfterLoginParam = [[NSMutableDictionary alloc]initWithDictionary:@{@"urlStr":urlStr?:@"",@"type":@(type)?:@(1),@"serviceName":serviceName?:@""}];
+		self.routeAfterLoginParam = [[NSMutableDictionary alloc]initWithDictionary:@{@"urlStr":urlStr?:@"",@"type":@(type)?:@(1),@"serviceName":serviceName?:@"",@"isNeedLogin":@(isNeedLogin)}];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GotoLoginVCNotification" object:nil userInfo:@{@"loginType":@""}];
         return;
     }
+
     [self dealWithViewNameWithUrl:urlStr type:type fromVc:fromVC serviceName:serviceName];
 }
 
-- (void)dealWithViewNameWithUrl:(NSString *)urlStr type:(NSInteger)type fromVc:(UIViewController *)fromVC serviceName:(NSString *)serviceName{
+- (void)dealWithViewNameWithUrl:(NSString *)urlStr type:(NSInteger)type fromVc:(UIViewController *)fromVC serviceName:(NSString *)serviceName {
+	
+	// 判断token
+	BOOL isHasLoginToken = DC_IsStrEmpty([[NSUserDefaults standardUserDefaults] valueForKey:@"DCLoginToken"]);
+	
     if (type == 1) {
-        UIViewController * toVC = [self getViewController:urlStr];
+		PBBaseViewController * toVC = [self getViewController:urlStr];
         toVC.hidesBottomBarWhenPushed = YES;
-        if ([urlStr containsString:@"projectuniversal/terms_and_conditions?tcCode"]) {
+		
+		if([urlStr containsString:@"/clp_content/index"]){
+			Class class = NSClassFromString(@"DCGeneralContentViewController");
+			PBBaseViewController * toVC = [[class alloc] init];
+			@try {
+				NSArray *arr = [urlStr componentsSeparatedByString:@"?"];
+				NSString *par = [arr lastObject];
+				NSArray *codeArr = [par componentsSeparatedByString:@"="];
+				NSMutableDictionary * paramsDic = [NSMutableDictionary new];
+				[paramsDic setValue:[codeArr lastObject] forKey:@"contentCode"];
+				toVC.paramsDic = paramsDic;
+			} @catch (NSException *exception) {
+				
+			}
+			toVC.hidesBottomBarWhenPushed = YES;
+			[fromVC.navigationController pushViewController:toVC animated:YES];
+			
+		} else if ([urlStr containsString:@"projectuniversal/terms_and_conditions?tcCode"]) {
 //            DCBannerViewController *bannerVC = [[DCBannerViewController alloc] init];
 //            bannerVC.url = urlStr;
 //            [fromVC.navigationController pushViewController:bannerVC animated:YES];
@@ -163,6 +187,7 @@ static DCRouterManager *manager = nil;
             next.floorNavType = DCFloorNavType_CLP;
             [fromVC.navigationController pushViewController:next animated:YES];
         } else {
+			toVC.isSupportTourist = isHasLoginToken;
             [fromVC.navigationController pushViewController:toVC animated:YES];
         }
         return;
@@ -184,7 +209,8 @@ static DCRouterManager *manager = nil;
                 [fromVC.navigationController presentViewController:safariVC animated:YES completion:nil];
             }
         } else {
-            Class class = NSClassFromString(@"HJWebViewController");
+//            Class class = NSClassFromString(@"HJWebViewController");
+			Class class = NSClassFromString(@"BaseWebViewController");
             id classVC = [[class alloc] init];
             Ivar ivar = class_getInstanceVariable([classVC class], "_loadUrl");
             Ivar ivar2 = class_getInstanceVariable([classVC class], "_schemeType");
@@ -238,7 +264,19 @@ static DCRouterManager *manager = nil;
         } else {
             [fromVC.navigationController presentViewController:safariVC animated:YES completion:nil];
         }
-    } else {//默认调用Safari打开
+    } else if(type == 7) {
+		// 调用电话 拨打
+		NSMutableString *telStr;
+		if ([urlStr containsString:@"tel://"]) {
+			telStr = [[NSMutableString alloc] initWithFormat:@"%@",urlStr];
+		} else {
+			telStr = [[NSMutableString alloc] initWithFormat:@"tel://%@",urlStr];
+		}
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:telStr] options:@{} completionHandler:^(BOOL success) {
+			
+		}];
+		
+	} else {//默认调用Safari打开
 
         Class class = NSClassFromString(@"ZteThirdWebviewViewController");
         id classVC = [[class alloc] init];

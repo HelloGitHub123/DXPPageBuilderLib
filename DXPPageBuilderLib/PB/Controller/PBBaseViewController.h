@@ -28,6 +28,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSMutableDictionary *paramsDic;
 
+/**
+ *  判断是否支持游客。如果路由中配置了isNeedLogin = Y 。那在游客模式下就跳转了登录。但是特殊情况下，像充值页面如果支持游客模块，那就需要将路由的 isNeedLogin = N  并透传到具体业务页面，做特殊判断过滤。
+ *  具体页面具体使用判断，不能统一处理。
+ *   总之:  如果 isNeedLogin = N (支持游客)  那么 isSupportTourist 在路由处就赋值为 Y
+ *        如果 isNeedLogin = Y (不支持游客) 那么 isSupportTourist 在路由处就赋值为 N
+ */
+@property (nonatomic, assign) BOOL isSupportTourist;
+
 @property (nonatomic, copy) void (^returnValue)(NSString *string);
 
 - (void)ExChangeAppLanguage;

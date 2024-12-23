@@ -8,6 +8,7 @@
 #import "DCBroadbandAccountCellModel.h"
 #import "DCBroadbandAccountCell.h"
 #import "DCSubsListModel.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 // ****************** Model ******************
 @implementation DCBroadbandAccountCellModel
@@ -28,9 +29,9 @@
     NSString *upLoadVal = [dic objectForKey:@"upLoadVal"];
     NSString *downLoadVal = [dic objectForKey:@"downLoadVal"];
     
-    float mainheight = [HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-32-32-80-2 withFont:FONT_BS(14) string:mainPlanVal];
+    float mainheight = [HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-32-32-80-2 withFont:[FontManager setBoldFontSize:14] string:mainPlanVal];
     if (mainheight == 0) mainheight = 16.4;
-    float addressHeight = [HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-32-32-80-2 withFont:FONT_BS(14) string:addressStr];
+    float addressHeight = [HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-32-32-80-2 withFont:[FontManager setBoldFontSize:14] string:addressStr];
     if (addressHeight == 0) addressHeight = 16.4;
 
     BOOL isSpeed = ([upLoadVal floatValue] > 0 && [downLoadVal floatValue] > 0);

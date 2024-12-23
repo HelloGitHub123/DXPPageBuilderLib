@@ -10,6 +10,15 @@
 #import "DCTopLabel.h"
 #import "DCDashboardView.h"
 #import <DXPManagerLib/HJTokenManager.h>
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
+#import <DXPRTLHelperLib/RTLHelper.h>
+#if __has_include(<DXPAnalyticsManagerLibs/SensorsManagement.h>)
+#import <DXPAnalyticsManagerLibs/SensorsManagement.h>
+#endif
+#if __has_include(<DXPAnalyticsManagerLibs/GoogleAnalyticsManagement.h>)
+#import <DXPAnalyticsManagerLibs/GoogleAnalyticsManagement.h>
+#endif
 
 #define  item_V_M  12
 
@@ -101,21 +110,29 @@ static CGFloat iconTopH = 12;
             make.leading.equalTo(@(col *w +page * onePageW));
             make.top.equalTo(@(row *oneRowH));
         }];
+        if (idx == items.count - 1) {
+            [itemView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.trailing.equalTo(@(0));
+            }];
+        }
         
-//        // 埋点
-//        NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
-//        [dict setValue:[HJGlobalDataManager shareInstance].currentInfoModel.currentRole forKey:@"userProfile"];
-//        [dict setValue:[HJGlobalDataManager shareInstance].currentInfoModel.userInfo.mobile forKey:@"mobile"];
-//        [dict setValue:[HJGlobalDataManager shareInstance].currentInfoModel.userInfo.email forKey:@"email"];
-//        [dict setValue:NSUSER_DEF(@"DCpageCode") forKey:@"pageCode"];
-//        [dict setValue: obj.iconName forKey:@"menuName"];
-//        [dict setValue:@(idx+1) forKey:@"$element_position"];
-//        [dict setValue:self.cellModel.props.floorName forKey:@"$element_name"];
-//        [dict setValue: obj.link forKey:@"jumpLink"];
-//
-//        
-//        [[GoogleAnalyticsManagement sharedInstance] logEventWithName:@"TopMenuExposure" withProperties:dict];
-//        [[SensorsManagement sharedInstance] trackWithName:@"TopMenuExposure" withProperties:dict];
+        // 埋点
+        NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+        [dict setValue:[DXPPBDataManager shareInstance].currentInfoModel.currentRole forKey:@"userProfile"];
+        [dict setValue:[DXPPBDataManager shareInstance].currentInfoModel.userInfo.mobile forKey:@"mobile"];
+        [dict setValue:[DXPPBDataManager shareInstance].currentInfoModel.userInfo.email forKey:@"email"];
+        [dict setValue:[DXPPBConfigManager shareInstance].pageCode forKey:@"pageCode"];
+        [dict setValue:obj.iconName forKey:@"menuName"];
+        [dict setValue:@(idx+1) forKey:@"$element_position"];
+        [dict setValue:self.cellModel.props.floorName forKey:@"$element_name"];
+        [dict setValue:obj.link forKey:@"jumpLink"];
+#if __has_include(<DXPAnalyticsManagerLibs/SensorsManagement.h>)
+		[[SensorsManagement sharedInstance] trackWithName:@"TopMenuExposure" withProperties:dict];
+#endif
+		
+#if __has_include(<DXPAnalyticsManagerLibs/GoogleAnalyticsManagement.h>)
+		[[GoogleAnalyticsManagement sharedInstance] logEventWithName:@"TopMenuExposure" withProperties:dict];
+#endif
     }];
     
     // 判断是否有pageControl
@@ -144,19 +161,25 @@ static CGFloat iconTopH = 12;
 	model.floorTitle = item.iconName;
 //    model.floorEventType = item.isAll ? DCFloorEventCustome: DCFloorEventFloor;
     [self hj_routerEventWith:model];
-    
-    // 埋点
-//    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
-//    [dict setValue:[HJGlobalDataManager shareInstance].currentInfoModel.currentRole forKey:@"userProfile"];
-//    [dict setValue:[HJGlobalDataManager shareInstance].currentInfoModel.userInfo.mobile forKey:@"mobile"];
-//    [dict setValue:[HJGlobalDataManager shareInstance].currentInfoModel.userInfo.email forKey:@"email"];
-//    [dict setValue:NSUSER_DEF(@"DCpageCode") forKey:@"pageCode"];
-//    [dict setValue: item.iconName forKey:@"menuName"];
-//    [dict setValue: item.link forKey:@"jumpLink"];
-//    [dict setValue:@(index+1) forKey:@"$element_position"];
-//    [dict setValue:self.cellModel.props.floorName forKey:@"$element_name"];
-//    [[GoogleAnalyticsManagement sharedInstance] logEventWithName:@"TopMenuclick" withProperties:dict];
-//    [[SensorsManagement sharedInstance] trackWithName:@"TopMenuclick" withProperties:dict];
+	
+	// 埋点
+	NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+	[dict setValue:[DXPPBDataManager shareInstance].currentInfoModel.currentRole forKey:@"userProfile"];
+	[dict setValue:[DXPPBDataManager shareInstance].currentInfoModel.userInfo.mobile forKey:@"mobile"];
+	[dict setValue:[DXPPBDataManager shareInstance].currentInfoModel.userInfo.email forKey:@"email"];
+	[dict setValue:[DXPPBConfigManager shareInstance].pageCode forKey:@"pageCode"];
+	[dict setValue: item.iconName forKey:@"menuName"];
+	[dict setValue: item.link forKey:@"jumpLink"];
+	[dict setValue:@(index+1) forKey:@"$element_position"];
+	[dict setValue:self.cellModel.props.floorName forKey:@"$element_name"];
+#if __has_include(<DXPAnalyticsManagerLibs/SensorsManagement.h>)
+	[[SensorsManagement sharedInstance] trackWithName:@"TopMenuclick" withProperties:dict];
+#endif
+	
+#if __has_include(<DXPAnalyticsManagerLibs/GoogleAnalyticsManagement.h>)
+	[[GoogleAnalyticsManagement sharedInstance] logEventWithName:@"TopMenuclick" withProperties:dict];
+#endif
+
 }
 
 #pragma mark -
@@ -166,7 +189,13 @@ static CGFloat iconTopH = 12;
 	
 	NSLog(@"asasdf:%f",DCP_SCREEN_WIDTH);
 	
-	NSInteger index = scrollView.contentOffset.x / width;
+	__block NSInteger index = scrollView.contentOffset.x / width;
+    __weak typeof(self)weakSelf = self;
+    [[RTLHelper sharedInstance] doRTLBlock:^(BOOL isRTL) {
+        if (isRTL) {
+            index = weakSelf.pageControl.numberOfPages - index - 1;
+        }
+    } enableCategoryWork:NO];
 	self.pageControl.currentPage = index;
 }
 
@@ -210,7 +239,7 @@ static CGFloat iconTopH = 12;
     
    
     NSURL *url = [NSURL URLWithString:[item.src stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];
-    [iconImageView sd_setImageWithURL:url];
+    [iconImageView dc_setImageWithURLString:[item.src stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];
 
     
     [iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -229,7 +258,7 @@ static CGFloat iconTopH = 12;
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = [UIColor hjp_colorWithHex:@"#2A2F38"];
-    titleLabel.font = FONT_S(12);
+	titleLabel.font = [FontManager setNormalFontSize:12];
     titleLabel.verticalAlignment = DCVerticalAlignmentMiddle;
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(contentView.mas_centerX);
@@ -260,7 +289,7 @@ static CGFloat iconTopH = 12;
 - (EllipsePageControl *)pageControl {
     if (!_pageControl) {
         _pageControl = [[EllipsePageControl alloc] init];
-        _pageControl.backgroundColor = [UIColor whiteColor];
+        _pageControl.backgroundColor = [UIColor clearColor];
         _pageControl.pagecontrlStyle = EllipsePageControlStyleLine;
         _pageControl.currentColor = [[HJTokenManager shareInstance] getColorByToken:@"ref-global-color-primary"];
         _pageControl.otherColor =  [UIColor hjp_colorWithHex:@"#aaaaaa"];

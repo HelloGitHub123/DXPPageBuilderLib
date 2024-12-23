@@ -7,6 +7,8 @@
 
 #import "DCNewToolBarMaskView.h"
 #import "DCPB.h"
+#import "UIImageView+PBSDWebImage.h"
+
 @interface DCNewToolBarMaskView()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -146,7 +148,7 @@
 }
 
 - (void)bindWithCellModel:(PicturesItem*)item {
-    [self.logoImgView sd_setImageWithURL:[NSURL URLWithString:item.src]];
+    [self.logoImgView dc_setImageWithURLString:item.src];
     self.textLbl.text = item.iconName;
     
 }

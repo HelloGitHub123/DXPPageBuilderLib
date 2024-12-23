@@ -7,6 +7,7 @@
 
 #import "DCSinglePostCell.h"
 #import "DCPageModel.h"
+#import "UIImageView+PBSDWebImage.h"
 
 //#define LeftRightMarginSize  10  // 左右两侧距离屏幕的边距
 #define BtnMoreWidth    100  // more 按钮宽度
@@ -79,14 +80,14 @@
         PicturesItem *picItem = [cellModel.props.pictures objectAtIndex:0];
         NSString *audioUrl = [picItem.src  stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
         NSURL *url = [NSURL URLWithString:audioUrl];
-        [self.imgView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"nadata"]];
+        [self.imgView dc_setImageWithURLString:picItem.src placeholderImage:[UIImage imageNamed:@"nadata"]];
 //        CGFloat height = (DCP_SCREEN_WIDTH - horizontalOutterMargin*2) / 750 * picItem.height;
 		
 		CGFloat height = ((picItem.width/2) * picItem.height)/ picItem.width;
 		
         [self.imgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.trailing.equalTo(@0);
-            make.top.equalTo(@0);
+            make.top.equalTo(@(cellModel.props.topMargin));
 //			make.top.equalTo(@(cellModel.props.topMargin));
             make.height.equalTo(@(height));
         }];

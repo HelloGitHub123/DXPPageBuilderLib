@@ -24,11 +24,16 @@
 @end
 
 
+@implementation AdPlacement
+
+@end
+
 
 @implementation CompositionProps
 
 + (NSDictionary *)mj_objectClassInArray{
     return @{
+        @"titleIcon" : [PicturesItem class],
         @"pictures" : [PicturesItem class],
         @"dataSource" : [NewsDataSource class],
         @"sheet1Pictures" : [PicturesItem class],
@@ -48,6 +53,10 @@
         @"accountChangePictures":[PicturesItem class],
         @"dashLeftPictures":[PicturesItem class],
         @"dashRightPictures":[PicturesItem class],
+		@"unVerifiedIcon":[UnVerifiedIcon class],
+		@"verificationIcon":[VerificationIcon class],
+		@"sevenMainBalInfo":[PicturesItem class],
+        @"sevenDashInfo":[PicturesItem class],
     };
 }
 
@@ -134,5 +143,14 @@
 
 @implementation RightQuickLinkInfo
 
+
+@end
+
+@implementation UnVerifiedIcon
+
+@end
+
+
+@implementation VerificationIcon
 
 @end

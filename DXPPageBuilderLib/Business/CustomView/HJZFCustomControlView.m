@@ -14,6 +14,7 @@
 #import "ZFSliderView.h"
 #import "UIImageView+ZFCache.h"
 #import "DCPB.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @interface HJZFCustomControlView () <ZFSliderViewDelegate>
 
@@ -499,7 +500,7 @@
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.textColor = [UIColor whiteColor];
-        _titleLabel.font = FONT_S(15.0);
+		_titleLabel.font = [FontManager setNormalFontSize:15];
     }
     return _titleLabel;
 }
@@ -518,7 +519,7 @@
     if (!_currentTimeLabel) {
         _currentTimeLabel = [[UILabel alloc] init];
         _currentTimeLabel.textColor = [UIColor whiteColor];
-        _currentTimeLabel.font = FONT_S(14);
+		_currentTimeLabel.font = [FontManager setNormalFontSize:14];
         _currentTimeLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _currentTimeLabel;
@@ -542,7 +543,7 @@
     if (!_totalTimeLabel) {
         _totalTimeLabel = [[UILabel alloc] init];
         _totalTimeLabel.textColor = [UIColor whiteColor];
-        _totalTimeLabel.font =  FONT_S(14);
+		_totalTimeLabel.font = [FontManager setNormalFontSize:14];
         _totalTimeLabel.hidden = YES;
         _totalTimeLabel.textAlignment = NSTextAlignmentCenter;
     }

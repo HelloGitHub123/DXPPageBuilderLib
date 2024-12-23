@@ -35,6 +35,7 @@
                 
                 NSDictionary* data = [res objectForKey:@"data"];
                 weakSelf.subDetailModel = [DCSubsDetailModel yy_modelWithDictionary:data];
+				[[NSUserDefaults standardUserDefaults] setValue:weakSelf.subDetailModel.paidFlag forKey:@"UserPaidFlag"];
                 if (weakSelf.delegate && [weakSelf.delegate respondsToSelector:@selector(requestSuccess:method:)]) {
                     [weakSelf.delegate requestSuccess:weakSelf method:HJUserSubsDetail];
                 }

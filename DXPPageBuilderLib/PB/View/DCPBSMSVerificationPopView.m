@@ -15,6 +15,7 @@
 #import "DXPPBConfigManager.h"
 #import "DCPB.h"
 #import "DCSendOtpViewModel.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @interface DCPBSMSVerificationPopView  ()<UITextFieldDelegate, HJVMRequestDelegate_PB> {
     CGFloat buttonWidth;
@@ -304,7 +305,7 @@
 - (UILabel *)titleLab {
     if (!_titleLab) {
         _titleLab = [[UILabel alloc] init];
-        _titleLab.font = FONT_BS(18);
+		_titleLab.font = [FontManager setBoldFontSize:18];
         _titleLab.textColor = DC_UIColorFromRGB(0x242424);
         _titleLab.textAlignment = NSTextAlignmentCenter;
         _titleLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_authentication"];
@@ -324,7 +325,7 @@
 - (UILabel *)serviceNumberLab {
     if (!_serviceNumberLab) {
         _serviceNumberLab = [[UILabel alloc] init];
-        _serviceNumberLab.font = FONT_S(14);
+		_serviceNumberLab.font = [FontManager setNormalFontSize:14];
         _serviceNumberLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_number_to_switch"];
         _serviceNumberLab.textColor = DC_UIColorFromRGB(0x858585);
         _serviceNumberLab.textAlignment = NSTextAlignmentLeft;
@@ -335,7 +336,7 @@
 - (UILabel *)accNbrLab {
     if (!_accNbrLab) {
         _accNbrLab = [[UILabel alloc] init];
-        _accNbrLab.font = FONT_S(14);
+		_accNbrLab.font = [FontManager setNormalFontSize:14];
         _accNbrLab.textColor = [DC_UIColorFromRGB(0x242424) colorWithAlphaComponent:0.85];
         _accNbrLab.textAlignment = NSTextAlignmentRight;
         _accNbrLab.text = _switchedAccNbr;
@@ -348,7 +349,7 @@
         _descLab = [[UILabel alloc] init];
         _descLab.textColor = [[HJTokenManager shareInstance] getColorByToken:@"ref-tipBlock-info-textColor"];
         _descLab.text = DC_stringFormat(@"ꔷ%@", [NSString stringWithFormat:@"%@", [[HJLanguageManager shareInstance] getTextByKey:@"tip_subs_authentication_required_sent_code"]]);
-        _descLab.font= FONT_S(14);
+		_descLab.font= [FontManager setNormalFontSize:14];
         _descLab.numberOfLines = 0;
     }
     return _descLab;
@@ -368,7 +369,7 @@
 - (UITextField *)codeTextField {
     if (!_codeTextField) {
         _codeTextField = [[UITextField alloc] init];
-        _codeTextField.font = FONT_S(14);
+		_codeTextField.font = [FontManager setNormalFontSize:14];
         _codeTextField.backgroundColor = DC_UIColorFromRGB(0xFFFFFFF);
         _codeTextField.textColor = DC_UIColorFromRGB(0x242424);
         _codeTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -390,7 +391,7 @@
         _getBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_getBtn setTitle:[[HJLanguageManager shareInstance] getTextByKey:@"btn_get"] forState:UIControlStateNormal];
         [_getBtn setTitleColor:[[HJTokenManager shareInstance] getColorByToken:@"ref-textButton-textColor-active"] forState:UIControlStateNormal];
-        _getBtn.titleLabel.font = FONT_S(14);
+		_getBtn.titleLabel.font = [FontManager setNormalFontSize:14];
         _getBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [_getBtn addTarget:self action:@selector(getOTPCode) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -401,7 +402,7 @@
     if (!_errorLab) {
         _errorLab = [[UILabel alloc] init];
         _errorLab.textColor = [[HJTokenManager shareInstance] getColorByToken:@"ref-form-stokeColor-error"];
-        _errorLab.font= FONT_S(14);
+		_errorLab.font= [FontManager setNormalFontSize:14];
         _errorLab.numberOfLines = 0;
         _errorLab.textAlignment = NSTextAlignmentLeft;
         _errorLab.lineBreakMode = NSLineBreakByWordWrapping;
@@ -412,7 +413,7 @@
 - (UIButton *)cancelBtn {
     if (!_cancelBtn) {
         _cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _cancelBtn.titleLabel.font = FONT_BS(14);
+		_cancelBtn.titleLabel.font = [FontManager setBoldFontSize:14];
         _cancelBtn.layer.borderColor = DC_UIColorFromRGB(0xD5D5D5).CGColor;
         _cancelBtn.layer.borderWidth = 1.0;
         _cancelBtn.layer.cornerRadius = 12;
@@ -427,7 +428,7 @@
 - (UIButton *)nextBtn {
     if (!_nextBtn) {
         _nextBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _nextBtn.titleLabel.font = FONT_BS(14);
+		_nextBtn.titleLabel.font = [FontManager setBoldFontSize:14];
         _nextBtn.layer.cornerRadius = 12;
         [_nextBtn setTitleColor:[[HJTokenManager shareInstance] getColorByToken:@"ref-primaryButton-textColor-disable"] forState:UIControlStateNormal];
         _nextBtn.backgroundColor = [[HJTokenManager shareInstance] getColorByToken:@"ref-primaryButton-fillColor-disable"];

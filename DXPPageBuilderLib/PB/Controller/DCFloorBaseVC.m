@@ -13,6 +13,7 @@
 #import <ZFPlayer/ZFPlayerConst.h>
 #import "HJZFCustomControlView.h"
 #import "DCPB.h"
+#import "UIImageView+PBSDWebImage.h"
 
 @interface DCFloorBaseVC ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) NSDictionary *content;
@@ -82,7 +83,7 @@
     NSString *bgImage = model.backgroundImage;
     
     if (!DC_IsStrEmpty(bgImage)) {
-		[self.backgroundImgView sd_setImageWithURL:[NSURL URLWithString:bgImage] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+		[self.backgroundImgView dc_setImageWithURLString:bgImage placeholderImage:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
 			CGSize imgSize = image.size;
 			if (imgSize.width > 0 && imgSize.height > 0) {
 				self.backgroundImgView.frame = CGRectMake(0, 0, self.tableView.frame.size.width,  self.tableView.frame.size.width / imgSize.width * imgSize.height);
@@ -283,6 +284,9 @@
      if (!cell) {
          cell = [[NSClassFromString(cellModel.cellClsName) alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
          [self cellExposureTrackWtihCellModel:cellModel];
+		 // 给pageBuild cell 进行打标签
+		 cell.accessibilityIdentifier = [NSString stringWithFormat:@"Native_tableView_DCFloorBaseCell_%ld_%ld",(long)indexPath.section, (long)indexPath.row];
+		 
      }
      // 防止重复调用bindCellModel
      if (!cellModel.isBinded && cellModel.cellHeight > 0) {

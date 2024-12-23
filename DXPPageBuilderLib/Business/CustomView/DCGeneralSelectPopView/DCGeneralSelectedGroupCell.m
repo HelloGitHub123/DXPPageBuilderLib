@@ -8,6 +8,7 @@
 #import "DCGeneralSelectedGroupCell.h"
 #import <Masonry/Masonry.h>
 #import "DCPB.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @interface DCGeneralSelectedGroupCell()
 @property (nonatomic, strong) UIView *content;
@@ -95,7 +96,7 @@
     // 标题
     UILabel *titleLab = [UILabel new];
     titleLab.text = model.accNbr;
-    titleLab.font = FONT_BS(14);
+	titleLab.font = [FontManager setBoldFontSize:14];
     titleLab.textColor = [UIColor hjp_colorWithHex:@"#242424" ];
     [contentView addSubview:titleLab];
     [titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -118,7 +119,7 @@
         
         UILabel *stateLbl = [UILabel new];
         stateLbl.text =  [model.state isEqualToString:@"A"] ? @"Active" : @"Blocked";
-        stateLbl.font = FONT_BS(12);
+	stateLbl.font = [FontManager setBoldFontSize:12];
     stateLbl.textColor = [UIColor hjp_colorWithHex:[model.state isEqualToString:@"A"] ? @"#1CD287" : @"#FA2C2C"];
         [contentView addSubview:stateLbl];
         [stateLbl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -150,7 +151,7 @@
         UILabel *statusLbl1 = [UILabel new];
         statusLbl1.textColor = [UIColor hjp_colorWithHex: @"#04ACF3" ];
         statusLbl1.text = isPrepaid ? @"Prepaid" : @"Postpaid";
-        statusLbl1.font = FONT_S(12);
+		statusLbl1.font = [FontManager setNormalFontSize:12];
         [statusView1 addSubview:statusLbl1];
         [statusLbl1 mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(statusView1).with.insets(UIEdgeInsetsMake(0, 8, 0, 8));

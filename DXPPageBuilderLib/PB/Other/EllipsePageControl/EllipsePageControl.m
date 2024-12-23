@@ -7,6 +7,7 @@
 //
 
 #import "EllipsePageControl.h"
+#import <DXPRTLHelperLib/RTLHelper.h>
 //#import <APCommonUI/APCommonUI.h>
 
 @interface EllipsePageControl ()
@@ -182,7 +183,15 @@
     
      //动态创建点
     for (int page=0; page<_numberOfPages; page++) {
-        if(page==_currentPage){
+        __weak typeof(self)weakSelf = self;
+        __block int tempPage = page;
+        [[RTLHelper sharedInstance] doRTLBlock:^(BOOL isRTL) {
+            if (isRTL) {
+                tempPage = (int)(weakSelf.numberOfPages - page - 1);
+            }
+        } enableCategoryWork:NO];
+        
+        if(tempPage == _currentPage){
             
             CGFloat width, height;
             if (_pagecontrlStyle == EllipsePageControlStyleDefault) {
@@ -203,7 +212,7 @@
             }
             
              UIView *currPointView=[[UIView alloc]initWithFrame:CGRectMake(startX, startY, width, height)];
-             currPointView.tag=page+1000;
+             currPointView.tag=tempPage+1000;
              currPointView.backgroundColor=_currentColor;
              UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(clickAction:)];
              [currPointView addGestureRecognizer:tapGesture];
@@ -255,7 +264,7 @@
             
             UIView *otherPointView=[[UIView alloc]initWithFrame:CGRectMake(startX, startY, width, height)];
             otherPointView.backgroundColor=_otherColor;
-            otherPointView.tag=page+1000;
+            otherPointView.tag=tempPage+1000;
 
             if (_pagecontrlStyle == EllipsePageControlStyleDefault || _pagecontrlStyle == EllipsePageControlStyleLine) {
                 otherPointView.layer.cornerRadius=height/2;

@@ -7,6 +7,7 @@
 
 #import "HJSDCollectionViewCell.h"
 #import "UIImageView+WebCache.h"
+#import "UIImageView+PBSDWebImage.h"
 
 @interface HJSDCollectionViewCell()
 
@@ -35,7 +36,7 @@
 
 - (void)setModel:(HJSDCycleModel *)model{
     _model = model;
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:[_model.urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:nil];
+    [_imageView dc_setImageWithURLString:[_model.urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] placeholderImage:nil];
 }
 
 

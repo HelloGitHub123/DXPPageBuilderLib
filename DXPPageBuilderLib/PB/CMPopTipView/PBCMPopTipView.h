@@ -88,13 +88,13 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, PointDirection) {
+typedef NS_ENUM(NSInteger, PBPointDirection) {
     PointDirectionAny = 0,
     PointDirectionUp,
     PointDirectionDown,
 };
 
-typedef NS_ENUM(NSInteger, CMPopTipAnimation) {
+typedef NS_ENUM(NSInteger, PBCMPopTipAnimation) {
     CMPopTipAnimationSlide = 0,
     CMPopTipAnimationPop,
     CMPopTipAnimationFade
@@ -102,7 +102,7 @@ typedef NS_ENUM(NSInteger, CMPopTipAnimation) {
 
 @protocol CMPopTipViewDelegate;
 
-@interface CMPopTipView : UIView
+@interface PBCMPopTipView : UIView
 
 @property (nonatomic, strong)			UIColor					*backgroundColor;
 @property (nonatomic, weak)				id<CMPopTipViewDelegate>	delegate;
@@ -123,9 +123,9 @@ typedef NS_ENUM(NSInteger, CMPopTipAnimation) {
 @property (nonatomic, assign)           CGFloat                 cornerRadius;
 @property (nonatomic, assign)			CGFloat					borderWidth;
 @property (nonatomic, assign)           BOOL                    hasShadow;
-@property (nonatomic, assign)           CMPopTipAnimation       animation;
+@property (nonatomic, assign)           PBCMPopTipAnimation       animation;
 @property (nonatomic, assign)           CGFloat                 maxWidth;
-@property (nonatomic, assign)           PointDirection          preferredPointDirection;
+@property (nonatomic, assign)           PBPointDirection          preferredPointDirection;
 @property (nonatomic, assign)           BOOL                    hasGradientBackground;
 @property (nonatomic, assign)           BOOL                    showFromCenter;
 @property (nonatomic, assign)           CGFloat                 sidePadding;
@@ -154,11 +154,11 @@ typedef NS_ENUM(NSInteger, CMPopTipAnimation) {
 - (void)presentPointingAtBarButtonItem:(UIBarButtonItem *)barButtonItem animated:(BOOL)animated;
 - (void)dismissAnimated:(BOOL)animated;
 - (void)autoDismissAnimated:(BOOL)animated atTimeInterval:(NSTimeInterval)timeInterval;
-- (PointDirection) getPointDirection;
+- (PBPointDirection) getPointDirection;
 
 @end
 
 
 @protocol CMPopTipViewDelegate <NSObject>
-- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView;
+- (void)popTipViewWasDismissedByUser:(PBCMPopTipView *)popTipView;
 @end

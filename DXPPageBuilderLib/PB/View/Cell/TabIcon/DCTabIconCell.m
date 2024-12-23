@@ -9,6 +9,7 @@
 #import "DCTabIconItemCell.h"
 #import "DCTabIconCollectionFlowLayout.h"
 #import "EllipsePageControl.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 // ****************** Model ******************
 @implementation DCTabIconCellModel
@@ -198,8 +199,8 @@
     self.tag2.hidden = btn.tag != 2;
     self.tab1.selected = btn.tag == 1;
     self.tab2.selected = btn.tag == 2;
-    self.tab1.titleLabel.font =  btn.tag == 1? FONT_BS(16) : FONT_S(16);
-    self.tab2.titleLabel.font =  btn.tag == 1?  FONT_S(16) : FONT_BS(16);
+	self.tab1.titleLabel.font =  btn.tag == 1? [FontManager setBoldFontSize:16] : [FontManager setNormalFontSize:16];
+	self.tab2.titleLabel.font =  btn.tag == 1?  [FontManager setNormalFontSize:16] : [FontManager setBoldFontSize:16];
     [self.collectionView1 reloadData];
     self.pageControl1.currentPage = 0;
 }
@@ -258,7 +259,7 @@
 - (UIButton *)tab1{
     if (!_tab1) {
         _tab1 = [UIButton buttonWithType:UIButtonTypeCustom];
-        _tab1.titleLabel.font = FONT_BS(16);
+		_tab1.titleLabel.font = [FontManager setBoldFontSize:16];
         _tab1.tag = 1;
         [_tab1 setTitle:@"Hot" forState:UIControlStateNormal];
         [_tab1 setTitleColor:[UIColor hjp_colorWithHex:@"#545454"] forState:UIControlStateNormal];
@@ -271,7 +272,7 @@
 - (UIButton *)tab2{
     if (!_tab2) {
         _tab2 = [UIButton buttonWithType:UIButtonTypeCustom];
-        _tab2.titleLabel.font = FONT_S(16);
+		_tab2.titleLabel.font = [FontManager setNormalFontSize:16];
         _tab2.tag = 2;
         [_tab2 setTitle:@"Life Service" forState:UIControlStateNormal];
         [_tab2 setTitleColor:[UIColor hjp_colorWithHex:@"#545454"]forState:UIControlStateNormal];

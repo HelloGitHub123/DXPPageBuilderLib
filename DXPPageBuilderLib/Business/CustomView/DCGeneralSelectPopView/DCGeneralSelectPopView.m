@@ -12,6 +12,7 @@
 #import "DCGeneralSelectedCell.h"
 #import <DXPManagerLib/HJLanguageManager.h>
 #import "DCPB.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 static NSString *DCGeneralSelectedCellId = @"DCGeneralSelectedCell";
 static NSString *DCGeneralSelectedGroupCellId = @"DCGeneralSelectedGroupCell";
@@ -195,7 +196,7 @@ static NSString *DCGeneralSelectedGroupCellId = @"DCGeneralSelectedGroupCell";
 - (UILabel *)titleLab {
     if (!_titleLab) {
         _titleLab = [[UILabel alloc] init];
-        _titleLab.font = FONT_BS(18);
+		_titleLab.font = [FontManager setBoldFontSize:18];
         _titleLab.textColor = DC_UIColorFromRGB(0x242424);
         _titleLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_service_number"];
         _titleLab.textAlignment = NSTextAlignmentCenter;

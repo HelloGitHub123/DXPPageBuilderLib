@@ -9,6 +9,8 @@
 #import "EllipsePageControl.h"
 #import "DCTopLabel.h"
 #import "DCPBMenuItemModel.h"
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
 
 @implementation DCDashboardViewModel
 
@@ -124,8 +126,7 @@
     if (item.isAll) {
         iconImageView.image = [UIImage imageNamed:@"icon_color_all"];
     }else {
-        NSURL *url = [NSURL URLWithString:[item.iconUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];
-        [iconImageView sd_setImageWithURL:url];
+        [iconImageView dc_setImageWithURLString:[item.iconUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];
     }
    
     [iconImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -141,7 +142,7 @@
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textAlignment = NSTextAlignmentCenter;
     titleLabel.textColor = [UIColor hjp_colorWithHex:@"#2A2F38"];
-    titleLabel.font = FONT_S(12);
+	titleLabel.font = [FontManager setNormalFontSize:12];
     titleLabel.verticalAlignment = DCVerticalAlignmentMiddle;
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(contentView.mas_centerX);

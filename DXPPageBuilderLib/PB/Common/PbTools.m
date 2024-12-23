@@ -169,4 +169,25 @@
 	return [[DXPPBConfigManager shareInstance].safariUrl containsString:host];
 }
 
++ (NSString *)getDateFormatAppByGCP:(NSString *)dateStr {
+	//设置时间显示格式
+	NSString *dateFormatApp = [DXPPBConfigManager shareInstance].dateFormatApp;
+	if (DC_isNull(dateFormatApp) || !dateFormatApp) return dateStr;
+	
+	NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+	[formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];//输入的日期格式
+	
+	NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
+	[dateFormat setDateFormat:dateFormatApp];//输出的日期格式
+	
+	NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en"];
+	[formatter setLocale:locale];
+	[dateFormat setLocale:locale];
+	
+	NSDate *date = [formatter dateFromString:dateStr];
+	
+	NSString *timeString = [dateFormat stringFromDate:date];
+	return timeString;
+}
+
 @end

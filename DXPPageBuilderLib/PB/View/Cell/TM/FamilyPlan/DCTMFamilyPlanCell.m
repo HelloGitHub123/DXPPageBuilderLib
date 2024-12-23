@@ -6,6 +6,7 @@
 //
 
 #import "DCTMFamilyPlanCell.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 CGFloat itemH = 62;
 CGFloat marginH = 4;
@@ -128,7 +129,7 @@ CGFloat marginH = 4;
     [self addSubview:dsdLbl];
     dsdLbl.textColor = [UIColor hjp_colorWithHex:@"#858585"];
     dsdLbl.text = @"Data Used";
-    dsdLbl.font = FONT_S(12);
+	dsdLbl.font = [FontManager setNormalFontSize:12];
     [dsdLbl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.trailing.equalTo(@-16);
         make.top.equalTo(@10);
@@ -166,7 +167,7 @@ CGFloat marginH = 4;
 - (UILabel *)phoneLbl {
     if(!_phoneLbl) {
         _phoneLbl = [UILabel new];
-        _phoneLbl.font = FONT_BS(14);
+		_phoneLbl.font = [FontManager setBoldFontSize:14];
     }
     return _phoneLbl;
 }
@@ -174,7 +175,7 @@ CGFloat marginH = 4;
 - (UILabel *)typeLbl {
     if(!_typeLbl) {
         _typeLbl = [UILabel new];
-        _typeLbl.font = FONT_S(12);
+		_typeLbl.font = [FontManager setNormalFontSize:12];
         _typeLbl.backgroundColor = [UIColor hjp_colorWithHex:@"#EBEBEB"];
         _typeLbl.textColor = [UIColor hjp_colorWithHex:@"#545454"];
         _typeLbl.text = @"  Principal  " ;
@@ -187,7 +188,7 @@ CGFloat marginH = 4;
 - (UILabel *)dataUsedLbl {
     if(!_dataUsedLbl) {
         _dataUsedLbl = [UILabel new];
-        _dataUsedLbl.font = FONT_BS(14);
+		_dataUsedLbl.font = [FontManager setBoldFontSize:14];
         _dataUsedLbl.textColor = [UIColor hjp_colorWithHex:@"#242424"];
         _dataUsedLbl.text = @"5GB";
     }

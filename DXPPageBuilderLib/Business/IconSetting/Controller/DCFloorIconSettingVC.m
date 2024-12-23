@@ -11,6 +11,7 @@
 #import <DXPCategoryLib/UIColor+Category.h>
 #import <DXPToolsLib/SNAlertMessage.h>
 #import "DCPBMenuItemModel.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @interface DCFloorIconSettingVC ()<UICollectionViewDataSource, UICollectionViewDelegate>
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -202,7 +203,7 @@
         
         UILabel *titleLbl = [[UILabel alloc]init];
         titleLbl.textColor = [UIColor blackColor];
-        titleLbl.font = FONT_S(14);
+		titleLbl.font = [FontManager setNormalFontSize:14];
         NSMutableDictionary * temp = (NSMutableDictionary*)self.dataSouce[indexPath.section];
         titleLbl.text = [temp objectForKey:@"menuName"];
         [reusableView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];

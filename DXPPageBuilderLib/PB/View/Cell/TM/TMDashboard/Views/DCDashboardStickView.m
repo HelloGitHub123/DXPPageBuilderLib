@@ -11,10 +11,11 @@
 #import <YYText/YYText.h>
 #import <DXPCategoryLib/UIColor+Category.h>
 #import <SDWebImage/UIButton+WebCache.h>
-
-
+#import <DXPFontManagerLib/FontManager.h>
 #import <DXPManagerLib/HJTokenManager.h>
 #import "DCSubsListModel.h"
+#import "UIImageView+PBSDWebImage.h"
+#import "UIButton+PBSDWebImage.h"
 
 @interface DCDashboardStickView ()
 
@@ -40,6 +41,13 @@
 	if (self = [super initWithFrame:frame]) {
 		
 		self.backgroundColor = [UIColor clearColor];
+        
+        self.layer.masksToBounds = NO; // 允许阴影效果
+        // 设置投影
+        self.layer.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1].CGColor;
+        self.layer.shadowOpacity = 1; // 投影透明度，范围0.0~1.0
+        self.layer.shadowRadius = 10.0; // 投影模糊半径
+        self.layer.shadowOffset = CGSizeMake(0, 5); // 投影偏移量
 		
 		[self configView];
 	}
@@ -48,27 +56,27 @@
 
 - (void)configView {
 	
+    [self addSubview:self.arrowView];
+    [self.arrowView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.centerY.mas_equalTo(self.mas_bottom).offset(-30);
+        make.width.height.mas_equalTo(60);
+    }];
+    
+    [self.arrowView addSubview:self.arrowImgView];
+    [self.arrowImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(0);
+        make.centerY.mas_equalTo(self.arrowView.mas_centerY).offset(15);
+        make.width.mas_equalTo(21);
+        make.height.mas_equalTo(14);
+    }];
+    
 	[self addSubview:self.bgView];
 	[self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.mas_equalTo(0);
 		make.trailing.mas_equalTo(0);
 		make.top.mas_equalTo(STATUS_BAR_HEIGHT);
 		make.bottom.mas_equalTo(-24);
-	}];
-	
-	[self.bgView addSubview:self.arrowView];
-	[self.arrowView mas_makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.mas_equalTo(0);
-		make.centerY.mas_equalTo(self.mas_bottom).offset(-30);
-		make.width.height.mas_equalTo(60);
-	}];
-	
-	[self.arrowView addSubview:self.arrowImgView];
-	[self.arrowImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.mas_equalTo(0);
-		make.centerY.mas_equalTo(self.arrowView.mas_centerY).offset(15);
-		make.width.mas_equalTo(21);
-		make.height.mas_equalTo(14);
 	}];
 	
 	[self.bgView addSubview:self.paddingContentView];
@@ -94,13 +102,21 @@
 	self.postpaidNoPointStickView.hidden = YES;
 	self.postpaidNoOutstandingBillsStickView.hidden = YES;
 	self.rightPointView.hidden = YES;
+    
+    NSString *bgColor = @"#FFFFFF";
+    if (!DC_IsStrEmpty(propsDic.phoneNumberBgColor)) {
+        bgColor = propsDic.phoneNumberBgColor;
+        self.topInfoView.backgroundColor = [UIColor colorWithHexString:bgColor];
+    }
 	
+	NSString *showPoints = propsDic.showPoints;
 	// 判断
 	NSString *paidFlag = [DXPPBDataManager shareInstance].selectedSubsModel.paidFlag; // 是否后付费
 	if ([paidFlag isEqualToString:@"1"]) {
 		// 后付费
-		NSString *usablePoint = [dic objectForKey:@"usablePoint"];
-		if (!DC_IsStrEmpty(usablePoint) && [usablePoint floatValue] > 0) {
+//		NSString *usablePoint = [dic objectForKey:@"usablePoint"];
+//		if (!DC_IsStrEmpty(usablePoint) && [usablePoint floatValue] > 0) {
+		if ([showPoints isEqualToString:@"Y"]) {
 			// 有积分
 			CGFloat itemW = (DC_DCP_SCREEN_WIDTH - 10*2 - 8) / 2;
 			NSString *money = [dic objectForKey:@"money"];
@@ -109,6 +125,7 @@
 				self.postpaidNoOutstandingBillsStickView.hidden = NO;
 				self.rightPointView.hidden = NO;
 				[self.paddingContentView addSubview:self.topInfoView];
+				self.topInfoView.isShowhalf = YES;
 				[self.paddingContentView addSubview:self.postpaidNoOutstandingBillsStickView];
 				[self.paddingContentView addSubview:self.rightPointView];
 				[self.topInfoView bindWithModel:cellModel];
@@ -136,6 +153,7 @@
 				self.postpaidStickView.hidden = NO;
 				self.rightPointView.hidden = NO;
 				[self.paddingContentView addSubview:self.topInfoView];
+				self.topInfoView.isShowhalf = YES;
 				[self.paddingContentView addSubview:self.postpaidStickView];
 				[self.paddingContentView addSubview:self.rightPointView];
 				[self.topInfoView bindWithModel:cellModel];
@@ -165,6 +183,7 @@
 				// No Outstanding Bills
 				self.postpaidNoOutstandingBillsStickView.hidden = NO;
 				[self.paddingContentView addSubview:self.topInfoView];
+				self.topInfoView.isShowhalf = NO;
 				[self.paddingContentView addSubview:self.postpaidNoOutstandingBillsStickView];
 				[self.topInfoView bindWithModel:cellModel];
 				[self.postpaidNoOutstandingBillsStickView bindWithModel:cellModel];
@@ -181,6 +200,7 @@
 			} else {
 				self.postpaidNoPointStickView.hidden = NO;
 				[self.paddingContentView addSubview:self.topInfoView];
+				self.topInfoView.isShowhalf = NO;
 				[self.paddingContentView addSubview:self.postpaidNoPointStickView];
 				[self.topInfoView bindWithModel:cellModel];
 				[self.postpaidNoPointStickView bindWithModel:cellModel];
@@ -198,14 +218,16 @@
 		}
 	} else {
 		// 预付费
-		NSString *usablePoint = [dic objectForKey:@"usablePoint"];
-		if (!DC_IsStrEmpty(usablePoint) && [usablePoint floatValue] > 0) {
+//		NSString *usablePoint = [dic objectForKey:@"usablePoint"];
+//		if (!DC_IsStrEmpty(usablePoint) && [usablePoint floatValue] > 0) {
+		if ([showPoints isEqualToString:@"Y"]) {
 			// 有积分
 			CGFloat itemW = (DC_DCP_SCREEN_WIDTH - 10*2 - 8) / 2;
 			self.prepaidStickView.hidden = NO;
 			self.rightPointView.hidden = NO;
 			[self.paddingContentView addSubview:self.prepaidStickView];
 			[self.paddingContentView addSubview:self.topInfoView];
+			self.topInfoView.isShowhalf = YES;
 			[self.paddingContentView addSubview:self.rightPointView];
 			[self.topInfoView bindWithModel:cellModel];
 			[self.prepaidStickView bindWithModel:cellModel];
@@ -224,6 +246,7 @@
 				make.width.mas_equalTo(itemW);
 				make.trailing.mas_equalTo(0);
 				make.top.mas_equalTo(self.topInfoView.mas_bottom).offset(8);
+				make.height.mas_equalTo(40);
 			}];
 			
 		} else {
@@ -231,6 +254,7 @@
 			self.prepaidNoPointStickView.hidden = NO;
 			[self.paddingContentView addSubview:self.prepaidNoPointStickView];
 			[self.paddingContentView addSubview:self.topInfoView];
+			self.topInfoView.isShowhalf = NO;
 			[self.topInfoView bindWithModel:cellModel];
 			[self.prepaidNoPointStickView bindWithModel:cellModel];
 			
@@ -259,12 +283,6 @@
 	if (!_bgView) {
 		_bgView = [[UIView alloc] init];
 		_bgView.backgroundColor = DC_UIColorFromRGB(0xFFFFFF);
-		_bgView.layer.masksToBounds = NO; // 允许阴影效果
-		// 设置投影
-		_bgView.layer.shadowColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1].CGColor;
-		_bgView.layer.shadowOpacity = 1; // 投影透明度，范围0.0~1.0
-		_bgView.layer.shadowRadius = 10.0; // 投影模糊半径
-		_bgView.layer.shadowOffset = CGSizeMake(0, 5); // 投影偏移量
 	}
 	return _bgView;
 }
@@ -289,7 +307,7 @@
 - (DCPrepaidNoPointStickView *)prepaidNoPointStickView {
 	if (!_prepaidNoPointStickView) {
 		_prepaidNoPointStickView = [[DCPrepaidNoPointStickView alloc] init];
-		_prepaidNoPointStickView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_prepaidNoPointStickView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 		_prepaidNoPointStickView.layer.borderWidth = 1.f;
 		_prepaidNoPointStickView.layer.cornerRadius = 8.f;
 	}
@@ -299,7 +317,7 @@
 - (DCPrepaidStickView *)prepaidStickView {
 	if (!_prepaidStickView) {
 		_prepaidStickView = [[DCPrepaidStickView alloc] init];
-		_prepaidStickView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_prepaidStickView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 		_prepaidStickView.layer.borderWidth = 1.f;
 		_prepaidStickView.layer.cornerRadius = 8.f;
 	}
@@ -309,7 +327,7 @@
 - (DCPostpaidStickView *)postpaidStickView {
 	if (!_postpaidStickView) {
 		_postpaidStickView = [[DCPostpaidStickView alloc] init];
-		_postpaidStickView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_postpaidStickView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 		_postpaidStickView.layer.borderWidth = 1.f;
 		_postpaidStickView.layer.cornerRadius = 8.f;
 	}
@@ -319,7 +337,7 @@
 - (DCPostpaidNoPointStickView *)postpaidNoPointStickView {
 	if (!_postpaidNoPointStickView) {
 		_postpaidNoPointStickView = [[DCPostpaidNoPointStickView alloc] init];
-		_postpaidNoPointStickView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_postpaidNoPointStickView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 		_postpaidNoPointStickView.layer.borderWidth = 1.f;
 		_postpaidNoPointStickView.layer.cornerRadius = 8.f;
 	}
@@ -329,7 +347,7 @@
 - (DCPostpaidNoOutstandingBillsStickView *)postpaidNoOutstandingBillsStickView {
 	if (!_postpaidNoOutstandingBillsStickView) {
 		_postpaidNoOutstandingBillsStickView = [[DCPostpaidNoOutstandingBillsStickView alloc] init];
-		_postpaidNoOutstandingBillsStickView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_postpaidNoOutstandingBillsStickView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 		_postpaidNoOutstandingBillsStickView.layer.borderWidth = 1.f;
 		_postpaidNoOutstandingBillsStickView.layer.cornerRadius = 8.f;
 	}
@@ -339,7 +357,7 @@
 - (DCRightPointView *)rightPointView {
 	if (!_rightPointView) {
 		_rightPointView = [[DCRightPointView alloc] init];
-		_rightPointView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_rightPointView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 		_rightPointView.layer.borderWidth = 1.f;
 		_rightPointView.layer.cornerRadius = 8.f;
 	}
@@ -381,6 +399,7 @@
 @property (nonatomic, strong) UILabel *titleLab;
 @property (nonatomic, strong) UILabel *moneyLab;
 @property (nonatomic, strong) UILabel *dateLab;
+@property (nonatomic, strong) UIView *viewDetailView;
 @property (nonatomic, strong) UILabel *viewDetailLab;
 @property (nonatomic, strong) UIButton *toViewBtn;
 
@@ -404,7 +423,9 @@
 	[self.paddingContentView addSubview:self.moneyLab];
 	[self.paddingContentView addSubview:self.viewDetailLab];
 	[self.paddingContentView addSubview:self.dateLab];
-	[self.paddingContentView addSubview:self.toViewBtn];
+	[self.paddingContentView addSubview:self.viewDetailView];
+	[self.viewDetailView addSubview:self.viewDetailLab];
+	[self.viewDetailView addSubview:self.toViewBtn];
 }
 
 - (void)layoutUI {
@@ -423,8 +444,8 @@
 	
 	[self.moneyLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.mas_equalTo(0);
-		make.top.mas_equalTo(self.titleLab.mas_bottom).offset(10);
-		make.height.mas_equalTo(30);
+		make.top.mas_equalTo(self.titleLab.mas_bottom).offset(4);
+		make.height.mas_equalTo(28);
 		make.width.mas_equalTo(itemW);
 	}];
 	
@@ -434,15 +455,22 @@
 		make.width.mas_equalTo(itemW);
 	}];
 	
+	[self.viewDetailView mas_makeConstraints:^(MASConstraintMaker *make) {
+		make.height.mas_equalTo(40);
+		make.trailing.mas_equalTo(0);
+		make.width.mas_equalTo(itemW);
+		make.top.mas_equalTo(self.dateLab.mas_bottom);
+	}];
+	
 	[self.toViewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.width.height.mas_equalTo(40);
 		make.trailing.mas_equalTo(0);
-		make.top.mas_equalTo(self.dateLab.mas_bottom).offset(0);
+		make.centerY.mas_equalTo(0);
 	}];
 	
 	[self.viewDetailLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.centerY.mas_equalTo(self.toViewBtn.mas_centerY);
-		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(-12);
+		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(-4);
 		make.height.mas_equalTo(18);
 	}];
 }
@@ -456,20 +484,36 @@
 	NSString *money = [dic objectForKey:@"money"];
 	self.moneyLab.text = [NSString stringWithFormat:@"%@%@", [DXPPBConfigManager shareInstance].currencySymbol,money];
 	// 日期
+	CGFloat itemW = (DC_DCP_SCREEN_WIDTH - 10*2 - 12*2) / 2;
 	NSString *effDate = [dic objectForKey:@"effDate"];
 	if (DC_IsStrEmpty(effDate)) {
 		self.dateLab.hidden = YES;
+		
+		[self.viewDetailView mas_remakeConstraints:^(MASConstraintMaker *make) {
+			make.height.mas_equalTo(40);
+			make.trailing.mas_equalTo(0);
+			make.width.mas_equalTo(itemW);
+			make.centerY.mas_equalTo(0);
+		}];
+		
 	} else {
 		self.dateLab.hidden = NO;
 		self.dateLab.text = [NSString stringWithFormat:@"%@ %@", [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_valid_until"] ,!DC_IsStrEmpty(effDate) ? [PbTools getDateFormatAppByProperty:effDate] : @"--"];
+		
+		[self.viewDetailView mas_remakeConstraints:^(MASConstraintMaker *make) {
+			make.height.mas_equalTo(40);
+			make.trailing.mas_equalTo(0);
+			make.width.mas_equalTo(itemW);
+			make.top.mas_equalTo(self.dateLab.mas_bottom);
+		}];
 	}
 	// 按钮
 	NSDictionary *balIconDic = [propsDic.balIcon firstObject];
 	NSString *balIconSrc = [balIconDic objectForKey:@"src"];
-	[self.toViewBtn sd_setImageWithURL:[NSURL URLWithString:balIconSrc] forState:UIControlStateNormal placeholderImage:DC_image(@"ic_add")];
+	[self.toViewBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_add")];
 }
 
-- (void)toViewAction:(id)sender {
+- (void)toViewAction {
 	NSMutableDictionary *dic = self.cellModel.customData;
 	CompositionProps *propsDic = self.cellModel.props;
 	
@@ -482,6 +526,9 @@
 	model.link = DC_IsStrEmpty(link)?@"":link;
 	model.floorEventType = DCFloorEventFloor;
 	[self hj_routerEventWith:model];
+	
+	// 文字颜色
+	self.viewDetailLab.textColor = [UIColor hjp_colorWithHex:propsDic.balOrBillLinkColor];
 }
 
 #pragma mark - lazy load
@@ -496,7 +543,7 @@
 	if (!_titleLab) {
 		_titleLab = [[UILabel alloc] init];
 		_titleLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_your_load_balance"];
-		_titleLab.font = FONT_S(12);
+		_titleLab.font = [FontManager setNormalFontSize:12];
 		_titleLab.textColor = DC_UIColorFromRGB(0x242424);
 		_titleLab.textAlignment = NSTextAlignmentLeft;
 	}
@@ -506,7 +553,7 @@
 - (UILabel *)moneyLab {
 	if (!_moneyLab) {
 		_moneyLab = [[UILabel alloc] init];
-		_moneyLab.font = FONT_S(22);
+		_moneyLab.font = [FontManager setNormalFontSize:22];
 		_moneyLab.textColor = DC_UIColorFromRGB(0x242424);
 		_moneyLab.textAlignment = NSTextAlignmentLeft;
 	}
@@ -516,19 +563,27 @@
 - (UILabel *)dateLab {
 	if (!_dateLab) {
 		_dateLab = [[UILabel alloc] init];
-		_dateLab.font = FONT_S(12);
+		_dateLab.font = [FontManager setNormalFontSize:12];
 		_dateLab.textColor = DC_UIColorFromRGB(0x242424);
 		_dateLab.textAlignment = NSTextAlignmentRight;
 	}
 	return _dateLab;
 }
 
+- (UIView *)viewDetailView {
+	if (!_viewDetailView) {
+		_viewDetailView = [[UIView alloc] init];
+		_viewDetailView.userInteractionEnabled = YES;
+	}
+	return _viewDetailView;
+}
+
 - (UILabel *)viewDetailLab {
 	if (!_viewDetailLab) {
 		_viewDetailLab = [[UILabel alloc] init];
 		_viewDetailLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_top_up"];
-		_viewDetailLab.font = FONT_S(12);
-		_viewDetailLab.textColor = DC_UIColorFromRGB(0x0077A6);
+		_viewDetailLab.font = [FontManager setNormalFontSize:12];
+		_viewDetailLab.textColor = DC_UIColorFromRGB(0x1AABBA);
 		_viewDetailLab.textAlignment = NSTextAlignmentRight;
 	}
 	return _viewDetailLab;
@@ -539,7 +594,7 @@
 		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
 		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-		[_toViewBtn addTarget:self action:@selector(toViewAction:) forControlEvents:UIControlEventTouchUpInside];
+		[_toViewBtn addTarget:self action:@selector(toViewAction) forControlEvents:UIControlEventTouchUpInside];
 	}
 	return _toViewBtn;
 }
@@ -593,21 +648,21 @@
 	[self.titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.top.mas_equalTo(0);
 		make.height.mas_equalTo(18);
-		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(4);
+		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(0);
 	}];
 	
 	[self.moneyLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.mas_equalTo(0);
 		make.top.mas_equalTo(self.titleLab.mas_bottom).offset(0);
-		make.height.mas_equalTo(30);
-		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(4);
+		make.height.mas_equalTo(26);
+		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(0);
 	}];
 	
 	[self.dateLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.mas_equalTo(0);
 		make.top.mas_equalTo(self.moneyLab.mas_bottom).offset(0);
 		make.height.mas_equalTo(18);
-		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(4);
+		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(0);
 	}];
 	
 }
@@ -637,11 +692,16 @@
 	self.moneyLab.text = [NSString stringWithFormat:@"%@%@",money,[DXPPBConfigManager shareInstance].currencySymbol];
 	// 日期
 	NSString *effDate = [dic objectForKey:@"effDate"];
-	self.dateLab.text = [NSString stringWithFormat:@"%@ %@" , [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_valid_until"],!DC_IsStrEmpty(effDate) ? [PbTools getDateFormatAppByProperty:effDate] : @"--"];
+	if (DC_IsStrEmpty(effDate) || [effDate isEqualToString:@"(null)"]) {
+		self.dateLab.hidden = YES;
+	} else {
+		self.dateLab.hidden = NO;
+		self.dateLab.text = [NSString stringWithFormat:@"%@ %@" , [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_valid_until"],[PbTools getDateFormatAppByProperty:effDate]];
+	}
 	// 按钮
 	NSDictionary *balIconDic = [propsDic.balIcon firstObject];
 	NSString *balIconSrc = [balIconDic objectForKey:@"src"];
-	[self.toViewBtn sd_setImageWithURL:[NSURL URLWithString:balIconSrc] forState:UIControlStateNormal placeholderImage:DC_image(@"ic_add")];
+	[self.toViewBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_add")];
 }
 
 #pragma mark - lazy load
@@ -656,7 +716,7 @@
 	if (!_titleLab) {
 		_titleLab = [[UILabel alloc] init];
 		_titleLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_your_load_balance"];
-		_titleLab.font = FONT_S(12);
+		_titleLab.font = [FontManager setNormalFontSize:12];
 		_titleLab.textColor = DC_UIColorFromRGB(0x242424);
 		_titleLab.textAlignment = NSTextAlignmentLeft;
 	}
@@ -666,7 +726,7 @@
 - (UILabel *)moneyLab {
 	if (!_moneyLab) {
 		_moneyLab = [[UILabel alloc] init];
-		_moneyLab.font = FONT_S(22);
+		_moneyLab.font = [FontManager setBoldFontSize:18];
 		_moneyLab.textColor = DC_UIColorFromRGB(0x242424);
 		_moneyLab.textAlignment = NSTextAlignmentLeft;
 	}
@@ -676,9 +736,9 @@
 - (UILabel *)dateLab {
 	if (!_dateLab) {
 		_dateLab = [[UILabel alloc] init];
-		_dateLab.font = FONT_S(22);
+		_dateLab.font = [FontManager setNormalFontSize:12];
 		_dateLab.textColor = DC_UIColorFromRGB(0x242424);
-		_dateLab.textAlignment = NSTextAlignmentRight;
+		_dateLab.textAlignment = NSTextAlignmentLeft;
 	}
 	return _dateLab;
 }
@@ -744,21 +804,21 @@
 	[self.titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.top.mas_equalTo(0);
 		make.height.mas_equalTo(18);
-		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(4);
+		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(0);
 	}];
 	
 	[self.moneyLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.mas_equalTo(0);
 		make.top.mas_equalTo(self.titleLab.mas_bottom).offset(0);
-		make.height.mas_equalTo(30);
-		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(4);
+		make.height.mas_equalTo(26);
+		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(0);
 	}];
 	
 	[self.dateLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.mas_equalTo(0);
 		make.top.mas_equalTo(self.moneyLab.mas_bottom).offset(0);
 		make.height.mas_equalTo(18);
-//		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(4);
+		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(0);
 	}];
 }
 
@@ -792,12 +852,12 @@
 		self.dateLab.hidden = YES;
 	} else {
 		self.dateLab.hidden = NO;
-		self.dateLab.text = [NSString stringWithFormat:@"%@ %@", [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_due_by"] ,!DC_IsStrEmpty(effDate) ? [PbTools getDateFormatAppByProperty:effDate] : @"--"];
+		self.dateLab.text = [NSString stringWithFormat:@"%@ %@", [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_due_by"] ,[PbTools getDateFormatAppByProperty:effDate]];
 	}
 	// 按钮
 	NSDictionary *balIconDic = [propsDic.billIcon firstObject];
 	NSString *balIconSrc = [balIconDic objectForKey:@"src"];
-	[self.toViewBtn sd_setImageWithURL:[NSURL URLWithString:balIconSrc] forState:UIControlStateNormal placeholderImage:DC_image(@"ic_add")];
+	[self.toViewBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_add")];
 	
 }
 
@@ -813,7 +873,7 @@
 	if (!_titleLab) {
 		_titleLab = [[UILabel alloc] init];
 		_titleLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_outstanding_bill"];
-		_titleLab.font = FONT_S(12);
+		_titleLab.font = [FontManager setNormalFontSize:12];
 		_titleLab.textColor = DC_UIColorFromRGB(0x242424);
 		_titleLab.textAlignment = NSTextAlignmentLeft;
 	}
@@ -823,7 +883,7 @@
 - (UILabel *)moneyLab {
 	if (!_moneyLab) {
 		_moneyLab = [[UILabel alloc] init];
-		_moneyLab.font = FONT_S(22);
+		_moneyLab.font = [FontManager setNormalFontSize:22];
 		_moneyLab.textColor = DC_UIColorFromRGB(0x242424);
 		_moneyLab.textAlignment = NSTextAlignmentLeft;
 	}
@@ -833,9 +893,9 @@
 - (UILabel *)dateLab {
 	if (!_dateLab) {
 		_dateLab = [[UILabel alloc] init];
-		_dateLab.font = FONT_S(12);
+		_dateLab.font = [FontManager setNormalFontSize:12];
 		_dateLab.textColor = DC_UIColorFromRGB(0x242424);
-		_dateLab.textAlignment = NSTextAlignmentRight;
+		_dateLab.textAlignment = NSTextAlignmentLeft;
 	}
 	return _dateLab;
 }
@@ -861,6 +921,7 @@
 @property (nonatomic, strong) UILabel *titleLab;
 @property (nonatomic, strong) UILabel *moneyLab;
 @property (nonatomic, strong) UILabel *dateLab;
+@property (nonatomic, strong) UIView *viewDetailView;
 @property (nonatomic, strong) UILabel *viewDetailLab;
 @property (nonatomic, strong) UIButton *toViewBtn;
 
@@ -884,7 +945,9 @@
 	[self.paddingContentView addSubview:self.moneyLab];
 	[self.paddingContentView addSubview:self.viewDetailLab];
 	[self.paddingContentView addSubview:self.dateLab];
-	[self.paddingContentView addSubview:self.toViewBtn];
+	[self.paddingContentView addSubview:self.viewDetailView];
+	[self.viewDetailView addSubview:self.viewDetailLab];
+	[self.viewDetailView addSubview:self.toViewBtn];
 }
 
 - (void)layoutUI {
@@ -903,8 +966,7 @@
 	
 	[self.moneyLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.mas_equalTo(0);
-		make.top.mas_equalTo(self.titleLab.mas_bottom).offset(10);
-		make.height.mas_equalTo(30);
+		make.height.mas_equalTo(28);
 		make.width.mas_equalTo(itemW);
 		make.bottom.mas_equalTo(0);
 	}];
@@ -915,15 +977,22 @@
 		make.width.mas_equalTo(itemW);
 	}];
 	
+	[self.viewDetailView mas_makeConstraints:^(MASConstraintMaker *make) {
+		make.trailing.mas_equalTo(0);
+		make.top.mas_equalTo(self.dateLab.mas_bottom);
+		make.height.mas_equalTo(40);
+		make.width.mas_equalTo(itemW);
+	}];
+	
 	[self.toViewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.width.height.mas_equalTo(40);
 		make.trailing.mas_equalTo(0);
-		make.top.mas_equalTo(self.dateLab.mas_bottom).offset(0);
+		make.centerY.mas_equalTo(0);
 	}];
 	
 	[self.viewDetailLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.centerY.mas_equalTo(self.toViewBtn.mas_centerY);
-		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(-12);
+		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(-4);
 		make.height.mas_equalTo(18);
 	}];
 }
@@ -938,12 +1007,39 @@
 	NSString *money = [dic objectForKey:@"money"];
 	self.moneyLab.text = [NSString stringWithFormat:@"%@%@", [DXPPBConfigManager shareInstance].currencySymbol,money];
 	// 日期
+	CGFloat itemW = (DC_DCP_SCREEN_WIDTH - 10*2 - 12*2) / 2;
 	NSString *effDate = [dic objectForKey:@"effDate"];
-	self.dateLab.text = [NSString stringWithFormat:@"%@ %@" , [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_due_by"],!DC_IsStrEmpty(effDate) ? [PbTools getDateFormatAppByProperty:effDate] : @"--"];
+	if (DC_IsStrEmpty(effDate) || [effDate isEqualToString:@"(null)"]) {
+		self.dateLab.hidden = YES;
+		[self.viewDetailView mas_remakeConstraints:^(MASConstraintMaker *make) {
+			make.centerY.mas_equalTo(self.paddingContentView.mas_centerY);
+			make.trailing.mas_equalTo(0);
+			make.height.mas_equalTo(40);
+			make.width.mas_equalTo(itemW);
+		}];
+		
+	} else {
+		self.dateLab.text = [NSString stringWithFormat:@"%@ %@" , [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_due_by"],[PbTools getDateFormatAppByProperty:effDate]];
+		
+		self.dateLab.hidden = NO;
+		[self.dateLab mas_remakeConstraints:^(MASConstraintMaker *make) {
+			make.trailing.top.mas_equalTo(0);
+			make.height.mas_equalTo(18);
+			make.width.mas_equalTo(itemW);
+		}];
+		
+		[self.viewDetailView mas_remakeConstraints:^(MASConstraintMaker *make) {
+			make.trailing.mas_equalTo(0);
+			make.top.mas_equalTo(self.dateLab.mas_bottom);
+			make.height.mas_equalTo(40);
+			make.width.mas_equalTo(itemW);
+		}];
+	}
+	
 	// 按钮
 	NSDictionary *billIconDic = [propsDic.billIcon firstObject];
 	NSString *billIconSrc = [billIconDic objectForKey:@"src"];
-	[self.toViewBtn sd_setImageWithURL:[NSURL URLWithString:billIconSrc] forState:UIControlStateNormal placeholderImage:DC_image(@"ic_to_view")];
+	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_to_view")];
 	// 当showPoints为N时，渲染balOrBillLinkColor，为Y渲染pointsColor
 	if ([propsDic.showPoints isEqualToString:@"Y"]) {
 		self.viewDetailLab.textColor = [UIColor hjp_colorWithHex:propsDic.pointsColor];
@@ -952,7 +1048,7 @@
 	}
 }
 
-- (void)toViewAction:(id)sender {
+- (void)toViewAction {
 	NSMutableDictionary *dic = self.cellModel.customData;
 	CompositionProps *propsDic = self.cellModel.props;
 	
@@ -979,7 +1075,7 @@
 	if (!_titleLab) {
 		_titleLab = [[UILabel alloc] init];
 		_titleLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_outstanding_bill"];
-		_titleLab.font = FONT_S(12);
+		_titleLab.font = [FontManager setNormalFontSize:12];
 		_titleLab.textColor = DC_UIColorFromRGB(0x242424);
 		_titleLab.textAlignment = NSTextAlignmentLeft;
 	}
@@ -989,7 +1085,7 @@
 - (UILabel *)moneyLab {
 	if (!_moneyLab) {
 		_moneyLab = [[UILabel alloc] init];
-		_moneyLab.font = FONT_S(22);
+		_moneyLab.font = [FontManager setBoldFontSize:18];
 		_moneyLab.textColor = DC_UIColorFromRGB(0x242424);
 		_moneyLab.textAlignment = NSTextAlignmentLeft;
 	}
@@ -999,19 +1095,30 @@
 - (UILabel *)dateLab {
 	if (!_dateLab) {
 		_dateLab = [[UILabel alloc] init];
-		_dateLab.font = FONT_S(12);
+		_dateLab.font = [FontManager setNormalFontSize:12];
 		_dateLab.textColor = DC_UIColorFromRGB(0x242424);
 		_dateLab.textAlignment = NSTextAlignmentRight;
 	}
 	return _dateLab;
 }
 
+- (UIView *)viewDetailView {
+	if (!_viewDetailView) {
+		_viewDetailView = [[UIView alloc] init];
+		_viewDetailView.userInteractionEnabled = YES;
+		
+		UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(toViewAction)];
+		[_viewDetailView addGestureRecognizer:tap];
+	}
+	return _viewDetailView;
+}
+
 - (UILabel *)viewDetailLab {
 	if (!_viewDetailLab) {
 		_viewDetailLab = [[UILabel alloc] init];
-		_viewDetailLab.text = @"Pay My Bills";
-		_viewDetailLab.font = FONT_S(12);
-		_viewDetailLab.textColor = DC_UIColorFromRGB(0x0077A6);
+		_viewDetailLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_view_my_bills"];
+		_viewDetailLab.font = [FontManager setNormalFontSize:12];
+		_viewDetailLab.textColor = DC_UIColorFromRGB(0x1AABBA);
 		_viewDetailLab.textAlignment = NSTextAlignmentRight;
 	}
 	return _viewDetailLab;
@@ -1036,6 +1143,8 @@
 @property (nonatomic, strong) UIView *paddingContentView;
 @property (nonatomic, strong) UILabel *titleLab;
 @property (nonatomic, strong) UILabel *subTitleLab;
+@property (nonatomic, strong) UIView *payMyBillsView;
+//@property (nonatomic, strong) UILabel *payLab;
 @property (nonatomic, strong) UIButton *toViewBtn;
 
 @property (nonatomic, strong) DCMutiBalanceDashboardCellModel *cellModel;
@@ -1056,7 +1165,9 @@
 	[self addSubview:self.paddingContentView];
 	[self.paddingContentView addSubview:self.titleLab];
 	[self.paddingContentView addSubview:self.subTitleLab];
-	[self.paddingContentView addSubview:self.toViewBtn];
+	[self.paddingContentView addSubview:self.payMyBillsView];
+//	[self.payMyBillsView addSubview:self.payLab];
+	[self.payMyBillsView addSubview:self.toViewBtn];
 }
 
 - (void)layoutUI {
@@ -1065,21 +1176,29 @@
 		make.trailing.bottom.mas_equalTo(-12);
 	}];
 	
+	[self.payMyBillsView mas_makeConstraints:^(MASConstraintMaker *make) {
+		make.height.mas_equalTo(40);
+		make.width.mas_equalTo(160);
+		make.centerY.mas_equalTo(self.paddingContentView.mas_centerY);
+		make.trailing.mas_equalTo(0);
+	}];
+	
 	[self.toViewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-		make.trailing.mas_equalTo(-12);
 		make.width.height.mas_equalTo(40);
-		make.centerY.mas_equalTo(0);
+		make.trailing.mas_equalTo(0);
+		make.centerY.mas_equalTo(self.payMyBillsView.mas_centerY);
 	}];
 	
 	[self.titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.top.leading.mas_equalTo(0);
 		make.height.mas_equalTo(18);
-		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(-4);
+		make.trailing.mas_equalTo(self.payMyBillsView.mas_trailing).offset(0);
 	}];
 	
 	[self.subTitleLab mas_makeConstraints:^(MASConstraintMaker *make) {
-		make.bottom.leading.mas_equalTo(0);
-		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(-4);
+		make.leading.mas_equalTo(0);
+		make.top.mas_equalTo(self.titleLab.mas_bottom).offset(4);
+		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(4);
 	}];
 }
 
@@ -1087,13 +1206,16 @@
 	NSMutableDictionary *dic = cellModel.customData;
 	CompositionProps *propsDic = cellModel.props;
 	
+	// 文字艳娥
+//	self.payLab.textColor = [UIColor hjp_colorWithHex:propsDic.balOrBillLinkColor];
+	
 	NSDictionary *billIconDic = [propsDic.billIcon firstObject];
 	NSString *billIconSrc = [billIconDic objectForKey:@"src"];
-	[self.toViewBtn sd_setImageWithURL:[NSURL URLWithString:billIconSrc] forState:UIControlStateNormal placeholderImage:DC_image(@"ic_to_view")];
+	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_to_view")];
 	
 }
 
-- (void)toViewAction:(id)sender {
+- (void)toViewAction {
 	NSMutableDictionary *dic = self.cellModel.customData;
 	CompositionProps *propsDic = self.cellModel.props;
 	
@@ -1122,7 +1244,7 @@
 		_titleLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_outstanding_bill"];
 		_titleLab.textAlignment = NSTextAlignmentLeft;
 		_titleLab.textColor = DC_UIColorFromRGB(0x242424);
-		_titleLab.font = FONT_S(12);
+		_titleLab.font = [FontManager setNormalFontSize:12];
 	}
 	return _titleLab;
 }
@@ -1135,18 +1257,40 @@
 		_subTitleLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_no_outstanding_bills"];
 		_subTitleLab.textAlignment = NSTextAlignmentLeft;
 		_subTitleLab.textColor = DC_UIColorFromRGB(0x242424);
-		_subTitleLab.font = FONT_S(14);
+		_subTitleLab.font = [FontManager setBoldFontSize:14];
 	}
 	return _subTitleLab;
 }
+
+- (UIView *)payMyBillsView {
+	if (!_payMyBillsView) {
+		_payMyBillsView = [[UIView alloc] init];
+		_payMyBillsView.userInteractionEnabled = YES;
+		
+		UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(toViewAction)];
+		[_payMyBillsView addGestureRecognizer:tap];
+		
+	}
+	return _payMyBillsView;
+}
+
+//- (UILabel *)payLab {
+//	if (!_payLab) {
+//		_payLab = [[UILabel alloc] init];
+//		_payLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_view_my_bills"];
+//		_payLab.textAlignment = NSTextAlignmentRight;
+//		_payLab.textColor = DC_UIColorFromRGB(0x1AABBA);
+//		_payLab.font = FONT_S(12);
+//	}
+//	return _payLab;
+//}
 
 - (UIButton *)toViewBtn {
 	if (!_toViewBtn) {
 		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
 		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-		[_toViewBtn addTarget:self action:@selector(toViewAction:) forControlEvents:UIControlEventTouchUpInside];
-		_toViewBtn.hidden = YES;
+		[_toViewBtn addTarget:self action:@selector(toViewAction) forControlEvents:UIControlEventTouchUpInside];
 	}
 	return _toViewBtn;
 }
@@ -1159,9 +1303,10 @@
 @interface DCRightPointView ()
 
 @property (nonatomic, strong) UIView *paddingContentView;
+@property (nonatomic, strong) UILabel *titleLab;
 @property (nonatomic, strong) UIImageView *moneyImgView;
 @property (nonatomic, strong) UILabel *pointLab;
-@property (nonatomic, strong) UIButton *toViewBtn;
+//@property (nonatomic, strong) UIButton *toViewBtn;
 @property (nonatomic, strong) DCMutiBalanceDashboardCellModel *cellModel;
 @end
 
@@ -1178,9 +1323,10 @@
 
 - (void)initUI {
     [self addSubview:self.paddingContentView];
+	[self.paddingContentView addSubview:self.titleLab];
 	[self.paddingContentView addSubview:self.moneyImgView];
 	[self.paddingContentView addSubview:self.pointLab];
-	[self.paddingContentView addSubview:self.toViewBtn];
+//	[self.paddingContentView addSubview:self.toViewBtn];
 }
 
 - (void)layoutUI {
@@ -1188,29 +1334,33 @@
         make.top.leading.mas_equalTo(12);
         make.trailing.bottom.mas_equalTo(-12);
     }];
-    
-	[self.moneyImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-		make.width.height.mas_equalTo(14);
+	
+	[self.titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.mas_equalTo(0);
 		make.centerY.mas_equalTo(0);
-	}];
-	
-	[self.toViewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-		make.width.height.mas_equalTo(40);
-		make.trailing.mas_equalTo(self.mas_trailing).offset(-12);
-		make.centerY.mas_equalTo(0);
+		make.height.mas_equalTo(18);
 	}];
 	
 	[self.pointLab mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.height.mas_equalTo(24);
-		make.leading.mas_equalTo(self.moneyImgView.mas_trailing).offset(4);
-		make.trailing.mas_equalTo(self.toViewBtn.mas_leading).offset(-4);
+		make.trailing.mas_equalTo(self.paddingContentView.mas_trailing).offset(0);
+		make.centerY.mas_equalTo(0);
+	}];
+    
+	[self.moneyImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+		make.width.height.mas_equalTo(14);
+		make.trailing.mas_equalTo(self.pointLab.mas_leading).offset(-4);
 		make.centerY.mas_equalTo(0);
 	}];
 	
+//	[self.toViewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//		make.width.height.mas_equalTo(40);
+//		make.trailing.mas_equalTo(self.mas_trailing).offset(-12);
+//		make.centerY.mas_equalTo(0);
+//	}];
 }
 
-- (void)toViewAction:(id)sender {
+- (void)toViewAction {
 	NSMutableDictionary *dic = self.cellModel.customData;
 	CompositionProps *propsDic = self.cellModel.props;
 	
@@ -1232,13 +1382,13 @@
 	CompositionProps *propsDic = cellModel.props;
 	
 	// 跳转按钮
-	NSDictionary *pointsIconDic = [propsDic.pointsIcon firstObject];
-	NSString *pointsIconSrc = [pointsIconDic objectForKey:@"src"];
-	[self.toViewBtn sd_setBackgroundImageWithURL:[NSURL URLWithString:pointsIconSrc] forState:UIControlStateNormal];
+//	NSDictionary *pointsIconDic = [propsDic.pointsIcon firstObject];
+//	NSString *pointsIconSrc = [pointsIconDic objectForKey:@"src"];
+//	[self.toViewBtn sd_setBackgroundImageWithURL:[NSURL URLWithString:pointsIconSrc] forState:UIControlStateNormal];
 	// 金币按钮
 	NSDictionary *pointsAmountIconDic = [propsDic.pointsAmountIcon firstObject];
 	NSString *pointsAmountIconSrc = [pointsAmountIconDic objectForKey:@"src"];
-	[self.moneyImgView sd_setImageWithURL:[NSURL URLWithString:pointsAmountIconSrc] placeholderImage:DC_image(@"ic_money_icon")];
+	[self.moneyImgView dc_setImageWithURLString:pointsAmountIconSrc placeholderImage:DC_image(@"ic_money_icon")];
 	// point值
 	NSString *pointVal = [NSString stringWithFormat:@"%@",[dic objectForKey:@"usablePoint"]];
 	self.pointLab.text = DC_IsStrEmpty(pointVal)?@"":pointVal;
@@ -1249,8 +1399,23 @@
 - (UIView *)paddingContentView {
     if (!_paddingContentView) {
         _paddingContentView = [[UIView alloc] init];
+		_paddingContentView.userInteractionEnabled = YES;
+		
+		UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(toViewAction)];
+		[_paddingContentView addGestureRecognizer:tap];
     }
     return _paddingContentView;
+}
+
+- (UILabel *)titleLab {
+	if (!_titleLab) {
+		_titleLab = [[UILabel alloc] init];
+		_titleLab.textAlignment = NSTextAlignmentLeft;
+		_titleLab.font = [FontManager setNormalFontSize:12];
+		_titleLab.textColor = DC_UIColorFromRGB(0x242424);
+		_titleLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_muti_balance_dashboard_your_points"];
+	}
+	return _titleLab;
 }
 
 - (UIImageView *)moneyImgView {
@@ -1264,21 +1429,23 @@
 - (UILabel *)pointLab {
 	if (!_pointLab) {
 		_pointLab = [[UILabel alloc] init];
-		_pointLab.textAlignment = NSTextAlignmentLeft;
-		_pointLab.font = FONT_S(16);
+		_pointLab.textAlignment = NSTextAlignmentRight;
+		_pointLab.font = [FontManager setBoldFontSize:16];
 		_pointLab.textColor = DC_UIColorFromRGB(0x242424);
 	}
 	return _pointLab;
 }
 
-- (UIButton *)toViewBtn {
-	if (!_toViewBtn) {
-		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
-		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-		[_toViewBtn addTarget:self action:@selector(toViewAction:) forControlEvents:UIControlEventTouchUpInside];
-	}
-	return _toViewBtn;
-}
+
+
+//- (UIButton *)toViewBtn {
+//	if (!_toViewBtn) {
+//		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
+//		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+//		[_toViewBtn addTarget:self action:@selector(toViewAction:) forControlEvents:UIControlEventTouchUpInside];
+//	}
+//	return _toViewBtn;
+//}
 
 @end

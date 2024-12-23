@@ -6,6 +6,7 @@
 //
 
 #import "DCTMDBCircleContainerView.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @interface DCTMDBCircleContainerView()
 @property (nonatomic, strong) UIImageView *bgImgView1;
@@ -248,7 +249,7 @@
         //
         UILabel *numLbl = [UILabel new];
         self.numLbl = numLbl;
-        numLbl.font = FONT_BS(14);
+		numLbl.font = [FontManager setBoldFontSize:14];
         numLbl.text = @"********";
         numLbl.textColor = [UIColor whiteColor];
         [_topInfoView addSubview:numLbl];
@@ -296,7 +297,7 @@
         
         // 具体的值
         UILabel *pointValue = [UILabel new];
-        pointValue.font = FONT_BS(14);
+		pointValue.font = [FontManager setBoldFontSize:14];
         pointValue.text = @"point:";
         pointValue.textColor = [UIColor hjp_colorWithHex:@"#ffffff" alpha:0.5];
         [rightContainer addSubview:pointValue];
@@ -307,7 +308,7 @@
         
         UILabel *pointLbl = [UILabel new];
         self.pointLbl = pointLbl;
-        pointLbl.font = FONT_BS(14);
+		pointLbl.font = [FontManager setBoldFontSize:14];
         pointLbl.textColor = [UIColor hjp_colorWithHex:@"#ffffff"];
         [rightContainer addSubview:pointLbl];
         [pointLbl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -351,7 +352,7 @@
 //        balance.text = @"Bill Amount Due";
 		balance.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_dashboard_bill_amount_due"];
         balance.textColor = [UIColor hjp_colorWithHex:@"#ffffff" alpha:0.5];
-        balance.font = FONT_BS(14);
+		balance.font = [FontManager setBoldFontSize:14];
         [_balanceView addSubview:balance];
         [balance mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(@0);
@@ -361,7 +362,7 @@
         
         UILabel *rmLbl = [UILabel new];
         rmLbl.textColor = [UIColor whiteColor];
-        rmLbl.font = FONT_BS(24);
+		rmLbl.font = [FontManager setBoldFontSize:24];
         rmLbl.text = @"RM ";
         self.rmLbl = rmLbl;
         [_balanceView addSubview:rmLbl];
@@ -372,7 +373,7 @@
         
         // 过期时间
         UILabel *expir1 = [UILabel new];
-        expir1.font =  FONT_S(14);
+		expir1.font =  [FontManager setNormalFontSize:14];
         expir1.textColor = [UIColor hjp_colorWithHex:@"ffffff" alpha:0.5];
         self.expir1 = expir1;
         [_balanceView addSubview:expir1];
@@ -382,7 +383,7 @@
         }];
         
         UILabel *expir2 = [UILabel new];
-        expir2.font =  FONT_S(14);
+		expir2.font = [FontManager setNormalFontSize:14];
         expir2.textColor = [UIColor hjp_colorWithHex:@"ffffff"];
         self.expir2 = expir2;
         [_balanceView addSubview:expir2];
@@ -408,7 +409,7 @@
         
         // 过期时间
         UILabel *expir1 = [UILabel new];
-        expir1.font =  FONT_S(14);
+		expir1.font =  [FontManager setNormalFontSize:14];
         expir1.textColor = [UIColor hjp_colorWithHex:@"ffffff" alpha:0.5];
         expir1.text = @"Balance Expires on ";
         [_rmView addSubview:expir1];
@@ -418,7 +419,7 @@
         }];
         
         UILabel *expir2 = [UILabel new];
-        expir2.font =  FONT_S(14);
+		expir2.font = [FontManager setNormalFontSize:14];
         expir2.textColor = [UIColor hjp_colorWithHex:@"ffffff"];
         expir2.text = @"20/11/2022";
         [_rmView addSubview:expir2];

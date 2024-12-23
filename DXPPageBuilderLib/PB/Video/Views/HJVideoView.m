@@ -9,6 +9,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SDWebImage/UIView+WebCache.h>
 #import <Masonry/Masonry.h>
+#import "UIImageView+PBSDWebImage.h"
 
 @interface HJVideoView ()
 
@@ -45,7 +46,7 @@
 
 #pragma mark -- mathod
 - (void)setVideoCoverImage:(NSString *)videoURL {
-    [_coverImageView sd_setImageWithURL:[NSURL URLWithString:videoURL] placeholderImage:[UIImage imageNamed:@"ic_video_coverImage"]];
+    [_coverImageView dc_setImageWithURLString:videoURL placeholderImage:[UIImage imageNamed:@"ic_video_coverImage"]];
 }
 
 #pragma mark -- lazy load

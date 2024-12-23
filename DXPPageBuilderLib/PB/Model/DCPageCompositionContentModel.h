@@ -24,6 +24,9 @@
 @class LeftQuickLinkInfo;
 @class RightQuickLinkInfo;
 @class ObjFocus;
+@class UnVerifiedIcon;
+@class VerificationIcon;
+@class AdPlacement;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -37,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) CompositionProps *props;
 @property (nonatomic, strong) NSArray<CompositionChildrenItem *> *children;
 @property (nonatomic, copy) NSString *ids;
+@property (nonatomic, copy) NSString *componentCode;
 @end
 
 
@@ -52,7 +56,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *moreName;
 @property (nonatomic, copy) NSString *moreLink;
 @property (nonatomic, copy) NSString *moreLinkType;
+@property (nonatomic, strong) NSArray<PicturesItem *> *sevenMainBalInfo;
+@property (nonatomic, strong) NSArray<PicturesItem *> *sevenDashInfo;
+
+@property (nonatomic, strong) NSArray<PicturesItem *> *titleIcon;
 @property (nonatomic, strong) NSArray<PicturesItem *> *pictures;
+@property (nonatomic, copy) NSString *titleIconPosition;
 @property (nonatomic, copy) NSString *needLogin;
 @property (nonatomic, copy) NSString *titleColor;
 @property (nonatomic, assign) CGFloat titleColorOpacity;
@@ -109,6 +118,20 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *pointsColor;
 @property (nonatomic, assign) CGFloat pointsColorOpacity;
 
+@property (nonatomic, assign) CGFloat descFontSize;
+@property (nonatomic, copy) NSString * descFontColor;
+@property (nonatomic, assign) CGFloat descFontColorOpacity;
+@property (nonatomic, copy) NSString * isdescFontBold;
+@property (nonatomic, copy) NSString * isdescFontItalic;
+
+@property (nonatomic, copy) NSString * sevenTitleColor;
+@property (nonatomic, assign) CGFloat sevenTitleColorOpacity;
+@property (nonatomic, copy) NSString * sevenValueColor;
+@property (nonatomic, assign) CGFloat sevenValueColorOpacity;
+@property (nonatomic, copy) NSString * sevenUnitColor;
+@property (nonatomic, assign) CGFloat sevenUnitColorOpacity;
+@property (nonatomic, copy) NSString * hasFixedBg;
+
 @property (nonatomic, strong) NSArray *phoneIcon;
 @property (nonatomic, strong) NSArray *changeIcon;
 @property (nonatomic, strong) NSArray *pointsIcon;
@@ -143,11 +166,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat titleFontSize;
 @property (nonatomic, copy) NSString *titleFontColor;
 @property (nonatomic, assign) CGFloat titleFontColorOpacity;
+@property (nonatomic, copy) NSString * isTitleFontBold;
 
 @property (nonatomic, assign) CGFloat staticTitleFontSize;
 @property (nonatomic, copy) NSString *staticTitleFontColor;
 @property (nonatomic, assign) CGFloat staticTitleFontColorOpacity;
-
+@property (nonatomic, copy) NSString * isStaticTitleFontBold;
 // 背景色
 @property (nonatomic, copy) NSString *hasBg;
 @property (nonatomic, copy) NSString *bgColorOpacity;
@@ -169,6 +193,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *themeType; // DB的主题类型
 @property (nonatomic, copy) NSString *dashboardType;  // DB类型
 
+@property (nonatomic, copy) NSString * direction;///滚动方向
 // toolbar的 bg
 @property (nonatomic, copy) NSString *toolbarBgStyle;  // 沉浸式标题栏 “IE”
 @property (nonatomic, copy) NSString *hasToolbarBg;
@@ -190,6 +215,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *btnUrl;
 @property (nonatomic, copy) NSString *msgInfo;
 @property (nonatomic, assign) CGFloat horizontalOutterMargin;
+@property (nonatomic, assign) CGFloat horizontalInnerPadding;
+@property (nonatomic, assign) CGFloat horizontalInnerLeftPadding;
+@property (nonatomic, assign) CGFloat horizontalInnerRightPadding;
+@property (nonatomic, assign) CGFloat horizontalInnerSpacing;
+
+@property (nonatomic, assign) CGFloat bottomPadding;
+@property (nonatomic, assign) CGFloat topPadding;
+
 @property (nonatomic, assign) CGFloat adRatio;
 @property (nonatomic, assign) bool showDesc;
 @property (nonatomic, copy) NSString *desc;
@@ -220,7 +253,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *lineColorOpacity;
 @property (nonatomic, copy) NSString * uploadIconColor;//上传图片颜色
 @property (nonatomic, copy) NSString *uploadIconColorOpacity;
-@property (nonatomic, copy) NSString *bottomMargin;
+@property (nonatomic, assign) CGFloat bottomMargin;
 @property (nonatomic, copy) NSString *speedTextColor;
 
 @property (nonatomic, copy) NSString * uploadIconBgColorOpacity;
@@ -248,7 +281,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *isCountdownbg;
 @property (nonatomic, copy) NSString *countdownBg;
-
+@property (nonatomic, copy) NSString *countdownFontColor;
+@property (nonatomic, copy) NSString *countdownFontColorOpacity;
 
 @property (nonatomic, copy) NSString *showPoints; // 是否展示积分
 @property (nonatomic, strong) DBBoardingSetting *onBoardingSetting;  // 开户跳转设置
@@ -295,6 +329,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *circleBottomBgColor; // '#000000',
 @property (nonatomic, copy) NSString *circleBottomBgColorOpacity; // 100,
 
+@property (nonatomic, copy) NSString *enableVerification; // 实名制开关  'Y' or 'N'
+@property (nonatomic, copy) NSString *unVerifiedNumColor; // 未实名文字色
+@property (nonatomic, copy) NSString *unVerifiedNumColorOpacity;
+@property (nonatomic, copy) NSString *unVerifiedNumBgColor; // 未实名背景色
+@property (nonatomic, copy) NSString *unVerifiedNumBgColorOpacity;
+@property (nonatomic, copy) NSString *unVerifiedText; // 未实名文案 eg: 'Hi,%s Re-registration Required'
+@property (nonatomic, strong) NSArray<UnVerifiedIcon*> *unVerifiedIcon; // 未实名icon
+@property (nonatomic, strong) NSArray<VerificationIcon*> *verificationIcon; // 未实名icon
+
 // 返回按钮
 @property (nonatomic, copy) NSString *hasBack; // @"Y" @"N"
 @property (nonatomic, strong) NSArray<PicturesItem*> *backInfo;
@@ -313,6 +356,23 @@ NS_ASSUME_NONNULL_BEGIN
  "voiceAreaTypeUrl":"/clp_mybillv2/index"*/
 @property (nonatomic, strong)  NSDictionary *voiceAreaSetting;
 
+// offerlist 的最大数量
+@property (nonatomic, copy) NSString *maxNum;
+// 是否展示积分数
+@property (nonatomic, assign) bool isShowPoint;
+
+@property (nonatomic, strong) AdPlacement *adPlacement;
+
+@end
+
+
+@interface AdPlacement : NSObject
+
+@property (nonatomic, strong) NSString *adviceChannel;
+@property (nonatomic, strong) NSString *adviceChannelCode;
+@property (nonatomic, strong) NSString *adviceChannelName;
+@property (nonatomic, strong) NSString *channelId;
+@property (nonatomic, strong) NSString *channelCode;
 @end
 
 
@@ -407,12 +467,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *link;
 @property (nonatomic, assign) CGFloat width;
 @property (nonatomic, assign) CGFloat height;
+@property (nonatomic, assign) CGFloat horizontalInnerPadding;
+@property (nonatomic, assign) CGFloat horizontalOutterMargin;
+@property (nonatomic, assign) CGFloat horizontalInnerSpacing;
+
 @property (nonatomic, copy) NSString *desc;
 @property (nonatomic, copy) NSString *iconName;
 @property (nonatomic, copy) NSString *linkType;
 @property (nonatomic, copy) NSString *linkId;
 @property (nonatomic, copy) NSString *ids;
-
+@property (nonatomic, copy) NSString *unit;
+@property (nonatomic, copy) NSString *typeId;
+@property (nonatomic, copy) NSString *type;
+@property (nonatomic, copy) NSString *num;
 @property (nonatomic, copy) NSString *source;
 @property (nonatomic, copy) NSString *moreBtnName;
 @property (nonatomic, copy) NSString *miniVideoSrc; // 这个视频src  是必有的。
@@ -482,6 +549,31 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @interface DownloadIconItem : NSObject
+
+@property (nonatomic, copy) NSString *width;
+@property (nonatomic, copy) NSString *height;
+@property (nonatomic, copy) NSString *src;
+@property (nonatomic, copy) NSString *desc;
+@property (nonatomic, copy) NSString *iconName;
+@property (nonatomic, copy) NSString *linkType;
+@property (nonatomic, copy) NSString *link;
+@property (nonatomic, copy) NSString *linkId;
+@end
+
+
+@interface UnVerifiedIcon : NSObject
+
+@property (nonatomic, copy) NSString *width;
+@property (nonatomic, copy) NSString *height;
+@property (nonatomic, copy) NSString *src;
+@property (nonatomic, copy) NSString *desc;
+@property (nonatomic, copy) NSString *iconName;
+@property (nonatomic, copy) NSString *linkType;
+@property (nonatomic, copy) NSString *link;
+@property (nonatomic, copy) NSString *linkId;
+@end
+
+@interface VerificationIcon : NSObject
 
 @property (nonatomic, copy) NSString *width;
 @property (nonatomic, copy) NSString *height;

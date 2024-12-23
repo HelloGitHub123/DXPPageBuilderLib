@@ -8,7 +8,7 @@
 #import "DCMeetingCell.h"
 #import "DCTopLabel.h"
 #import "MJExtension.h"
-
+#import <DXPFontManagerLib/FontManager.h>
 
 // ****************** Model ******************
 @implementation DCMeetingCellModel
@@ -137,7 +137,7 @@
     UILabel *typeLbl = [UILabel new];
     typeLbl.text = type;
     typeLbl.textColor = [UIColor whiteColor];
-    typeLbl.font = FONT_BS(14);
+	typeLbl.font = [FontManager setBoldFontSize:14];
     [contentView addSubview:typeLbl];
     [typeLbl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(@16);
@@ -159,7 +159,7 @@
     totalLbl.tag = tag + 10;
     totalLbl.text = [NSString stringWithFormat:@"/%ld",total];
     totalLbl.textColor = [UIColor whiteColor];
-    totalLbl.font = FONT_BS(14);
+	totalLbl.font = [FontManager setBoldFontSize:14];
     [contentView addSubview:totalLbl];
     [totalLbl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(numLbl.mas_trailing).offset(1);

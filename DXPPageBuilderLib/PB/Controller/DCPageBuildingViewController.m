@@ -251,7 +251,7 @@
 				if ([toobarItem.content.type isEqualToString:@"NewToolbar"] ) {
 					if ([@"color" isEqualToString:toobarItem.content.props.toolbarBgStyle]) {
 						[self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
-							make.top.equalTo(@DCP_NAV_HEIGHT);
+                            make.top.mas_equalTo(DCP_NAV_HEIGHT);
 						}];
 						caourseItem.content.props.immersive = NO;
 					} else {
@@ -482,11 +482,14 @@
 			NSMutableDictionary *dic = cellModel.customData;
 			CompositionProps *propsDic = cellModel.props;
 			
+			NSString *usablePoint = propsDic.showPoints;
 			NSString *paidFlag = [DXPPBDataManager shareInstance].selectedSubsModel.paidFlag; // 是否后付费
 			if ([paidFlag isEqualToString:@"1"]) {
 				// 后付费
-				NSString *usablePoint = [dic objectForKey:@"usablePoint"];
-				if (!DC_IsStrEmpty(usablePoint) && [usablePoint floatValue] > 0) {
+//				NSString *usablePoint = [dic objectForKey:@"usablePoint"];
+				
+//				if (!DC_IsStrEmpty(usablePoint) && [usablePoint floatValue] > 0) {
+				if ([usablePoint isEqualToString:@"Y"]) {
 					// 有积分
 					[self.dbStickView mas_updateConstraints:^(MASConstraintMaker *make) {
 						make.height.equalTo(@((100+24)+STATUS_BAR_HEIGHT));
@@ -501,14 +504,15 @@
 						}];
 					} else {
 						[self.dbStickView mas_updateConstraints:^(MASConstraintMaker *make) {
-							make.height.equalTo(@((142+24)+STATUS_BAR_HEIGHT));
+							make.height.equalTo(@((134+24)+STATUS_BAR_HEIGHT));
 						}];
 					}
 				}
 			} else {
 				// 预付费
-				NSString *usablePoint = [dic objectForKey:@"usablePoint"];
-				if (!DC_IsStrEmpty(usablePoint) && [usablePoint floatValue] > 0) {
+//				NSString *usablePoint = [dic objectForKey:@"usablePoint"];
+//				if (!DC_IsStrEmpty(usablePoint) && [usablePoint floatValue] > 0) {
+				if ([usablePoint isEqualToString:@"Y"]) {
 					// 有积分
 					[self.dbStickView mas_updateConstraints:^(MASConstraintMaker *make) {
 						make.height.equalTo(@((100+24)+STATUS_BAR_HEIGHT));
@@ -516,7 +520,7 @@
 				} else {
 					// 没有积分
 					[self.dbStickView mas_updateConstraints:^(MASConstraintMaker *make) {
-						make.height.equalTo(@((142+24)+STATUS_BAR_HEIGHT));
+						make.height.equalTo(@((134+24)+STATUS_BAR_HEIGHT));
 					}];
 				}
 			}
@@ -554,7 +558,7 @@
 			if (!isPBEmptyString(eventModel.link)) {
 				NSString *title = [eventModel.floorTitle stringByReplacingOccurrencesOfString:@"\\n" withString:@""];
 				if (self.onPbItemClickBlock) {
-					self.onPbItemClickBlock(eventModel.link, [eventModel.linkType intValue], self, title, eventModel.needLogin);
+					self.onPbItemClickBlock(eventModel.link, [eventModel.linkType intValue], self, title, eventModel.needLogin, eventModel.coustomData);
 				}
 			}
 			break;
@@ -596,7 +600,7 @@
 			if (!isPBEmptyString(eventModel.link)) {
 				NSString *title = [eventModel.floorTitle stringByReplacingOccurrencesOfString:@"\\n" withString:@""];
 				if (self.onPbItemClickBlock) {
-					self.onPbItemClickBlock(eventModel.link, [eventModel.linkType intValue], self, title, eventModel.needLogin);
+					self.onPbItemClickBlock(eventModel.link, [eventModel.linkType intValue], self, title, eventModel.needLogin, eventModel.coustomData);
 				}
 			}
 			break;
@@ -771,7 +775,7 @@
 					
 					// 跳转回调
 					if (self.onPbItemClickBlock) {
-						self.onPbItemClickBlock(model.jumpLink, [linkType intValue], self, @"", @"Y");
+						self.onPbItemClickBlock(model.jumpLink, [linkType intValue], self, @"", @"Y", @"");
 					}
 					
 				}

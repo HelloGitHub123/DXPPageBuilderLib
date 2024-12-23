@@ -14,6 +14,7 @@
 #import "DCSubsDetailModel.h"
 #import "DCPB.h"
 #import "DCSubsListModel.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @interface DCBroadbandView()
 @property (nonatomic, strong) UIImageView * iconIV;
@@ -396,7 +397,7 @@
     if(!_nameLabel){
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.textColor = DC_UIColorFromRGB(0x242424);
-        _nameLabel.font = FONT_BS(14);
+		_nameLabel.font = [FontManager setBoldFontSize:14];
     }
     return _nameLabel;
 }
@@ -423,7 +424,7 @@
 - (UILabel *)stateLabel{
     if(!_stateLabel){
         _stateLabel = [[UILabel alloc] init];
-        _stateLabel.font = FONT_S(14);
+		_stateLabel.font = [FontManager setNormalFontSize:14];
         _stateLabel.textColor = DC_UIColorFromRGB(0xD82E00);
     }
     return _stateLabel;
@@ -439,7 +440,7 @@
 - (UILabel *)accountNoLabel {
     if(!_accountNoLabel){
         _accountNoLabel = [[UILabel alloc] init];
-        _accountNoLabel.font = FONT_S(14);
+		_accountNoLabel.font = [FontManager setNormalFontSize:14];
         _accountNoLabel.textColor = DC_UIColorFromRGB(0x545454);
 		_accountNoLabel.text  = [[HJLanguageManager shareInstance] getTextByKey:@"lb_account_no"];
     }
@@ -449,7 +450,7 @@
 - (UILabel *)accountNoValueLabel {
     if(!_accountNoValueLabel){
         _accountNoValueLabel = [[UILabel alloc] init];
-        _accountNoValueLabel.font = FONT_BS(14);
+		_accountNoValueLabel.font = [FontManager setBoldFontSize:14];
         _accountNoValueLabel.textColor = DC_UIColorFromRGB(0x242424);
         _accountNoValueLabel.numberOfLines = 0;
         _accountNoValueLabel.text = @" ";
@@ -460,7 +461,7 @@
 - (UILabel *)mainPlanLabel{
     if(!_mainPlanLabel){
         _mainPlanLabel = [[UILabel alloc] init];
-        _mainPlanLabel.font = FONT_S(14);
+		_mainPlanLabel.font = [FontManager setNormalFontSize:14];
         _mainPlanLabel.textColor = DC_UIColorFromRGB(0x545454);
 		_mainPlanLabel.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_main_plan"];
     }
@@ -470,7 +471,7 @@
 - (UILabel *)mainPlanValueLabel {
     if(!_mainPlanValueLabel){
         _mainPlanValueLabel = [[UILabel alloc] init];
-        _mainPlanValueLabel.font = FONT_BS(14);
+		_mainPlanValueLabel.font = [FontManager setBoldFontSize:14];
         _mainPlanValueLabel.textColor = DC_UIColorFromRGB(0x242424);
         _mainPlanValueLabel.numberOfLines = 0;
         _mainPlanValueLabel.text = @" ";
@@ -481,7 +482,7 @@
 - (UILabel *)addressLabel{
     if(!_addressLabel){
         _addressLabel = [[UILabel alloc] init];
-        _addressLabel.font = FONT_S(14);
+		_addressLabel.font = [FontManager setNormalFontSize:14];
         _addressLabel.textColor = DC_UIColorFromRGB(0x545454);
 		_addressLabel.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_address"];
     }
@@ -491,7 +492,7 @@
 - (UILabel *)addressValueLabel {
     if(!_addressValueLabel){
         _addressValueLabel = [[UILabel alloc] init];
-        _addressValueLabel.font = FONT_BS(14);
+		_addressValueLabel.font = [FontManager setBoldFontSize:14];
         _addressValueLabel.textColor = DC_UIColorFromRGB(0x242424);
         _addressValueLabel.numberOfLines = 0;
         _addressValueLabel.text = @" ";

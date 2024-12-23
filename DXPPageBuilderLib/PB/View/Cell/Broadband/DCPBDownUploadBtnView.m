@@ -10,6 +10,7 @@
 #import <DXPCategoryLib/UIImage+Category.h>
 #import <DXPCategoryLib/UIColor+Category.h>
 #import "DCBroadbandAccountCellModel.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @interface DCPBDownUploadBtnView ()
 
@@ -75,7 +76,7 @@
 - (UILabel *)titleLabel{
     if(!_titleLabel){
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = FONT_S(14);
+		_titleLabel.font = [FontManager setNormalFontSize:14];
         _titleLabel.textColor = DC_UIColorFromRGB(0xffffff);
     }
     return _titleLabel;
@@ -84,7 +85,7 @@
 - (UILabel *)speedLabel{
     if(!_speedLabel){
         _speedLabel = [[UILabel alloc] init];
-        _speedLabel.font = FONT_BS(14);
+		_speedLabel.font = [FontManager setBoldFontSize:14];
         _speedLabel.textColor = DC_UIColorFromRGB(0xffffff);
         _speedLabel.text = @"";
     }

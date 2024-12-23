@@ -15,6 +15,9 @@ NSInteger DCDitoVideoCell_Video_Detail_tag = 9999;
 #import "EllipsePageControl.h"
 #import "HJMultiCountdownPostIndicatorView.h"
 #import "DCFloorBaseVC.h"
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
+
 // ****************** Model ******************
 @implementation DCDitoVideoCellModel
 - (instancetype)initWithComponentModel:(DCPageCompositionContentModel *)componentModel {
@@ -37,7 +40,7 @@ NSInteger DCDitoVideoCell_Video_Detail_tag = 9999;
         titleParagraphStyle.lineBreakMode = NSLineBreakByWordWrapping;
         height = [self.contentModel.props.desc boundingRectWithSize:maxSize
                                                                        options:NSStringDrawingUsesLineFragmentOrigin
-                                                                    attributes:@{NSFontAttributeName: FONT_BS(14) ,
+														 attributes:@{NSFontAttributeName: [FontManager setBoldFontSize:14] ,
                                                                                       NSParagraphStyleAttributeName: titleParagraphStyle}
                                                                             context:nil].size.height;
     }
@@ -129,12 +132,12 @@ NSInteger DCDitoVideoCell_Video_Detail_tag = 9999;
             make.height.equalTo(@(videoH));
             make.top.equalTo(self.contentLbl.mas_bottom).offset(12);
         }];
-        [self.videoView sd_setImageWithURL:[NSURL URLWithString:obj.videoPosterSrc]];
+        [self.videoView dc_setImageWithURLString:obj.videoPosterSrc];
         
         // LearnMore
         UILabel *learnMore  = [UILabel new];
         learnMore.text      = !DC_IsStrEmpty(obj.moreBtnName) ? obj.moreBtnName : @"Leam More";
-        learnMore.font      = FONT_BS(14);
+		learnMore.font      = [FontManager setBoldFontSize:14];
         learnMore.textColor = [UIColor whiteColor];
         learnMore.userInteractionEnabled = YES;
         learnMore.tag = DCDitoVideoCell_Video_Detail_tag;
@@ -216,7 +219,7 @@ NSInteger DCDitoVideoCell_Video_Detail_tag = 9999;
     
     
     if([@"image" isEqualToString:item.source]){
-        [videoView sd_setImageWithURL:[NSURL URLWithString:item.src]];
+        [videoView dc_setImageWithURLString:item.src];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(itemClickAction:)];
         [videoView addGestureRecognizer:tap];
     }else {
@@ -228,13 +231,13 @@ NSInteger DCDitoVideoCell_Video_Detail_tag = 9999;
             make.centerX.equalTo(videoView.mas_centerX);
             make.centerY.equalTo(videoView.mas_centerY);
         }];
-        [videoView sd_setImageWithURL:[NSURL URLWithString:item.videoPosterSrc]];
+        [videoView dc_setImageWithURLString:item.videoPosterSrc];
         UITapGestureRecognizer *tapVideo = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(goVideoDetail:)];
         [videoView addGestureRecognizer:tapVideo];
         // LearnMore
         UILabel *learnMore  = [UILabel new];
         learnMore.text      = !DC_IsStrEmpty(item.moreBtnName) ? item.moreBtnName : @"Leam More";
-        learnMore.font      = FONT_BS(12);
+		learnMore.font      = [FontManager setBoldFontSize:12];
         learnMore.textColor = [UIColor whiteColor];
         [videoView addSubview:learnMore];
         [learnMore mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -341,7 +344,7 @@ NSInteger DCDitoVideoCell_Video_Detail_tag = 9999;
     if(!_contentLbl) {
         _contentLbl = [UILabel new];
         _contentLbl.textColor = [UIColor hjp_colorWithHex:@"#3E3E3E"];
-        _contentLbl.font = FONT_BS(14);
+		_contentLbl.font = [FontManager setBoldFontSize:14];
         _contentLbl.numberOfLines = 0;
     }
     return _contentLbl;

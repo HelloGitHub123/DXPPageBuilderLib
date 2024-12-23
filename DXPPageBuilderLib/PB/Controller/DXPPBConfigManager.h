@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)shareInstance;
 
+@property (nonatomic, copy) NSString *pageCode;
 // 货币单位
 @property (nonatomic, copy) NSString *currencySymbol;
 // 精度 读取配置项 spi.common.currency-type 获取  默认:0

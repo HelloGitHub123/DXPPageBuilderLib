@@ -9,17 +9,23 @@
 #import "UIResponder+DCFloorResponder.h"
 #import "HJDitoProgress.h"
 #import <DXPManagerLib/HJTokenManager.h>
-#import "CMPopTipView.h"
+#import "PBCMPopTipView.h"
 #import "DCSubsListModel.h"
 #import "DCMainBalanceSummaryModel.h"
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
+#import "UIColor+YYAdd.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @interface DCDITODashboardView ()<UIScrollViewDelegate,CMPopTipViewDelegate>
 
 @property (nonatomic, strong) UIView *bgView;
 @property (nonatomic, strong) UIView *baseContiner;
 @property (nonatomic, strong) UIView *paddingContentView;
-// 顶部
-@property (nonatomic, strong) DCDBTopInfoView *topInfoView; // 头部view
+// 顶部（根据enableVerification 判断 如果 = N 显示旧样式，如果 = Y 显示新样式）
+@property (nonatomic, strong) UIView *topSuperView; // 两种topview的容器
+@property (nonatomic, strong) DCDBTopInfoView *topInfoView; // 头部view(旧样式)
+@property (nonatomic, strong) DCNewDBTopInfoView *dcNewTopInfoView; // 头部view(新样式)
 // 左边
 @property (nonatomic, strong) UIView *bottomLeftView;
 @property (nonatomic, strong) UIScrollView *progressScrollView; // 流量球view
@@ -102,19 +108,19 @@
 		make.trailing.mas_equalTo(-10);
 		make.bottom.mas_equalTo(-16);
 	}];
-	// top
-	[self.paddingContentView addSubview:self.topInfoView];
-	[self.topInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
-		make.height.mas_equalTo(32);
-		make.leading.top.trailing.mas_equalTo(0);
+	
+	// topview的容器
+	[self.paddingContentView addSubview:self.topSuperView];
+	[self.topSuperView mas_makeConstraints:^(MASConstraintMaker *make) {
+		make.leading.trailing.top.mas_equalTo(0);
 	}];
 	
 	// 下面左边
 	[self.paddingContentView addSubview:self.bottomLeftView];
 	[self.bottomLeftView mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.mas_equalTo(0);
-		make.top.mas_equalTo(self.topInfoView.mas_bottom).offset(8);
-		make.width.mas_equalTo(150);
+		make.top.mas_equalTo(self.topSuperView.mas_bottom).offset(8);
+		make.width.mas_equalTo(132);
 		make.bottom.mas_equalTo(self.paddingContentView.mas_bottom);
 	}];
 	// 球
@@ -128,14 +134,14 @@
 	[self.bottomLeftView addSubview:self.progressView2];
 	[self.progressView2 mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.mas_equalTo(self.bottomLeftView.mas_centerX);
-		make.top.mas_equalTo(self.progressView1.mas_bottom).offset(-7);
+		make.top.mas_equalTo(self.progressView1.mas_bottom).offset(-5);
 		make.width.mas_equalTo(100);
 		make.height.mas_equalTo(120);
 	}];
 	[self.bottomLeftView addSubview:self.progressView3];
 	[self.progressView3 mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.mas_equalTo(self.bottomLeftView.mas_centerX);
-		make.top.mas_equalTo(self.progressView2.mas_bottom).offset(-7);
+		make.top.mas_equalTo(self.progressView2.mas_bottom).offset(-5);
 		make.width.mas_equalTo(100);
 		make.height.mas_equalTo(120);
 	}];
@@ -143,16 +149,17 @@
 	[self.bottomLeftView addSubview:self.detailBtn];
 	[self.detailBtn mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.height.mas_equalTo(34);
-		make.top.mas_equalTo(self.progressView3.mas_bottom).offset(-7);
-		make.leading.mas_equalTo(5);
-		make.trailing.mas_equalTo(-5);
+//		make.top.mas_equalTo(self.progressView3.mas_bottom).offset(-5);
+		make.bottom.mas_equalTo(self.bottomLeftView.mas_bottom).offset(0);
+		make.leading.mas_equalTo(0);
+		make.trailing.mas_equalTo(0);
 	}];
 	
 	// 右边
 	[self.paddingContentView addSubview:self.bottomRightView];
 	[self.bottomRightView mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.trailing.mas_equalTo(0);
-		make.top.mas_equalTo(self.topInfoView.mas_bottom).offset(8);
+		make.top.mas_equalTo(self.topSuperView.mas_bottom).offset(8);
 //		make.leading.mas_equalTo(self.bottomLeftView.mas_trailing).offset(16);
 		make.width.mas_equalTo(176);
 		make.bottom.mas_equalTo(self.paddingContentView.mas_bottom);
@@ -162,7 +169,7 @@
 	[self.prepaidRightTopInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.trailing.leading.mas_equalTo(0);
 		make.top.mas_equalTo(self.bottomRightView.mas_top).offset(0);
-		make.height.mas_equalTo(82);
+		make.height.mas_equalTo(110);
 	}];
 	
 	[self.bottomRightView addSubview:self.prepaidRightInfoView]; // 预付费无积分
@@ -174,14 +181,14 @@
 	[self.bottomRightView addSubview:self.rightPointInfoView]; // 积分
 	[self.rightPointInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.trailing.leading.mas_equalTo(0);
-		make.top.mas_equalTo(self.prepaidRightTopInfoView.mas_bottom).offset(8);
-		make.height.mas_equalTo(58);
+		make.top.mas_equalTo(self.prepaidRightTopInfoView.mas_bottom).offset(10);
+		make.height.mas_equalTo(32);
 	}];
 	[self.bottomRightView addSubview:self.postpaidRightTopInfoView]; // 后付费有积分 右上view
 	[self.postpaidRightTopInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.trailing.leading.mas_equalTo(0);
 		make.top.mas_equalTo(self.bottomRightView.mas_top).offset(0);
-		make.height.mas_equalTo(82);
+		make.height.mas_equalTo(110);
 	}];
 	[self.bottomRightView addSubview:self.postpaidRightInfoView]; // 后付费无积分
 	[self.postpaidRightInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -238,7 +245,46 @@
 	self.postpaidRightInfoView.hidden = YES;
 	self.postpaidOutstandingBillRightTopInfoView.hidden = YES;
 	
-	[self.topInfoView bindWithModel:cellModel];
+	[self.topSuperView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+		[obj removeFromSuperview];
+	}];
+	// 判断顶部view是新版的还是旧版
+	if ([propsDic.enableVerification isEqualToString:@"Y"]) {
+		// 新版
+		[self.dcNewTopInfoView bindWithModel:cellModel];
+		// 顶部view
+		[self.topSuperView addSubview:self.dcNewTopInfoView];
+		[self.dcNewTopInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
+			make.leading.trailing.top.mas_equalTo(0);
+			make.bottom.mas_equalTo(self.topSuperView.mas_bottom).offset(0);//撑满
+		}];
+		// 更新界面
+		BOOL isRealName = [[cellModel.customData valueForKey:@"isRealName"] boolValue];
+		[self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
+			if (!isRealName) {
+				// 未实名
+				make.height.mas_equalTo(495);
+			} else {
+				// 已实名
+				make.height.mas_equalTo(470);
+			}
+		}];
+		
+	} else {
+		// 旧版
+		[self.topInfoView bindWithModel:cellModel];
+        NSString *bgColor = @"#FFFFFF";
+        if (!DC_IsStrEmpty(propsDic.phoneNumberBgColor)) {
+            bgColor = propsDic.phoneNumberBgColor;
+            self.topInfoView.backgroundColor = [UIColor colorWithHexString:bgColor];
+        }
+		// 顶部view
+		[self.topSuperView addSubview:self.topInfoView];
+		[self.topInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
+			make.leading.trailing.top.mas_equalTo(0);
+			make.bottom.mas_equalTo(self.topSuperView.mas_bottom).offset(0);//撑满
+		}];
+	}
 	
 	// 判断
 	NSString *paidFlag = [DXPPBDataManager shareInstance].selectedSubsModel.paidFlag; // 是否后付费
@@ -323,23 +369,27 @@
 			[propsList addObject:dic];
 		}
 		
-	DCMainBalanceSummaryItemModel *model1 = [list objectAtIndex:0];
-	    NSDictionary *propDic1 = [propsList objectAtIndex:0];
-	DCMainBalanceSummaryItemModel *model2 = [list objectAtIndex:1];
-	    NSDictionary *propDic2 = [propsList objectAtIndex:1];
-	DCMainBalanceSummaryItemModel *model3 = [list objectAtIndex:2];
-		NSDictionary *propDic3 = [propsList objectAtIndex:2];
-		
-		// 构建数据 progressModel1
-		HJDitoProgressModel *progressModel1 = [[HJDitoProgressModel alloc]initWithGross:model1.formatGrossBalance grossUnit:model1.formatGrossBalanceUnitName balance:model1.formatRealBalance balanceUnit:@"" type:model1.temp expire:@"" des:@"" btnName:@"" realBalance:model1.realBalance grossBalance:model1.grossBalance];
-		[self.progressView1 updateWithModel:progressModel1 props:propDic1];
-		// 构建数据 progressModel2
-		HJDitoProgressModel *progressModel2 = [[HJDitoProgressModel alloc]initWithGross:model2.formatGrossBalance grossUnit:model2.formatGrossBalanceUnitName balance:model2.formatRealBalance balanceUnit:@"" type:model2.temp expire:@"" des:@"" btnName:@"" realBalance:model2.realBalance grossBalance:model2.grossBalance];
-		[self.progressView2 updateWithModel:progressModel2 props:propDic2];
-		
-		// 构建数据 progressModel3
-		HJDitoProgressModel *progressModel3 = [[HJDitoProgressModel alloc]initWithGross:model3.formatGrossBalance grossUnit:model3.formatGrossBalanceUnitName balance:model3.formatRealBalance balanceUnit:@"" type:model3.temp expire:@"" des:@"" btnName:@"" realBalance:model3.realBalance grossBalance:model3.grossBalance];
-		[self.progressView3 updateWithModel:progressModel3 props:propDic3];
+	if (list.count > 2) {
+		DCMainBalanceSummaryItemModel *model1 = [list objectAtIndex:0];
+			NSDictionary *propDic1 = [propsList objectAtIndex:0];
+		DCMainBalanceSummaryItemModel *model2 = [list objectAtIndex:1];
+			NSDictionary *propDic2 = [propsList objectAtIndex:1];
+		DCMainBalanceSummaryItemModel *model3 = [list objectAtIndex:2];
+			NSDictionary *propDic3 = [propsList objectAtIndex:2];
+			
+			// 构建数据 progressModel1
+			HJDitoProgressModel *progressModel1 = [[HJDitoProgressModel alloc]initWithGross:model1.formatGrossBalance grossUnit:model1.formatGrossBalanceUnitName balance:model1.formatRealBalance balanceUnit:@"" type:model1.temp expire:@"" des:@"" btnName:@"" realBalance:model1.realBalance grossBalance:model1.grossBalance];
+			[self.progressView1 updateWithModel:progressModel1 props:propDic1];
+			// 构建数据 progressModel2
+			HJDitoProgressModel *progressModel2 = [[HJDitoProgressModel alloc]initWithGross:model2.formatGrossBalance grossUnit:model2.formatGrossBalanceUnitName balance:model2.formatRealBalance balanceUnit:@"" type:model2.temp expire:@"" des:@"" btnName:@"" realBalance:model2.realBalance grossBalance:model2.grossBalance];
+			[self.progressView2 updateWithModel:progressModel2 props:propDic2];
+			
+			// 构建数据 progressModel3
+			HJDitoProgressModel *progressModel3 = [[HJDitoProgressModel alloc]initWithGross:model3.formatGrossBalance grossUnit:model3.formatGrossBalanceUnitName balance:model3.formatRealBalance balanceUnit:@"" type:model3.temp expire:@"" des:@"" btnName:@"" realBalance:model3.realBalance grossBalance:model3.grossBalance];
+			[self.progressView3 updateWithModel:progressModel3 props:propDic3];
+	}
+	
+	
 //	}
 	
 	// 更新4宫格UI+数据
@@ -356,7 +406,7 @@
 		[imgView addGestureRecognizer:tapImg];
 		NSDictionary *dic = [propsDic.floorPictures objectAtIndex:i];
 		NSString *src = [dic objectForKey:@"src"];
-		[imgView sd_setImageWithURL:[NSURL URLWithString:src]];
+		[imgView dc_setImageWithURLString:src];
 		[self.picsView addSubview:imgView];
 		// 计算出图片等比高度
 		CGFloat p_w = [[dic objectForKey:@"width"] floatValue]; // 下发图片宽度
@@ -378,8 +428,8 @@
 	
 	// view detail
 	NSDictionary *dic1 = [propsDic.viewDetailPic firstObject];
-	NSString *src = [dic1 objectForKey:@"src"];
-	[self.detailBtn sd_setImageWithURL:[NSURL URLWithString:src] placeholderImage:DC_image(@"")];
+	NSString *src = [dic1 valueForKey:@"src"];
+	[self.detailBtn dc_setImageWithURLString:src placeholderImage:DC_image(@"")];
 }
 
 // 详情跳转
@@ -423,6 +473,14 @@
 	return _paddingContentView;
 }
 
+// topview的容器view
+- (UIView *)topSuperView {
+	if (!_topSuperView) {
+		_topSuperView = [[UIView alloc] init];
+	}
+	return _topSuperView;
+}
+
 - (DCDBTopInfoView *)topInfoView {
 	if (!_topInfoView) {
 		_topInfoView = [[DCDBTopInfoView alloc] init];
@@ -436,6 +494,14 @@
 		};
 	}
 	return _topInfoView;
+}
+
+// 新版top
+- (DCNewDBTopInfoView *)dcNewTopInfoView {
+	if (!_dcNewTopInfoView) {
+		_dcNewTopInfoView = [[DCNewDBTopInfoView alloc] init];
+	}
+	return _dcNewTopInfoView;
 }
 
 - (UIView *)bottomLeftView {
@@ -479,13 +545,13 @@
 }
 
 #pragma mark - CMPopTipViewDelegate methods
-- (void)popTipViewWasDismissedByUser:(CMPopTipView *)popTipView {
+- (void)popTipViewWasDismissedByUser:(PBCMPopTipView *)popTipView {
 	[self.visiblePopTipViews removeObject:popTipView];
 }
 
 - (void)showTipViewWithMsg:(NSString *)msg toView:(UIView *)toView {
 	
-	CMPopTipView *popTipView = [[CMPopTipView alloc] initWithMessage:msg];
+	PBCMPopTipView *popTipView = [[PBCMPopTipView alloc] initWithMessage:msg];
 	popTipView.delegate = self;
 	popTipView.disableTapToDismiss = YES; // 点击本身是否关闭
 	popTipView.dismissTapAnywhere = YES; // 点击任何空白处是否关闭
@@ -496,7 +562,7 @@
 	popTipView.hasShadow = YES;
 	popTipView.cornerRadius = 4;
 	popTipView.sidePadding = 16;
-	popTipView.textFont = FONT_S(14);
+	popTipView.textFont = [FontManager setNormalFontSize:14];
 	popTipView.textColor = DC_UIColorFromRGB(0x242424);
 	popTipView.preferredPointDirection = PointDirectionUp;
 	[popTipView presentPointingAtView:toView inView:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -537,9 +603,9 @@
 - (DCPrepaidRightTopInfoView *)prepaidRightTopInfoView {
 	if (!_prepaidRightTopInfoView) {
 		_prepaidRightTopInfoView = [[DCPrepaidRightTopInfoView alloc] init];
-		_prepaidRightTopInfoView.layer.cornerRadius = 4.f;
+		_prepaidRightTopInfoView.layer.cornerRadius = 8.f;
 		_prepaidRightTopInfoView.layer.borderWidth = 1.f;
-		_prepaidRightTopInfoView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_prepaidRightTopInfoView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 	}
 	return _prepaidRightTopInfoView;
 }
@@ -549,7 +615,7 @@
 		_prepaidRightInfoView = [[DCPrepaidRightInfoView alloc] init];
 		_prepaidRightInfoView.layer.borderWidth = 1.f;
 		_prepaidRightInfoView.layer.cornerRadius = 8.f;
-		_prepaidRightInfoView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_prepaidRightInfoView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 	}
 	return _prepaidRightInfoView;
 }
@@ -557,9 +623,9 @@
 - (DCRightPointInfoView *)rightPointInfoView {
 	if (!_rightPointInfoView) {
 		_rightPointInfoView = [[DCRightPointInfoView alloc] init];
-		_rightPointInfoView.layer.cornerRadius = 4.f;
+		_rightPointInfoView.layer.cornerRadius = 8.f;
 		_rightPointInfoView.layer.borderWidth = 1.f;
-		_rightPointInfoView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_rightPointInfoView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 	}
 	return _rightPointInfoView;
 }
@@ -569,7 +635,7 @@
 		_postpaidRightInfoView = [[DCPostpaidRightInfoView alloc] init];
 		_postpaidRightInfoView.layer.borderWidth = 1.f;
 		_postpaidRightInfoView.layer.cornerRadius = 8.f;
-		_postpaidRightInfoView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_postpaidRightInfoView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 	}
 	return _postpaidRightInfoView;
 }
@@ -578,8 +644,8 @@
 	if (!_postpaidRightTopInfoView) {
 		_postpaidRightTopInfoView = [[DCPostpaidRightTopInfoView alloc] init];
 		_postpaidRightTopInfoView.layer.borderWidth = 1.f;
-		_postpaidRightTopInfoView.layer.cornerRadius = 4.f;
-		_postpaidRightTopInfoView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_postpaidRightTopInfoView.layer.cornerRadius = 8.f;
+		_postpaidRightTopInfoView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 	}
 	return _postpaidRightTopInfoView;
 }
@@ -589,7 +655,7 @@
 		_postpaidOutstandingBillRightTopInfoView = [[DCPostpaidOutstandingBillRightTopInfoView alloc] init];
 		_postpaidOutstandingBillRightTopInfoView.layer.cornerRadius = 8.f;
 		_postpaidOutstandingBillRightTopInfoView.layer.borderWidth = 1.f;
-		_postpaidOutstandingBillRightTopInfoView.layer.borderColor = DC_UIColorFromRGB(0xEAEAEA).CGColor;
+		_postpaidOutstandingBillRightTopInfoView.layer.borderColor = DC_UIColorFromRGB(0xE6E6E6).CGColor;
 	}
 	return _postpaidOutstandingBillRightTopInfoView;
 }

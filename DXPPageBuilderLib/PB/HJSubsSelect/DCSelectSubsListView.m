@@ -13,6 +13,7 @@
 #import <DXPManagerLib/HJTokenManager.h>
 #import <DXPManagerLib/HJLanguageManager.h>
 #import "DCPB.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 static NSString *selectID = @"DCSelectSubsListCellIdentifier";
 
@@ -191,7 +192,7 @@ static NSString *selectID = @"DCSelectSubsListCellIdentifier";
 - (UILabel *)titleLab {
     if (!_titleLab) {
         _titleLab = [[UILabel alloc] initWithFrame:CGRectMake(50, 20, DC_DCP_SCREEN_WIDTH-100, 26)];
-        _titleLab.font = FONT_BS(18);
+		_titleLab.font = [FontManager setBoldFontSize:18];
         _titleLab.textColor = DC_UIColorFromRGB(0x242424);
 		_titleLab.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_your_service_number"];
         _titleLab.textAlignment = NSTextAlignmentCenter;

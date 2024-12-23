@@ -110,6 +110,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *stdAddrNbr;
 @end
 
+@interface DCSubsExtMap : DMBaseObject_PB
+
+@property (nonatomic, copy) NSString *defLang;
+@property (nonatomic, copy) NSString *isVerified;
+@property (nonatomic, copy) NSString *totalCreditlimit;
+@end
+
 @interface DCSubsDetailModel : DMBaseObject_PB
 
 @property (nonatomic, copy) NSString * offerName;
@@ -134,12 +141,14 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString * primaryFlag;
 @property (nonatomic, copy) NSString * blockReasonName;
 @property (nonatomic, copy) NSString * offerId;
+@property (nonatomic, copy) NSString * serviceTypeCode;
 @property (nonatomic, copy) NSString * serviceTypeName;
 @property (nonatomic, copy) NSString * offerCode;
 @property (nonatomic, copy) NSString * iccid;
 @property (nonatomic, copy) NSString * offerInstId;
 @property (nonatomic, copy) NSString * offerExpDate;
 @property (nonatomic, copy) NSString * agreementExpDate;
+@property (nonatomic, strong) DCSubsExtMap *subsExtMap;
 
 @property (nonatomic, strong) PBInternetInfo *internetInfo;
 @property (nonatomic, strong) DCInstallationAddrInfo *installationAddrInfo;

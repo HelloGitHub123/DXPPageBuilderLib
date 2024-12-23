@@ -26,6 +26,10 @@
 
 @end
 
+@implementation DCSubsExtMap
+
+@end
+
 @implementation DCSubsDetailModel
 + (NSDictionary<NSString *,id> *)modelContainerPropertyGenericClass {
     return @{

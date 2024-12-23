@@ -11,6 +11,7 @@
 #import "DCPBQryCampInfoViewModel.h"
 #import <SDWebImage/SDWebImage.h>
 #import "DCPB.h"
+#import "UIImageView+PBSDWebImage.h"
  
 @interface DCCampPopUpView()
 @property (nonatomic, strong) UIView * bgView;
@@ -64,8 +65,8 @@
         }];
     }
     
-    NSString * urlStr = [_campInfoModel.thumbURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
-    [self.imgView sd_setImageWithURL:[NSURL URLWithString:urlStr]];
+//    NSString * urlStr = [_campInfoModel.thumbURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+    [self.imgView dc_setImageWithURLString:_campInfoModel.thumbURL];
 }
 
 #pragma mark -- function

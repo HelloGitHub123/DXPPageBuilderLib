@@ -6,6 +6,8 @@
 //
 
 #import "DCCountdownPostCell.h"
+#import "UIImageView+PBSDWebImage.h"
+
 // ****************** Model ******************
 @implementation DCCountdownPostCellModel
 - (instancetype)initWithComponentModel:(DCPageCompositionContentModel *)componentModel {
@@ -109,8 +111,7 @@
     
    
     PicturesItem *imgItem = [cellModel.props.pictures firstObject];
-    NSURL *imgUrl = [NSURL URLWithString:imgItem.src];
-    [self.imgView sd_setImageWithURL:imgUrl];
+    [self.imgView dc_setImageWithURLString:imgItem.src];
 }
 
 - (void)updatehourLbl {

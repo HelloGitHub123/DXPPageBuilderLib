@@ -36,6 +36,8 @@
 #import "SDWebImageManager.h"
 #import "UIImageView+WebCache.h"
 #import "DCMacroHeader.h"
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
 
 #define kCycleScrollViewInitialPageControlDotSize CGSizeMake(10, 10)
 
@@ -78,7 +80,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
     _pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
     _autoScrollTimeInterval = 2.0;
     _titleLabelTextColor = [UIColor whiteColor];
-    _titleLabelTextFont= FONT_S(14);
+	_titleLabelTextFont= [FontManager setNormalFontSize:14];
     _titleLabelBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
     _titleLabelHeight = 30;
     _titleLabelTextAlignment = NSTextAlignmentLeft;
@@ -594,7 +596,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
     
     if (!self.onlyDisplayText && [imagePath isKindOfClass:[NSString class]]) {
         if ([imagePath hasPrefix:@"http"]) {
-            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:imagePath] placeholderImage:self.placeholderImage];
+            [cell.imageView dc_setImageWithURLString:imagePath placeholderImage:self.placeholderImage];
         } else {
             UIImage *image = [UIImage imageNamed:imagePath];
             if (!image) {

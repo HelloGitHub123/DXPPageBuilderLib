@@ -23,15 +23,15 @@
 //  THE SOFTWARE.
 //
 
-#import "CMPopTipView.h"
+#import "PBCMPopTipView.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface CMPopTipView ()
+@interface PBCMPopTipView ()
 {
 	CGSize					_bubbleSize;
 	CGFloat					_cornerRadius;
 	BOOL					_highlight;
-	PointDirection			_pointDirection;
+	PBPointDirection			_pointDirection;
 	CGFloat					_pointerSize;
 	CGPoint					_targetPoint;
 	CGFloat					_bubblePaddingX;
@@ -44,7 +44,7 @@
 @end
 
 
-@implementation CMPopTipView
+@implementation PBCMPopTipView
 
 - (CGRect)bubbleFrame {
 	CGRect bubbleFrame;
@@ -801,7 +801,7 @@
     }
 }
 
-- (PointDirection) getPointDirection
+- (PBPointDirection) getPointDirection
 {
   return _pointDirection;
 }

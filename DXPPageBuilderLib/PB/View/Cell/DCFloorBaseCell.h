@@ -96,6 +96,11 @@ typedef NS_ENUM(NSUInteger,DCFloorCellType) {
 @interface DCFloorBaseCell : UITableViewCell
 @property (nonatomic, strong) UIView *baseContainer; // 内边距容器(内容容器)
 @property (nonatomic, strong) UIView *borderView; // 外边距容器
+
+@property (nonatomic, strong) UIImageView *innerImgView; // 内边距容器
+
+
+@property (nonatomic, strong) UIImageView *titleIcon; // 全局标题
 @property (nonatomic, strong) UILabel *baseTitleLab; // 全局标题
 @property (nonatomic, strong) UIButton *baseBtnMore; // 右边按钮
 @property (nonatomic, strong) DCFloorBaseCellModel *cellModel;

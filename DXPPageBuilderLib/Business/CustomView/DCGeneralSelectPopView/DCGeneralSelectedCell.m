@@ -12,6 +12,7 @@
 #import "DCPB.h"
 #import <DXPToolsLib/HJTool.h>
 #import "PbTools.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @interface DCGeneralSelectedCell()
 @property (nonatomic, strong) UIView *content;
@@ -52,7 +53,7 @@
     
     
     UILabel *titleLab = [UILabel new];
-    titleLab.font = FONT_BS(16);
+	titleLab.font = [FontManager setBoldFontSize:16];
     titleLab.textColor = DC_UIColorFromRGB(0x000000);
     [self.content addSubview:titleLab];
     titleLab.text = [PbTools numberFormatWithString:model.accNbr rule:[DXPPBConfigManager shareInstance].serviceNbrBreakRule];
@@ -73,7 +74,7 @@
     
     UILabel *stateLbl = [UILabel new];
     stateLbl.text =  [model.state isEqualToString:@"A"] ? @"Active" : @"Blocked";
-    stateLbl.font = FONT_BS(14);
+	stateLbl.font = [FontManager setBoldFontSize:14];
     stateLbl.textColor = DC_UIColorFromRGB([model.state isEqualToString:@"A"]  ? 0x1CD287 : 0xFA2C2C );
     [self.content addSubview:stateLbl];
     [stateLbl mas_makeConstraints:^(MASConstraintMaker *make) {

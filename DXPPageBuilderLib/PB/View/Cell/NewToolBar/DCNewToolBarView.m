@@ -10,6 +10,10 @@
 #import "DCPB.h"
 #import "DCPageBuildingViewController.h"
 #import <DXPToolsLib/HJTool.h>
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
+#import "UIButton+PBSDWebImage.h"
+#import <DXPRTLHelperLib/RTLHelper.h>
 
 @interface DCNewToolBarView()
 @property (nonatomic, strong) UIView *containerView; // 容器View
@@ -100,8 +104,9 @@
     if ([@"color" isEqualToString:props.toolbarBgStyle] && [@"Y" isEqualToString:props.hasToolbarBg] && !DC_IsStrEmpty(props.toolbarBg)) {
         self.bgView.backgroundColor = [UIColor hjp_colorWithHex:props.toolbarBg];
         self.bgView.alpha = props.toolbarBgOpacity/100.0;
-    }
-    
+	} else {
+		self.bgView.backgroundColor = [UIColor hjp_colorWithHex:props.toolbarBg];
+	}
     
     CGFloat margin = 16;
     if([@"Y" isEqualToString:props.hasSidebar] && !DC_IsArrEmpty(props.sidebarInfo)) {
@@ -116,7 +121,7 @@
             make.centerY.equalTo(self.containerView.mas_centerY);
         }];
 
-        [self.sidebar sd_setImageWithURL:[NSURL URLWithString:sideitem.src]];
+        [self.sidebar dc_setImageWithURLString:sideitem.src];
         sideBarLeft = sideBarLeft + sideW + margin;
     }
     
@@ -129,7 +134,7 @@
             make.height.equalTo(@(logoItem.height/2.0));
             make.leading.equalTo(@(sideBarLeft));
         }];
-        [self.logoView sd_setImageWithURL:[NSURL URLWithString:logoItem.src]];
+        [self.logoView dc_setImageWithURLString:logoItem.src];
         sideBarLeft = sideBarLeft + margin + logoItem.width/2.0;
     }
     
@@ -148,7 +153,7 @@
                 make.height.equalTo(@(backItem.height/2.0));
                 make.leading.equalTo(@(0));  // 左边间距
             }];
-            [self.backImgView sd_setImageWithURL:[NSURL URLWithString:backItem.src]];
+            [self.backImgView dc_setImageWithURLString:backItem.src];
         }
     }
     
@@ -167,7 +172,7 @@
             UIButton *btn = [self getButtonItem:obj idx:idx];
             [self.rightBtnView addSubview:btn];
             [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.trailing.equalTo(@(-btnTotalW));
+                make.leading.equalTo(@(btnTotalW));
                 make.width.equalTo(@(obj.width/ 2.0) );
                 make.height.equalTo(@(obj.height/ 2.0 ));
                 make.centerY.equalTo(self.rightBtnView.mas_centerY);
@@ -224,7 +229,10 @@
     if(self.model.content.props.pictures.count > 3 && idx == 0){
         [btn setImage:[UIImage imageNamed:@"pb_menu"] forState:UIControlStateNormal];
     }else {
-        [btn sd_setImageWithURL:[NSURL URLWithString:item.src] forState:UIControlStateNormal];
+        if ([item.link isEqualToString:@"/clp_notification/index"]) {
+            [RTLHelper.sharedInstance.needReverseImgs addObject:item.src];
+        }
+		[btn dc_setImageWithURL:item.src forState:UIControlStateNormal placeholderImage:nil];
     }
    
     UIView *redView = [UIView new];
@@ -330,7 +338,7 @@
     if(!_titleLbl) {
         _titleLbl = [UILabel new];
         _titleLbl.textColor = [UIColor whiteColor];
-        _titleLbl.font = FONT_BS(16);
+		_titleLbl.font = [FontManager setBoldFontSize:16];
     }
     return _titleLbl;
 }

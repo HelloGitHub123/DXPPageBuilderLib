@@ -7,6 +7,9 @@
 
 #import "DCBundleDashboardCell.h"
 #import <DXPCategoryLib/UIColor+Category.h>
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
+#import "UIButton+PBSDWebImage.h"
 
 // ****************** Model ******************
 @implementation DCBundleDashboardCellModel
@@ -22,9 +25,9 @@
     NSString *mainPlan = [dic objectForKey:@"mainPlan"];
     NSString *addressStr = [dic objectForKey:@"Address"];
     
-    float mainPlanheight = [HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-24-16-82-16*2 withFont:FONT_BS(14) string:mainPlan lineHeightMultiple:1.31];
+	float mainPlanheight = [HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-24-16-82-16*2 withFont:[FontManager setBoldFontSize:14] string:mainPlan lineHeightMultiple:1.31];
     if (DC_IsStrEmpty(mainPlan)) mainPlanheight = 22;
-    float addressHeight = [HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-24-16-82-16*2 withFont:FONT_BS(14) string:addressStr lineHeightMultiple:1.31];
+	float addressHeight = [HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-24-16-82-16*2 withFont:[FontManager setBoldFontSize:14] string:addressStr lineHeightMultiple:1.31];
     if (DC_IsStrEmpty(addressStr)) addressHeight = 22;
      
     self.cellHeight = 16+32+22+17+22+16+12+44+mainPlanheight+addressHeight;
@@ -263,11 +266,11 @@
     
     // 顶部
     PicturesItem *picItem = [propsDic.accountPictures firstObject];
-    [_houseImageView sd_setImageWithURL:[NSURL URLWithString:picItem.src] placeholderImage:DC_image(@"ic_house_icon")];
+    [_houseImageView dc_setImageWithURLString:picItem.src placeholderImage:DC_image(@"ic_house_icon")];
     _houseLabel.text = DC_IsStrEmpty(picItem.iconName)?@"":picItem.iconName;
     
     PicturesItem *exchangeItem = [propsDic.accountChangePictures firstObject];
-    [_changeBtn sd_setImageWithURL:[NSURL URLWithString:exchangeItem.src] forState:UIControlStateNormal placeholderImage:DC_image(@"ic_change_number")];
+    [_changeBtn dc_setImageWithURL:exchangeItem.src forState:UIControlStateNormal placeholderImage:DC_image(@"ic_change_number")];
     
     _line1Label.backgroundColor = [UIColor colorWithHexString:propsDic.lineColor];
     
@@ -295,7 +298,7 @@
         _mainPlanValueLabel.textColor = [UIColor colorWithHexString:propsDic.subInfoColor];
         
         [_mainPlanValueLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo([HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-24-16-82-16*2 withFont:FONT_BS(14) string:mainPlan lineHeightMultiple:1.31]);
+			make.height.mas_equalTo([HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-24-16-82-16*2 withFont:[FontManager setBoldFontSize:14] string:mainPlan lineHeightMultiple:1.31]);
         }];
     }
     
@@ -304,7 +307,7 @@
         _addressValueLabel.textColor = [UIColor colorWithHexString:propsDic.subInfoColor];
         
         [_addressValueLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo([HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-24-16-82-16*2 withFont:FONT_BS(14) string:addressStr lineHeightMultiple:1.31]);
+			make.height.mas_equalTo([HJTool textHeightByWidth:DC_DCP_SCREEN_WIDTH-24-16-82-16*2 withFont:[FontManager setBoldFontSize:14] string:addressStr lineHeightMultiple:1.31]);
         }];
     }
     
@@ -313,8 +316,8 @@
     PicturesItem *bundleItem = [propsDic.dashLeftPictures firstObject];
     PicturesItem *billItem = [propsDic.dashRightPictures firstObject];
     
-    [_myBundleBtn sd_setImageWithURL:[NSURL URLWithString:bundleItem.src] forState:UIControlStateNormal placeholderImage:DC_image(@"ic_mybundle_btn")];
-    [_myBillBtn sd_setImageWithURL:[NSURL URLWithString:billItem.src] forState:UIControlStateNormal placeholderImage:DC_image(@"ic_mybill_btn")];
+    [_myBundleBtn dc_setImageWithURL:bundleItem.src forState:UIControlStateNormal placeholderImage:DC_image(@"ic_mybundle_btn")];
+    [_myBillBtn dc_setImageWithURL:billItem.src forState:UIControlStateNormal placeholderImage:DC_image(@"ic_mybill_btn")];
 }
 
 #pragma mark - Click
@@ -366,7 +369,7 @@
     if (!_houseLabel) {
         _houseLabel = [[UILabel alloc] init];
         _houseLabel.textColor = DC_UIColorFromRGB(0x242424);
-        _houseLabel.font = FONT_BS(14);
+		_houseLabel.font = [FontManager setBoldFontSize:14];
     }
     return _houseLabel;
 }
@@ -402,7 +405,7 @@
     if (!_stateLabel) {
         _stateLabel = [[UILabel alloc] init];
         _stateLabel.textColor = DC_UIColorFromRGB(0xD82E00);
-        _stateLabel.font = FONT_S(14);
+		_stateLabel.font = [FontManager setNormalFontSize:14];
     }
     return _stateLabel;
 }
@@ -419,7 +422,7 @@
     if (!_accountLabel) {
         _accountLabel = [[UILabel alloc] init];
         _accountLabel.textColor = DC_UIColorFromRGB(0x545454);
-        _accountLabel.font = FONT_S(14);
+		_accountLabel.font = [FontManager setNormalFontSize:14];
 		_accountLabel.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_account_to"];
     }
     return _accountLabel;
@@ -429,7 +432,7 @@
     if (!_accountValueLabel) {
         _accountValueLabel = [[UILabel alloc] init];
         _accountValueLabel.textColor = DC_UIColorFromRGB(0x242424);
-        _accountValueLabel.font = FONT_BS(14);
+		_accountValueLabel.font = [FontManager setBoldFontSize:14];
     }
     return _accountValueLabel;
 }
@@ -438,7 +441,7 @@
     if (!_mainPlanLabel) {
         _mainPlanLabel = [[UILabel alloc] init];
         _mainPlanLabel.textColor = DC_UIColorFromRGB(0x545454);
-        _mainPlanLabel.font = FONT_S(14);
+		_mainPlanLabel.font = [FontManager setNormalFontSize:14];
 		_mainPlanLabel.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_main_plan"];
     }
     return _mainPlanLabel;
@@ -448,7 +451,7 @@
     if (!_mainPlanValueLabel) {
         _mainPlanValueLabel = [[UILabel alloc] init];
         _mainPlanValueLabel.textColor = DC_UIColorFromRGB(0x242424);
-        _mainPlanValueLabel.font = FONT_BS(14);
+		_mainPlanValueLabel.font = [FontManager setBoldFontSize:14];
         _mainPlanValueLabel.numberOfLines = 0;
     }
     return _mainPlanValueLabel;
@@ -458,7 +461,7 @@
     if (!_addressLabel) {
         _addressLabel = [[UILabel alloc] init];
         _addressLabel.textColor = DC_UIColorFromRGB(0x545454);
-        _addressLabel.font = FONT_S(14);
+		_addressLabel.font = [FontManager setNormalFontSize:14];
 		_addressLabel.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_address"];
     }
     return _addressLabel;
@@ -468,7 +471,7 @@
     if (!_addressValueLabel) {
         _addressValueLabel = [[UILabel alloc] init];
         _addressValueLabel.textColor = DC_UIColorFromRGB(0x242424);
-        _addressValueLabel.font = FONT_BS(14);
+		_addressValueLabel.font = [FontManager setBoldFontSize:14];
         _addressValueLabel.numberOfLines = 0;
     }
     return _addressValueLabel;

@@ -8,6 +8,8 @@
 #import "DCIconEditCell.h"
 #import "DCPB.h"
 #import "DCPBMenuItemModel.h"
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
 
 @implementation DCIconEditCellModel
 
@@ -75,8 +77,7 @@
         _tagImageView.image = [UIImage imageNamed:@"db_icon_add"];
     }
     
-    NSURL *url = [NSURL URLWithString:[data.icon stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];
-    [self.iconImageView sd_setImageWithURL:url];
+    [self.iconImageView dc_setImageWithURLString:[data.icon stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];
 }
 
 #pragma mark - Getter
@@ -101,7 +102,7 @@
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.textColor = [UIColor blackColor];
-        _titleLabel.font =  FONT_S(12);
+		_titleLabel.font =  [FontManager setNormalFontSize:12];
     }
     return _titleLabel;
 }

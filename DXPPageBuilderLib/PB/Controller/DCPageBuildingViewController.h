@@ -45,8 +45,9 @@ NS_ASSUME_NONNULL_BEGIN
  * fromVC: 源头VC
  * title: 目标页面标题
  * needLogin: 是否需要登录 字符串：Y or N
+ * coustomData: 自定义数据
  */
-@property (nonatomic, copy) void (^onPbItemClickBlock)(NSString *link, int linkType, UIViewController *fromVC, NSString *title, NSString *needLogin);
+@property (nonatomic, copy) void (^onPbItemClickBlock)(NSString *link, int linkType, UIViewController *fromVC, NSString *title, NSString *needLogin, id coustomData);
 
 // 埋点回调
 @property (nonatomic, copy) void (^trackWithEventBlock)(DCFloorEventModel *eventModel);

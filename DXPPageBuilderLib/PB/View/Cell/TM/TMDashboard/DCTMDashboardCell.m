@@ -11,10 +11,11 @@
 #import "YYLabel.h"
 #import "YYText.h"
 #import <DXPCategoryLib/UIColor+Category.h>
-
+#import <DXPFontManagerLib/FontManager.h>
 #import "HJDitoProgress.h"
 #import <SDWebImage/UIButton+WebCache.h>
-
+#import "UIImageView+PBSDWebImage.h"
+#import "UIButton+PBSDWebImage.h"
 #import "DCSubsListModel.h"
 
 // ****************** Model ******************
@@ -79,7 +80,7 @@
 }
 
 + (CGFloat)getTMDBTopMargin {
-    return  DCP_NAV_HEIGHT + 10;
+    return 10;
 }
 
 /**
@@ -90,7 +91,7 @@
 - (CGFloat)getMessageHeight:(NSString *)message
 {
     NSMutableAttributedString *introText = [[NSMutableAttributedString alloc] initWithString:message];
-    introText.yy_font = FONT_S(14);
+	introText.yy_font = [FontManager setNormalFontSize:14];
     introText.yy_lineSpacing = 8;
     CGSize introSize = CGSizeMake(DC_DCP_SCREEN_WIDTH-16*5-66, CGFLOAT_MAX);
     YYTextLayout *layout = [YYTextLayout layoutWithContainerSize:introSize text:introText];
@@ -269,7 +270,7 @@
         UILabel *titleLbl = [UILabel new];
         titleLbl.textColor = [UIColor whiteColor];
         titleLbl.text = @"Welcome to CLP. ";
-        titleLbl.font = FONT_BS(20);
+		titleLbl.font = [FontManager setBoldFontSize:20];
         [_openAccountView addSubview:titleLbl];
         [titleLbl mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(@16);
@@ -373,6 +374,7 @@
     [self addSubview:alphaImgView];
     [alphaImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@([DCTMDashboardCellModel getTMDBTopMargin]));
+        make.top.equalTo(@0);
         make.leading.equalTo(@16);
         make.trailing.equalTo(@-16);
         make.height.equalTo(@242);
@@ -454,7 +456,7 @@
     
     if(!DC_IsArrEmpty(cellModel.props.circlePhoneIcon)){
         PicturesItem *item = [cellModel.props.circlePhoneIcon firstObject];
-        [self.phoneIcon sd_setImageWithURL:[NSURL URLWithString:item.src]];
+        [self.phoneIcon dc_setImageWithURLString:item.src];
     }
     
     if(!DC_IsArrEmpty(cellModel.props.circleChangeIcon)){
@@ -562,7 +564,7 @@
         
         // 设置颜色
         if([@"image" isEqualToString:cellModel.props.dashCardBgType]) {
-            [self.alphaImgView sd_setImageWithURL:[NSURL URLWithString:cellModel.props.dashCardBgImg.src] placeholderImage:DC_image(@"pb_download_speed") completed:nil];
+            [self.alphaImgView dc_setImageWithURLString:cellModel.props.dashCardBgImg.src placeholderImage:DC_image(@"pb_download_speed") completed:nil];
         }
         if([@"Color" isEqualToString:cellModel.props.dashCardBgType] && !DC_IsStrEmpty(cellModel.props.circleCardColor)){
             self.alphaImgView.backgroundColor = [UIColor colorWithHexString:cellModel.props.circleCardColor];
@@ -570,7 +572,7 @@
         }
         
         if([@"image" isEqualToString:cellModel.props.dashBgType]) {
-            [self.bgImgView1 sd_setImageWithURL:[NSURL URLWithString:cellModel.props.dashBgImg.src] placeholderImage:DC_image(@"pb_download_speed") completed:nil];
+            [self.bgImgView1 dc_setImageWithURLString:cellModel.props.dashBgImg.src placeholderImage:DC_image(@"pb_download_speed") completed:nil];
         }
         if([@"Color" isEqualToString:cellModel.props.dashBgType] && !DC_IsStrEmpty(cellModel.props.circleDashBgColor)){
             self.bgImgView1.backgroundColor = [UIColor colorWithHexString:cellModel.props.circleDashBgColor];
@@ -579,7 +581,7 @@
         
         
         if([@"image" isEqualToString:cellModel.props.dashBottomBgType]) {
-            [self.bgImgView2 sd_setImageWithURL:[NSURL URLWithString:cellModel.props.dashBottomBgImg.src] placeholderImage:DC_image(@"pb_download_speed") completed:nil];
+            [self.bgImgView2 dc_setImageWithURLString:cellModel.props.dashBottomBgImg.src placeholderImage:DC_image(@"pb_download_speed") completed:nil];
         }
         
         if([@"Color" isEqualToString:cellModel.props.dashBottomBgType] && !DC_IsStrEmpty(cellModel.props.circleBottomBgColor)){
@@ -659,7 +661,7 @@
         
         UILabel *numLbl = [UILabel new];
         self.numLbl = numLbl;
-        numLbl.font = FONT_BS(15);
+		numLbl.font = [FontManager setBoldFontSize:15];
         numLbl.text = @"********";
         numLbl.textColor = [UIColor whiteColor];
         [_topInfoView addSubview:numLbl];
@@ -718,7 +720,7 @@
 		
         UILabel *activeLbl = [UILabel new];
         self.activeLbl = activeLbl;
-        activeLbl.font = FONT_BS(14);
+		activeLbl.font = [FontManager setBoldFontSize:14];
         [_topInfoView addSubview:activeLbl];
         [activeLbl mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(dotView.mas_trailing).offset(4);
@@ -749,7 +751,7 @@
         
         // 具体的值
         UILabel *pointValue = [UILabel new];
-        pointValue.font = FONT_BS(14);
+		pointValue.font = [FontManager setBoldFontSize:14];
         pointValue.text = @"point:";
         pointValue.textColor = [UIColor hjp_colorWithHex:@"#ffffff" alpha:0.5];
         [rightContainer addSubview:pointValue];
@@ -760,7 +762,7 @@
         
         UILabel *pointLbl = [UILabel new];
         self.pointLbl = pointLbl;
-        pointLbl.font = FONT_BS(14);
+		pointLbl.font = [FontManager setBoldFontSize:14];
         pointLbl.textColor = [UIColor hjp_colorWithHex:@"#ffffff"];
         [rightContainer addSubview:pointLbl];
         [pointLbl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -804,7 +806,7 @@
         self.balanceLbl = balance;
 		balance.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_dashboard_bill_amount_due"];
         balance.textColor = [UIColor hjp_colorWithHex:@"#ffffff" alpha:0.5];
-        balance.font = FONT_BS(14);
+		balance.font = [FontManager setBoldFontSize:14];
         [_balanceView addSubview:balance];
         [balance mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(@0);
@@ -814,7 +816,7 @@
         
         UILabel *rmLbl = [UILabel new];
         rmLbl.textColor = [UIColor whiteColor];
-        rmLbl.font = FONT_BS(24);
+		rmLbl.font = [FontManager setBoldFontSize:24];
         rmLbl.text = @"RM ";
         self.rmLbl = rmLbl;
         [_balanceView addSubview:rmLbl];
@@ -825,7 +827,7 @@
         
         // 过期时间
         UILabel *expir1 = [UILabel new];
-        expir1.font =  FONT_S(14);
+		expir1.font = [FontManager setNormalFontSize:14];
         expir1.textColor = [UIColor hjp_colorWithHex:@"ffffff" alpha:0.5];
         self.expir1 = expir1;
         [_balanceView addSubview:expir1];
@@ -835,7 +837,7 @@
         }];
         
         UILabel *expir2 = [UILabel new];
-        expir2.font =  FONT_S(16);
+		expir2.font = [FontManager setNormalFontSize:16];
         expir2.textColor = [UIColor hjp_colorWithHex:@"ffffff"];
         self.expir2 = expir2;
         [_balanceView addSubview:expir2];
@@ -861,7 +863,7 @@
         
         // 过期时间
         UILabel *expir1 = [UILabel new];
-        expir1.font =  FONT_S(14);
+		expir1.font = [FontManager setNormalFontSize:14];
         expir1.textColor = [UIColor hjp_colorWithHex:@"ffffff" alpha:0.5];
         expir1.text = @"Balance Expires on ";
         [_rmView addSubview:expir1];
@@ -871,7 +873,7 @@
         }];
         
         UILabel *expir2 = [UILabel new];
-        expir2.font =  FONT_S(14);
+		expir2.font = [FontManager setNormalFontSize:14];
         expir2.textColor = [UIColor hjp_colorWithHex:@"ffffff"];
         [_rmView addSubview:expir2];
         [expir2 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -959,7 +961,7 @@
 - (UILabel *)titleLab {
     if (!_titleLab) {
         _titleLab = [[UILabel alloc] init];
-        _titleLab.font = FONT_S(11);
+		_titleLab.font = [FontManager setNormalFontSize:11];
         _titleLab.textColor = DC_UIColorFromRGB(0x545454);
         _titleLab.numberOfLines = 0;
         _titleLab.textAlignment = NSTextAlignmentLeft;
@@ -970,7 +972,7 @@
 - (UILabel *)valLab {
     if (!_valLab) {
         _valLab = [[UILabel alloc] init];
-        _valLab.font = FONT_BS(12);
+		_valLab.font = [FontManager setBoldFontSize:12];
         _valLab.textColor = DC_UIColorFromRGB(0x222222);
         _valLab.numberOfLines = 0;
         _valLab.textAlignment = NSTextAlignmentLeft;
@@ -1049,7 +1051,7 @@
 - (UILabel *)numberLab {
     if (!_numberLab) {
         _numberLab = [[UILabel alloc] init];
-        _numberLab.font = FONT_BS(17);
+		_numberLab.font = [FontManager setBoldFontSize:17];
         _numberLab.textColor = DC_UIColorFromRGB(0x3868FF);
         _numberLab.textAlignment = NSTextAlignmentLeft;
     }
@@ -1277,7 +1279,7 @@
         self.rightBottomView.imgView.image = DC_image(@"pb_uploadload_speed");
     } else {
         UploadIconItem *item = [uploadIconList objectAtIndex:0];
-        [self.rightBottomView.imgView sd_setImageWithURL:[NSURL URLWithString:item.src] placeholderImage:DC_image(@"pb_uploadload_speed") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [self.rightBottomView.imgView dc_setImageWithURLString:item.src placeholderImage:DC_image(@"pb_uploadload_speed") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         }];
     }
     // 下载
@@ -1286,7 +1288,7 @@
         self.leftBottomView.imgView.image = DC_image(@"pb_download_speed");
     } else {
         DownloadIconItem *item = [downloadIconList objectAtIndex:0];
-        [self.leftBottomView.imgView sd_setImageWithURL:[NSURL URLWithString:item.src] placeholderImage:DC_image(@"pb_download_speed") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [self.leftBottomView.imgView dc_setImageWithURLString:item.src placeholderImage:DC_image(@"pb_download_speed") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         }];
     }
     
@@ -1311,7 +1313,7 @@
                 self.leftBottomView.imgView.image = DC_image(@"pb_uploadload_speed");
             } else {
                 UploadIconItem *item = [uploadIconList objectAtIndex:0];
-                [self.leftBottomView.imgView sd_setImageWithURL:[NSURL URLWithString:item.src] placeholderImage:DC_image(@"pb_uploadload_speed") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                [self.leftBottomView.imgView dc_setImageWithURLString:item.src placeholderImage:DC_image(@"pb_uploadload_speed") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
                 }];
             }
         } else if ([upLoadVal isEqualToString:@"0"]) {
@@ -1347,7 +1349,7 @@
         self.topbannerView.imgView.image = DC_image(@"pb_topBanner_icon");
     } else {
         AccountIconItem *item = [accountIconList objectAtIndex:0];
-        [self.topbannerView.imgView sd_setImageWithURL:[NSURL URLWithString:item.src] placeholderImage:DC_image(@"pb_topBanner_icon") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [self.topbannerView.imgView dc_setImageWithURLString:item.src placeholderImage:DC_image(@"pb_topBanner_icon") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         }];
         
         self.topbannerView.swithImgView.image = DC_image(@"pb_topbanner_Switch");
@@ -1394,7 +1396,7 @@
         if (DC_IsStrEmpty(propsDic.bgImg.src)) {
             _mainImgView.image = DC_image(@"pb_FWB_Main");
         } else {
-            [self.mainImgView sd_setImageWithURL:[NSURL URLWithString:propsDic.bgImg.src] placeholderImage:DC_image(@"pb_FWB_Main") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            [self.mainImgView dc_setImageWithURLString:propsDic.bgImg.src placeholderImage:DC_image(@"pb_FWB_Main") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
             }];
         }
     } else {
@@ -1438,7 +1440,7 @@
     NSMutableAttributedString *attri_str = [[NSMutableAttributedString alloc] initWithString:address];
     attri_str.yy_minimumLineHeight = 22;
     [attri_str setYy_lineSpacing:0];
-    [attri_str setYy_font:FONT_S(14)];
+	[attri_str setYy_font:[FontManager setNormalFontSize:14]];
     [attri_str setYy_color:DC_UIColorFromRGB(0xFFFFFF)];
     [attri_str setYy_alignment:NSTextAlignmentLeft];
     YYTextContainer *containerC = [YYTextContainer containerWithSize:CGSizeMake(DC_DCP_SCREEN_WIDTH - 16*5 - 66, CGFLOAT_MAX)];
@@ -1546,7 +1548,7 @@
 - (UILabel *)balanceTitleLab {
     if (!_balanceTitleLab) {
         _balanceTitleLab = [[UILabel alloc] init];
-        _balanceTitleLab.font = FONT_S(14);
+		_balanceTitleLab.font = [FontManager setNormalFontSize:14];
         //        _balanceTitleLab.text = @"My Balance";
         _balanceTitleLab.textColor = DC_UIColorFromRGB(0xB0C3FF);
         _balanceTitleLab.numberOfLines = 0;
@@ -1567,7 +1569,7 @@
 - (UILabel *)balanceValLab {
     if (!_balanceValLab) {
         _balanceValLab = [[UILabel alloc] init];
-        _balanceValLab.font = FONT_BS(24);
+		_balanceValLab.font = [FontManager setBoldFontSize:24];
         _balanceValLab.textColor = DC_UIColorFromRGB(0xFFFFFF);
         _balanceValLab.textAlignment = NSTextAlignmentLeft;
     }
@@ -1577,7 +1579,7 @@
 - (UILabel *)expiresOnNameLab {
     if (!_expiresOnNameLab) {
         _expiresOnNameLab = [[UILabel alloc] init];
-        _expiresOnNameLab.font = FONT_S(14);
+		_expiresOnNameLab.font = [FontManager setNormalFontSize:14];
         _expiresOnNameLab.text = @"Expires on ";
         _expiresOnNameLab.textColor = DC_UIColorFromRGB(0xB0C3FF);
         _expiresOnNameLab.numberOfLines = 0;
@@ -1589,7 +1591,7 @@
 - (UILabel *)expiresOnValLab {
     if (!_expiresOnValLab) {
         _expiresOnValLab = [[UILabel alloc] init];
-        _expiresOnValLab.font = FONT_S(14);
+		_expiresOnValLab.font = [FontManager setNormalFontSize:14];
         _expiresOnValLab.textColor = DC_UIColorFromRGB(0xFFFFFF);
         _expiresOnValLab.textAlignment = NSTextAlignmentLeft;
     }
@@ -1599,7 +1601,7 @@
 - (UILabel *)name1TitleLab {
     if (!_name1TitleLab) {
         _name1TitleLab = [[UILabel alloc] init];
-        _name1TitleLab.font = FONT_S(14);
+		_name1TitleLab.font = [FontManager setNormalFontSize:14];
         _name1TitleLab.textColor = DC_UIColorFromRGB(0xB0C3FF);
         _name1TitleLab.textAlignment = NSTextAlignmentLeft;
     }
@@ -1609,7 +1611,7 @@
 - (UILabel *)name2TitleLab {
     if (!_name2TitleLab) {
         _name2TitleLab = [[UILabel alloc] init];
-        _name2TitleLab.font = FONT_S(14);
+		_name2TitleLab.font = [FontManager setNormalFontSize:14];
         _name2TitleLab.textColor = DC_UIColorFromRGB(0xB0C3FF);
         _name2TitleLab.textAlignment = NSTextAlignmentLeft;
     }
@@ -1619,7 +1621,7 @@
 - (UILabel *)name1ValLab {
     if (!_name1ValLab) {
         _name1ValLab = [[UILabel alloc] init];
-        _name1ValLab.font = FONT_S(14);
+		_name1ValLab.font = [FontManager setNormalFontSize:14];
         _name1ValLab.textColor = DC_UIColorFromRGB(0xFFFFFF);
         _name1ValLab.textAlignment = NSTextAlignmentLeft;
     }
@@ -1779,7 +1781,7 @@
 		_pointValueLab = [[UILabel alloc] init];
 		_pointValueLab.text = @"Point ";
 		_pointValueLab.textColor = DC_UIColorFromRGB(0x3868FF);
-		_pointValueLab.font = FONT_S(12);
+		_pointValueLab.font = [FontManager setNormalFontSize:12];
 	}
 	return _pointValueLab;
 }
@@ -1906,7 +1908,7 @@
 	
 	UILabel *activeLbl = [UILabel new];
 	self.activeLbl = activeLbl;
-	activeLbl.font = FONT_BS(14);
+	activeLbl.font = [FontManager setBoldFontSize:14];
 	[self.upContentView addSubview:activeLbl];
 	[activeLbl mas_makeConstraints:^(MASConstraintMaker *make) {
 		make.leading.equalTo(dotView.mas_trailing).offset(4);
@@ -2071,13 +2073,13 @@
 	
 	// 最上面的数据
     NSDictionary *phoneIconDic = [propsDic.phoneIcon firstObject];
-	[self.iconImgView sd_setImageWithURL:[NSURL URLWithString:[phoneIconDic objectForKey:@"src"]] placeholderImage:DC_image(@"ic_phonenumber_icon")];
+	[self.iconImgView dc_setImageWithURLString:[phoneIconDic objectForKey:@"src"] placeholderImage:DC_image(@"ic_phonenumber_icon")];
 	
 	NSDictionary *changeIconDic = [propsDic.changeIcon firstObject];
-	[self.changeBtn sd_setImageWithURL:[NSURL URLWithString:[changeIconDic objectForKey:@"src"]] forState:UIControlStateNormal placeholderImage:DC_image(@"ic_change_phonenumber")];
+	[self.changeBtn dc_setImageWithURL:[changeIconDic objectForKey:@"src"] forState:UIControlStateNormal placeholderImage:DC_image(@"ic_change_phonenumber")];
 	
 	NSDictionary *pointsIconDic = [propsDic.pointsIcon firstObject];
-	[self.pointView.iconImgView sd_setImageWithURL:[NSURL URLWithString:[pointsIconDic objectForKey:@"src"]] placeholderImage:DC_image(@"ic_point_logo")];
+	[self.pointView.iconImgView dc_setImageWithURLString:[pointsIconDic objectForKey:@"src"] placeholderImage:DC_image(@"ic_point_logo")];
 	
 	self.phoneNumberLab.text = DC_IsStrEmpty([dic objectForKey:@"num"]) ? @"" : [dic objectForKey:@"num"];
 	self.phoneNumberLab.textColor =  [UIColor colorWithHexString:propsDic.phoneNumberColor];
@@ -2166,7 +2168,7 @@
 		_phoneNumberLab = [[UILabel alloc] init];
 		_phoneNumberLab.textColor = DC_UIColorFromRGB(0x242424);
 		_phoneNumberLab.textAlignment = NSTextAlignmentLeft;
-		_phoneNumberLab.font = FONT_BS(14);
+		_phoneNumberLab.font = [FontManager setBoldFontSize:14];
 		_phoneNumberLab.text = @"";
 	}
 	return _phoneNumberLab;
@@ -2200,7 +2202,7 @@
 	if (!_midTitleLab) {
 		_midTitleLab = [[UILabel alloc] init];
 		_midTitleLab.textAlignment = NSTextAlignmentLeft;
-		_midTitleLab.font = FONT_S(12);
+		_midTitleLab.font = [FontManager setNormalFontSize:12];
 		_midTitleLab.textColor = DC_UIColorFromRGB(0x242424);
 		_midTitleLab.text = @"";
 	}
@@ -2211,7 +2213,7 @@
 	if (!_expDateLab) {
 		_expDateLab = [[UILabel alloc] init];
 		_expDateLab.textAlignment = NSTextAlignmentRight;
-		_expDateLab.font = FONT_S(12);
+		_expDateLab.font = [FontManager setNormalFontSize:12];
 		_expDateLab.textColor = DC_UIColorFromRGB(0x858585);
 		_expDateLab.text = @"";
 	}
@@ -2222,7 +2224,7 @@
 	if (!_moneyLab) {
 		_moneyLab = [[UILabel alloc] init];
 		_moneyLab.textAlignment = NSTextAlignmentRight;
-		_moneyLab.font = FONT_BS(18);
+		_moneyLab.font = [FontManager setBoldFontSize:18];
 		_moneyLab.textColor = DC_UIColorFromRGB(0x242424);
 		_moneyLab.text = @"€";
 	}

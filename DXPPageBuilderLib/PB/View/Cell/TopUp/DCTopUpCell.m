@@ -6,6 +6,8 @@
 //
 
 #import "DCTopUpCell.h"
+#import <DXPFontManagerLib/FontManager.h>
+
 // ****************** Model ******************
 @implementation DCTopUpCellModel
 - (instancetype)initWithComponentModel:(DCPageCompositionContentModel *)componentModel {
@@ -120,7 +122,7 @@
         _titleLbl = [[UILabel alloc]init];
         _titleLbl.numberOfLines = 0;
         _titleLbl.textAlignment = NSTextAlignmentCenter;
-        _titleLbl.font = FONT_S(14);
+		_titleLbl.font = [FontManager setNormalFontSize:14];
         _titleLbl.lineBreakMode = NSLineBreakByTruncatingTail;
         _titleLbl.textColor = [UIColor whiteColor];
         _titleLbl.backgroundColor = [UIColor purpleColor];

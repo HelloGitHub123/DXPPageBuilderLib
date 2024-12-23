@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 // 区别类型
 @property (nonatomic, assign) DCMutiBalanceDashboardCellHeightType dbCellType;
-
+@property (nonatomic, strong) CompositionProps *props;
 + (CGFloat)getTMDBTopMargin;
 @end
 
@@ -42,10 +42,21 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DCDBTopInfoView : UIView
 
 @property (nonatomic, assign) BOOL isStickView;
+@property (nonatomic, assign) BOOL isShowhalf; // 是否展示一半
 @property (nonatomic, copy) void(^dbEventBlack)(DCFloorEventModel *model);
 
 - (void)bindWithModel:(DCMutiBalanceDashboardCellModel *)cellModel;
 @end
+
+
+@interface DCNewDBTopInfoView : UIView
+
+@property (nonatomic, copy) void(^dbEventBlack)(DCFloorEventModel *model);
+
+- (void)bindWithModel:(DCMutiBalanceDashboardCellModel *)cellModel;
+@end
+
+
 
 // ****************** 右边 预付费上面 有积分 ******************
 @interface DCPrepaidRightTopInfoView : UIView

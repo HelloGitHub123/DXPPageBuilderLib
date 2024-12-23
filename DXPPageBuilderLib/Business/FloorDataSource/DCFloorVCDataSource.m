@@ -28,6 +28,10 @@
 #import <DXPNetWorkingManagerLib/DCNetAPIClient.h>
 #import "DCOrderHistoryModel.h"
 #import "DCBalanceModel.h"
+#import "DCCustomizedComponentCell.h"
+#import "DCMarketingOfferListCell.h"
+#import "DCPromotionsModel.h"
+#import <MJExtension/MJExtension.h>
 
 @implementation DCFloorVCDataSource
 
@@ -64,6 +68,28 @@
         DCDitoIconCellModel *model = (DCDitoIconCellModel *)cellModel;
 //        model.themeType = self.themeType;
         !callback?: callback(model,index);
+	} else if ([@"MarketingOfferListProd" isEqualToString:cellModel.code]) {
+		// XL 新增Offer 组件
+		DCMarketingOfferListCellModel *model = (DCMarketingOfferListCellModel *)cellModel;
+		NSMutableDictionary *customDic = [NSMutableDictionary new];
+		if (cellModel.customData) {
+			customDic = cellModel.customData;
+		}
+		cellModel.customData = customDic;
+		
+		NSString *subsId = [DXPPBDataManager shareInstance].currentInfoModel.currentSubsId?:@"";
+		NSString *accNbr = [DXPPBDataManager shareInstance].currentInfoModel.currentAccNbr?:@"";
+		NSString *prefix = [DXPPBDataManager shareInstance].selectedSubsModel.prefix;
+		[self QueryPromotionsOfferListWithModel:cellModel maxnum:model.props.maxNum SubsId:subsId serviceNumber:accNbr channel:@"APP" adSlot:cellModel.props.adPlacement.adviceChannelCode callback:callback index:index];
+		
+		
+		
+		
+		[model coustructCellHeight];
+		model.isBinded = NO;
+		!callback?: callback(cellModel,index);
+		return;
+		
 	} else if ([@"MutiBalanceDashboard" isEqualToString:cellModel.code]) {
 		
 		DCMutiBalanceDashboardCellModel *model = (DCMutiBalanceDashboardCellModel*)cellModel;
@@ -80,10 +106,37 @@
 		[customDic setObject: [DXPPBDataManager shareInstance].selectedSubsModel.state?:@"" forKey:@"state"];
 		[customDic setObject: [DXPPBDataManager shareInstance].selectedSubsModel.stateName?:@"" forKey:@"stateName"];
 		cellModel.customData = customDic;
-		[self getDBData:cellModel callback:callback index:index];
+		
+		[self getETASubsDetail:cellModel callback:callback index:index];
 		
 		!callback?: callback(cellModel,index);
 		return;
+		
+    } else if ([@"CustomizedComponent" isEqualToString:cellModel.code]) {
+		if ([cellModel.contentModel.componentCode isEqualToString:@"REGISTRATION_REQUIRED"]) {
+//			DCCustomizedComponentCellModel *model = (DCCustomizedComponentCellModel*)cellModel;
+//			NSMutableDictionary *customDic = [NSMutableDictionary new];
+//			if (cellModel.customData) {
+//				customDic = cellModel.customData;
+//			}
+//			cellModel.customData = customDic;
+//			model.componentCellType = DCCustomizedComponentCellType_REGISTRATION_REQUIRED;
+//			// 查询客户资料详情
+////			[self requestEtaCustInfo:cellModel CustId:[DXPPBDataManager shareInstance].selectedSubsModel.custId callback:callback index:index];
+//			
+//			[self getETASubsDetail:cellModel callback:callback index:index];
+//			
+//			!callback?: callback(cellModel,index);
+			
+		} else if ([@"MHAWALA_BALANCE" isEqualToString:cellModel.contentModel.componentCode]) {
+			// ETA 定制
+			DCCustomizedComponentCellModel *model = (DCCustomizedComponentCellModel*)cellModel;
+			model.componentCellType = DCCustomizedComponentCellType_MHAWALA_BALANCE;
+			cellModel.isBinded = NO;
+			!callback?: callback(cellModel,index);
+		}
+		return;
+		
 		
     } else if ([@"BundleDashboard" isEqualToString:cellModel.code]) {
         // TO DO lishan
@@ -236,6 +289,119 @@
     }];
 }
 
+// 查询客户详情资料(ETA POC项目)
+//- (void)requestEtaCustInfo:(DCFloorBaseCellModel *)model CustId:(NSString *)CustId callback:(DCFloorBaseViewDataCallback)callback index:(NSInteger)index {
+//	NSString *urlStr = [NSString stringWithFormat:@"/ecare/eta/cust/info"];
+//	
+//	NSMutableDictionary * parmas = [NSMutableDictionary new];
+//	[parmas setValue:CustId forKey:@"custId"];
+//
+//	[[DCNetAPIClient sharedClient] POST:urlStr paramaters:parmas CompleteBlock:^(id res, NSError *error) {
+//		if (!error) {
+//			if ([DC_HTTP_Code isEqualToString:DC_HTTP_Success] && !DC_IsStrEmpty(DC_HTTP_Code)) {
+//				NSDictionary *dataDict = [res objectForKey:@"data"];
+//				NSString *regDate;
+//				if (dataDict.allKeys.count > 0) {
+//					regDate = [dataDict valueForKey:@"regDate"];
+//				}
+//				NSMutableDictionary *customDic = [NSMutableDictionary new];
+//				[customDic setValue:regDate forKey:@"regDate"];
+//				model.customData = customDic;
+//				model.isBinded = NO;
+////				model.componentCellType = DCCustomizedComponentCellType_REGISTRATION_REQUIRED;
+//				[model coustructCellHeight];
+//				!callback?: callback(model,index);
+//			} else {
+//			}
+//		}
+//	}];
+//}
+
+- (void)QueryPromotionsOfferListWithModel:(DCFloorBaseCellModel *)model maxnum:(NSString *)maxnum SubsId:(NSString *)subsId serviceNumber:(NSString *)serviceNumber channel:(NSString *)channel adSlot:(NSString *)adSlot callback:(DCFloorBaseViewDataCallback)callback  index:(NSInteger)index {
+	
+	NSMutableDictionary * parmas = [NSMutableDictionary new];
+	[parmas setValue:subsId forKey:@"subsId"];
+	[parmas setValue:serviceNumber forKey:@"serviceNumber"];
+	[parmas setValue:channel forKey:@"channel"];
+	[parmas setValue:adSlot forKey:@"adSlot"];
+	[parmas setValue:maxnum forKey:@"count"];
+	
+	__weak typeof(self)weakSelf = self;
+//	[DCNetAPIClient userAddRequestHeader:@"CX" forHeadFieldName:@"app-key"];
+//	[DCNetAPIClient userAddRequestHeader:@"aplFAp$Kn5diAPfV" forHeadFieldName:@"app-secret"];
+	
+	[[DCNetAPIClient sharedClient] GET:@"/dxp/promotion-management/v1/promotions" paramaters:parmas CompleteBlock:^(id res, NSError *error) {
+		if (!error) {
+			NSDictionary *dict = (NSDictionary *)res;
+			if ([[dict objectForKey:@"resultCode"] isEqualToString:@"0"]) {
+				NSArray* dataList = [dict valueForKey:@"data"];
+				NSMutableDictionary *customDic = [NSMutableDictionary new];
+				if (model.customData) {
+					customDic = (NSMutableDictionary*)model.customData;
+				}
+				DCPromotionsModel *promotionsModel = [DCPromotionsModel mj_objectWithKeyValues:dict];
+				NSDictionary *dic = [promotionsModel mj_keyValues];
+				[customDic setValue:dic forKey:@"PromotionsOfferList"];
+				// 汇集offer 判断offer 是否为空，如果为空则不展示
+				NSMutableArray *offerList = [[NSMutableArray alloc] init];
+				[promotionsModel.data enumerateObjectsUsingBlock:^(DCDataItemModel *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+					[obj.offerList enumerateObjectsUsingBlock:^(OfferItem *subObj, NSUInteger idx, BOOL * _Nonnull stop) {
+						subObj.contactId = obj.contactId;
+						[offerList addObject:subObj];
+					}];
+				}];
+				if (DC_IsArrEmpty(offerList)) {
+					model.cellHeight = 0;
+				}
+				model.isBinded = NO;
+				model.customData = customDic;
+				!callback?: callback(model,index);
+			}
+		}
+	}];
+}
+
+// 订户详情 (ETA 需求)
+- (void)getETASubsDetail:(DCFloorBaseCellModel *)model callback:(DCFloorBaseViewDataCallback)callback  index:(NSInteger)index {
+	NSString *subsId = [DXPPBDataManager shareInstance].currentInfoModel.currentSubsId?:@"";
+	NSString *accNbr = [DXPPBDataManager shareInstance].currentInfoModel.currentAccNbr?:@"";
+	NSString *prefix = [DXPPBDataManager shareInstance].selectedSubsModel.prefix;
+	
+	NSMutableDictionary * parmas = [NSMutableDictionary new];
+	[parmas setValue:prefix forKey:@"prefix"];
+	[parmas setValue:accNbr forKey:@"accNbr"];
+	[parmas setValue:subsId forKey:@"subsId"];
+	__weak typeof(self)weakSelf = self;
+	[[DCNetAPIClient sharedClient] POST:@"/ecare/subs/detail" paramaters:parmas CompleteBlock:^(id res, NSError *error) {
+		if (!error) {
+			NSDictionary *dict = (NSDictionary *)res;
+			if ([[dict objectForKey:@"code"] isEqualToString:@"200"]) {
+				NSDictionary* data = [dict objectForKey:@"data"];
+				NSMutableDictionary *customDic = [NSMutableDictionary new];
+				if (model.customData) {
+					customDic = (NSMutableDictionary*)model.customData;
+				}
+				
+				DCSubsDetailModel *subDetailModel = [DCSubsDetailModel yy_modelWithDictionary:data];
+				[[NSUserDefaults standardUserDefaults] setValue:subDetailModel.paidFlag forKey:@"UserPaidFlag"];
+				BOOL isRealName = NO;
+				if (!DC_IsStrEmpty(subDetailModel.subsExtMap.isVerified) && [subDetailModel.subsExtMap.isVerified isEqualToString:@"Y"]) {
+					isRealName = YES;
+				}
+				[customDic setObject:@(isRealName) forKey:@"isRealName"]; // 是否实名过
+				model.isBinded = NO;
+				model.customData = customDic;
+				[model coustructCellHeight];
+				
+				[self getDBData:model callback:callback index:index];
+				
+				!callback?: callback(model,index);
+			}
+		}
+	}];
+}
+
+
 // 订户详情
 - (void)getSubsDetail:(DCFloorBaseCellModel *)model dic:(NSDictionary *)dic callback:(DCFloorBaseViewDataCallback)callback  index:(NSInteger)index {
     NSString *subsId = [DXPPBDataManager shareInstance].currentInfoModel.currentSubsId?:@"";
@@ -259,6 +425,10 @@
                 
 				DCSubsDetailModel *subDetailModel = [DCSubsDetailModel yy_modelWithDictionary:data];
                 NSString *offerName = subDetailModel.offerName;
+				[customDic setValue:subDetailModel.serviceTypeCode forKey:@"serviceTypeCode"];
+				[customDic setValue:subDetailModel.paidFlag forKey:@"paidFlag"];
+				
+				[[NSUserDefaults standardUserDefaults] setValue:subDetailModel.paidFlag forKey:@"UserPaidFlag"];
                 
                 if (dic) { // FWB业务逻辑
                     // 取属性列表，根据配置项的attrCode 取 value
@@ -324,7 +494,7 @@
             if ([[dict objectForKey:@"code"] isEqualToString:@"200"]) {
                 NSDictionary* data = [dict objectForKey:@"data"];
 				DCSubsDetailModel *subDetailModel = [DCSubsDetailModel yy_modelWithDictionary:data];
-                
+				[[NSUserDefaults standardUserDefaults] setValue:subDetailModel.paidFlag forKey:@"UserPaidFlag"];
                 NSMutableDictionary *customDic = [NSMutableDictionary new];
                 
                 [customDic setObject:DC_IsStrEmpty(subDetailModel.state)?@"":subDetailModel.state forKey:@"state"];
@@ -427,6 +597,9 @@
     [self getSubsDetail:model dic:nil callback:callback index:index];
     
     NSString *url = DC_stringFormat(@"%@/promotion/point/info", [DXPPBConfigManager shareInstance].promotionBaseUrl);
+	
+	NSLog(@"userID:%@",[DXPPBDataManager shareInstance].currentInfoModel.userInfo.userId);
+	
     [[DCNetAPIClient sharedClient] POST:url paramaters:@{@"userType":@"1", @"userId":[DXPPBDataManager shareInstance].currentInfoModel.userInfo.userId,@"pointAcctType":@"1",@"expiringData":@""} CompleteBlock:^(id res, NSError *error) {
         if (!error) {
             NSDictionary *dict = (NSDictionary *)res;
@@ -537,6 +710,9 @@
                 [customDic setObject:DC_IsStrEmpty(paidFlag)?@"":paidFlag forKey:@"paidFlag"];
 
                 model.customData = customDic;
+				
+//				[self getETASubsDetail:model callback:callback index:index];
+				
                 !callback?: callback(model,index);
             }
         }
@@ -578,7 +754,10 @@
                     model.isBinded = NO;
                     !callback?: callback(model,index);
                 }
-            }
+			} else {
+				model.isBinded = NO;
+				!callback?: callback(model,index);
+			}
         }
     }];
 }

@@ -74,9 +74,9 @@ p_View_Container.layer.mask = maskLayer;\
 
 
 //字体
-#define FONT_Regular(x)  [UIFont systemFont(14);:@"PingFangSC-Regular" size:x]
-#define FONT_Medium(x)  [UIFont fontWithName:@"PingFangSC-Medium" size:x]
-#define FONT_S(x)       [UIFont systemFontOfSize:x]
+//#define FONT_Regular(x)  [UIFont systemFont(14);:@"PingFangSC-Regular" size:x]
+//#define FONT_Medium(x)  [UIFont fontWithName:@"PingFangSC-Medium" size:x]
+//#define FONT_S(x)       [UIFont systemFontOfSize:x]
 
 //颜色
 #define DC_HEXCOLOR(rgbValue)    [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]

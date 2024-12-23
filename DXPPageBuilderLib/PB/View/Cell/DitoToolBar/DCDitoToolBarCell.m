@@ -6,6 +6,9 @@
 //
 
 #import "DCDitoToolBarCell.h"
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
+
 // ****************** Model ******************
 @implementation DCDitoToolBarCellModel
 - (instancetype)initWithComponentModel:(DCPageCompositionContentModel *)componentModel {
@@ -99,7 +102,7 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(iconClickAction:)];
         [img addGestureRecognizer:tap];
         img.contentMode = UIViewContentModeScaleAspectFit;
-        [img sd_setImageWithURL:[NSURL URLWithString:obj.src]];
+        [img dc_setImageWithURLString:obj.src];
         img.accessibilityIdentifier = [NSString stringWithFormat:@"%@", obj.src];
         [self addSubview:img];
         [self.iconArr addObject:img];
@@ -146,7 +149,7 @@
 - (UILabel *)hiLbl {
     if (!_hiLbl) {
         _hiLbl = [UILabel new];
-        _hiLbl.font =  FONT_BS(18); 
+		_hiLbl.font = [FontManager setBoldFontSize:18];
         _hiLbl.textColor = [UIColor blackColor];
         _hiLbl.text = @"Hi, DITOzen!";
         _hiLbl.lineBreakMode = NSLineBreakByTruncatingTail;

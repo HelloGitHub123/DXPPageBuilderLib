@@ -9,7 +9,7 @@
 #import "DCSelectSubsListView.h"
 #import <Masonry/Masonry.h>
 #import <DXPManagerLib/HJLanguageManager.h>
-
+#import <DXPFontManagerLib/FontManager.h>
 #import "DCSubsListModel.h"
 #import <DXPToolsLib/HJTool.h>
 #import <DXPManagerLib/HJTokenManager.h>
@@ -114,9 +114,9 @@
         
         NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:string];
         [attr addAttributes:@{NSForegroundColorAttributeName:[[HJTokenManager shareInstance] getColorByToken:@"ref-form-labelColor"],
-                        NSFontAttributeName:FONT_S(14)} range:NSMakeRange(0, label.length)];
+							  NSFontAttributeName:[FontManager setNormalFontSize:14]} range:NSMakeRange(0, label.length)];
         [attr addAttributes:@{NSForegroundColorAttributeName:[[HJTokenManager shareInstance] getColorByToken:@"ref-form-tipsColor-error"],
-                        NSFontAttributeName:FONT_S(14)} range:[string rangeOfString:@"*"]];
+							  NSFontAttributeName:[FontManager setNormalFontSize:14]} range:[string rangeOfString:@"*"]];
         self.titleLab.attributedText = attr;
         
         [self.accountView mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -192,7 +192,7 @@
     if (!_accountTF) {
         _accountTF = [[UITextField alloc] init];
         _accountTF.textColor = [[HJTokenManager shareInstance] getColorByToken:@"ref-form-textColor"];
-        _accountTF.font = FONT_S(14);
+		_accountTF.font = [FontManager setNormalFontSize:14];
         _accountTF.attributedPlaceholder = [[NSAttributedString alloc] initWithString:_placeholder attributes:@{NSForegroundColorAttributeName: [[HJTokenManager shareInstance] getColorByToken:@"ref-form-textColor-placeholder"]}];
         _accountTF.clearButtonMode = UITextFieldViewModeWhileEditing;
         _accountTF.keyboardType = UIKeyboardTypeASCIICapable;

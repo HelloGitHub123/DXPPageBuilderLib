@@ -9,6 +9,7 @@
 #import "TLVerticalScrollItem.h"
 #import <Masonry/Masonry.h>
 #import "DCPB.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @implementation TLVerticalScrollItem
 
@@ -41,7 +42,7 @@
         // 文本
         _textLabel = [[UILabel alloc]init];
         _textLabel.textColor = [UIColor hjp_colorWithHex:@"#545454"];
-		_textLabel.font = FONT_S(12);
+		_textLabel.font = [FontManager setNormalFontSize:12];
         [contentView addSubview:_textLabel];
         [_textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
 //            make.leading.mas_equalTo(self.imgView.mas_trailing).offset(10);

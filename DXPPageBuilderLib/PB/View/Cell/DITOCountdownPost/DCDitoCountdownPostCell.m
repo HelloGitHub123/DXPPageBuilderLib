@@ -6,6 +6,9 @@
 //
 
 #import "DCDitoCountdownPostCell.h"
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
+
 // ****************** Model ******************
 @implementation DCDitoCountdownPostCellModel
 - (instancetype)initWithComponentModel:(DCPageCompositionContentModel *)componentModel {
@@ -80,7 +83,7 @@
             make.height.equalTo(@195);
         }];
 		__weak typeof(self)weakSelf = self;
-        [self.imgView sd_setImageWithURL:[NSURL URLWithString:item.src] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [self.imgView dc_setImageWithURLString:item.src placeholderImage:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
           
             @try {
                 CGFloat imgW = DCP_SCREEN_WIDTH - 22;
@@ -144,7 +147,7 @@
     UILabel *timeLbl = [UILabel new];
     timeLbl.tag = 1000;
     timeLbl.textColor = [UIColor whiteColor];
-	timeLbl.font = FONT_S(18);
+	timeLbl.font = [FontManager setNormalFontSize:18];
     timeLbl.text = @"00";
     [content addSubview:timeLbl];
     [timeLbl mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -154,7 +157,7 @@
     
     UILabel *unitLbl = [UILabel new];
     unitLbl.textColor = [UIColor whiteColor];
-    unitLbl.font = FONT_S(7);
+	unitLbl.font = [FontManager setNormalFontSize:7];
     [content addSubview:unitLbl];
     [unitLbl mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(content.mas_centerY);
@@ -251,7 +254,7 @@
     if (!_leftEndLbl) {
         _leftEndLbl = [UILabel new];
         _leftEndLbl.text = @"This deal will end in:";
-        _leftEndLbl.font = FONT_BS(10);
+		_leftEndLbl.font = [FontManager setBoldFontSize:10];
         _leftEndLbl.textColor = [UIColor hjp_colorWithHex:@"#3E3E3E"];
     }
     return _leftEndLbl;

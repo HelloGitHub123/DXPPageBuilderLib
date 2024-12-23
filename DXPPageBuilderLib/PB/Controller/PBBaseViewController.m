@@ -8,6 +8,7 @@
 
 #import "PBBaseViewController.h"
 #import "DCPB.h"
+#import <DXPFontManagerLib/FontManager.h>
 
 @interface PBBaseViewController ()
 
@@ -61,7 +62,7 @@
 - (void)setNavTitleStr:(NSString *)navTitleStr {
 	UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
 	titleLabel.backgroundColor = [UIColor clearColor];
-	titleLabel.font = FONT_BS(18);
+	titleLabel.font = [FontManager setBoldFontSize:18];
 	titleLabel.textColor = [UIColor whiteColor];
 	titleLabel.textAlignment = NSTextAlignmentCenter;
 	titleLabel.text = DC_IsStrEmpty(navTitleStr)?@"":navTitleStr;
@@ -72,7 +73,7 @@
 }
 
 - (void)setTitleColor:(UIColor *)titleColor {
-	[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:titleColor,NSFontAttributeName:FONT_S(18)}];
+	[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:titleColor,NSFontAttributeName:[FontManager setNormalFontSize:18]}];
 }
 
 - (void)setHideNaVLine:(BOOL)hideNaVLine {

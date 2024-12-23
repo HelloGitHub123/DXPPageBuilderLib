@@ -9,6 +9,8 @@
 #import "DCBalanceDetailModel.h"
 #import "DCMainBalanceSummaryModel.h"
 #import "DCPB.h"
+#import <DXPFontManagerLib/FontManager.h>
+#import "UIImageView+PBSDWebImage.h"
 
 // ******************自定义view   滚动区域******************
 @interface DCTMDBScrollView() <iCarouselDataSource, iCarouselDelegate>
@@ -424,10 +426,10 @@
                     self.bgImgView.backgroundColor = [UIColor hjp_colorWithHex:props.dataBgColor];
                     self.bgImgView.layer.cornerRadius = self.bgImgView.frame.size.width / 2.0;
                 }else {
-                    [self.bgImgView sd_setImageWithURL:[NSURL URLWithString:props.dataBgImg.src]];
+                    [self.bgImgView dc_setImageWithURLString:props.dataBgImg.src];
                     if(!DC_IsArrEmpty(props.circleDataIcon)) {
                         PicturesItem *item = [props.circleDataIcon firstObject];
-                        [self.logoImgView sd_setImageWithURL:[NSURL URLWithString:item.src]];
+                        [self.logoImgView dc_setImageWithURLString:item.src];
                     }
                 }
             }else {
@@ -450,10 +452,10 @@
                     self.bgImgView.backgroundColor = [UIColor hjp_colorWithHex:props.smsBgColor];
                     self.bgImgView.layer.cornerRadius = self.bgImgView.frame.size.width / 2.0;
                 }else {
-                    [self.bgImgView sd_setImageWithURL:[NSURL URLWithString:props.smsBgImg.src]];
+                    [self.bgImgView dc_setImageWithURLString:props.smsBgImg.src];
                     if(!DC_IsArrEmpty(props.circleSmsIcon)) {
                         PicturesItem *item = [props.circleSmsIcon firstObject];
-                        [self.logoImgView sd_setImageWithURL:[NSURL URLWithString:item.src]];
+                        [self.logoImgView dc_setImageWithURLString:item.src];
                     }
                 }
             }else {
@@ -474,10 +476,10 @@
                     self.bgImgView.backgroundColor = [UIColor hjp_colorWithHex:props.voiceBgColor];
                     self.bgImgView.layer.cornerRadius = self.bgImgView.frame.size.width / 2.0;
                 }else {
-                    [self.bgImgView sd_setImageWithURL:[NSURL URLWithString:props.voiceBgImg.src]];
+                    [self.bgImgView dc_setImageWithURLString:props.voiceBgImg.src];
                     if(!DC_IsArrEmpty(props.circleSmsIcon)) {
                         PicturesItem *item = [props.circleVoiceIcon firstObject];
-                        [self.logoImgView sd_setImageWithURL:[NSURL URLWithString:item.src]];
+                        [self.logoImgView dc_setImageWithURLString:item.src];
                     }
                 }
             }else {
@@ -522,7 +524,7 @@
     if(!_typeLbl) {
         _typeLbl = [UILabel new];
         _typeLbl.textAlignment = NSTextAlignmentCenter;
-        _typeLbl.font = FONT_BS(16);
+		_typeLbl.font = [FontManager setBoldFontSize:16];
         _typeLbl.textColor = [UIColor whiteColor];
     }
     return _typeLbl;
@@ -533,7 +535,7 @@
         _valueLbl = [UILabel new];
         _valueLbl.textAlignment = NSTextAlignmentCenter;
         _valueLbl.text = @" ";
-        _valueLbl.font =  FONT_BS(24);
+		_valueLbl.font =  [FontManager setBoldFontSize:24];
         _valueLbl.textColor = [UIColor whiteColor];
     }
     return _valueLbl;
@@ -544,7 +546,7 @@
         _totalLbl = [UILabel new];
         _totalLbl.text = @"Total: ";
         _totalLbl.textAlignment = NSTextAlignmentCenter;
-        _totalLbl.font =  FONT_BS(14);
+		_totalLbl.font =  [FontManager setBoldFontSize:14];
         _totalLbl.textColor = [UIColor whiteColor];
     }
     return _totalLbl;
@@ -562,7 +564,7 @@
     if(!_unlimitedLbl) {
         _unlimitedLbl = [UILabel new];
         _unlimitedLbl.text = @"Unlimited";
-        _unlimitedLbl.font = FONT_BS(20);
+		_unlimitedLbl.font = [FontManager setBoldFontSize:20];
     }
     return _unlimitedLbl;
 }
