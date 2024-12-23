@@ -9,8 +9,8 @@
 #import "DCTMDashboardCell.h"
 #import "DCTMDBScrollView.h"
 #import "DCPB.h"
-#import "YYLabel.h"
-#import "YYText.h"
+#import <YYText/YYLabel.h>
+#import <YYText/YYText.h>
 #import <DXPCategoryLib/UIColor+Category.h>
 
 NS_ASSUME_NONNULL_BEGIN
