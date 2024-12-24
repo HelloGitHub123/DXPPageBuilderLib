@@ -9,6 +9,7 @@
 #import "DCPageModel.h"
 #import "TLVerticalScrollView.h"
 #import "UIImageView+PBSDWebImage.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 #define HotNewsViewHeight  36  // 整个 hotview 的高度
 #define LeftRightMarginSize  16  // 左右两侧距离屏幕的边距
