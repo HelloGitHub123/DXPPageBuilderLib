@@ -22,6 +22,7 @@
 #import "UIButton+PBSDWebImage.h"
 #import <DXPRTLHelperLib/RTLHelper.h>
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 // ****************** Model ******************
 @implementation DCMutiBalanceDashboardCellModel
@@ -112,7 +113,7 @@
 
 	if (bgImgView && !DC_IsStrEmpty(cellModel.props.themeType)) {
 		NSString *imgStr = [NSString stringWithFormat:@"db_bg_%@_top",cellModel.props.themeType];
-		bgImgView.image = [UIImage imageNamed:imgStr];
+		bgImgView.image = [[HJImageManager shareInstance] getImageByName:imgStr];
 	}
 }
 
@@ -422,7 +423,7 @@
 		// view detail
 		NSDictionary *dic = [propsDic.viewDetailPic firstObject];
 		NSString *src = [dic objectForKey:@"src"];
-		[self.detailBtn dc_setImageWithURLString:src placeholderImage:DC_image(@"")];
+		[self.detailBtn dc_setImageWithURLString:src placeholderImage:[[HJImageManager shareInstance] getImageByName:@""]];
 	}
 }
 
@@ -665,7 +666,7 @@
 	if (!_arrowImgView) {
 		_arrowImgView = [[UIImageView alloc] init];
 		_arrowImgView.userInteractionEnabled = YES;
-		_arrowImgView.image = DC_image(@"ic_arrow_Img");
+		_arrowImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_arrow_Img"];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPopDashboardView:)];
         [_arrowImgView addGestureRecognizer:tap];
 	}
@@ -750,10 +751,10 @@
 
 	// 图标
 	PicturesItem *picItem = [propsDic.circlePhoneIcon firstObject];
-	[self.phoneImgView dc_setImageWithURLString:picItem.src placeholderImage:DC_image(@"ic_phonenumber_icon")];
+	[self.phoneImgView dc_setImageWithURLString:picItem.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_phonenumber_icon"]];
 	// 切换号码图标
 	PicturesItem *picItem1 = [propsDic.circleChangeIcon firstObject];
-	[self.exchangeBtn dc_setImageWithURL:picItem1.src forState:UIControlStateNormal placeholderImage:DC_image(@"ic_change_phonenumber")];
+	[self.exchangeBtn dc_setImageWithURL:picItem1.src forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_change_phonenumber"]];
 	// 手机号码以及预后付费 名称 #11186528
 	NSString *isPaidFlag = [dic valueForKey:@"paidFlag"];
 	NSString *serviceType = [dic valueForKey:@"serviceTypeCode"];
@@ -796,7 +797,7 @@
 - (UIImageView *)phoneImgView {
 	if (!_phoneImgView) {
 		_phoneImgView = [[UIImageView alloc] init];
-		_phoneImgView.image = DC_image(@"ic_mobilePhone");
+		_phoneImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_mobilePhone"];
 	}
 	return _phoneImgView;
 }
@@ -814,7 +815,7 @@
 - (UIButton *)exchangeBtn {
 	if (!_exchangeBtn) {
 		_exchangeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_exchangeBtn setImage:[UIImage imageNamed:@"ic_change_phonenumber"] forState:UIControlStateNormal];
+		[_exchangeBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_change_phonenumber"] forState:UIControlStateNormal];
 		[_exchangeBtn addTarget:self action:@selector(changeAction:) forControlEvents:UIControlEventTouchUpInside];
 		_exchangeBtn.hidden = !_canSwitchSubs;
 	}
@@ -903,7 +904,7 @@
 
 	// 切换号码图标
 	PicturesItem *picItem1 = [propsDic.circleChangeIcon firstObject];
-	[self.exchangeBtn dc_setImageWithURL:picItem1.src forState:UIControlStateNormal placeholderImage:DC_image(@"ic_change_phonenumber")];
+	[self.exchangeBtn dc_setImageWithURL:picItem1.src forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_change_phonenumber"]];
 	
 	// 手机号码以及预后付费 名称 #11186528
 	NSString *isPaidFlag = [dic valueForKey:@"paidFlag"];
@@ -940,7 +941,7 @@
 		// 未实名图标
 		UnVerifiedIcon *icon = propsDic.unVerifiedIcon.firstObject;
         [[RTLHelper sharedInstance].needReverseImgs addObject:icon.src];
-		[self.iconImgView dc_setImageWithURLString:icon.src placeholderImage:DC_image(@"ic_enterDetail")];
+		[self.iconImgView dc_setImageWithURLString:icon.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_enterDetail"]];
 	
 	} else {
 		// 已实名 文本
@@ -960,7 +961,7 @@
 		}
 		// 已实名图标
 		VerificationIcon *icon = propsDic.verificationIcon.firstObject;
-		[self.iconImgView dc_setImageWithURLString:icon.src placeholderImage:DC_image(@"ic_verified")];
+		[self.iconImgView dc_setImageWithURLString:icon.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_verified"]];
 	}
 }
 
@@ -1025,7 +1026,7 @@
 - (UIButton *)exchangeBtn {
 	if (!_exchangeBtn) {
 		_exchangeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_exchangeBtn setImage:[UIImage imageNamed:@"ic_change_phonenumber"] forState:UIControlStateNormal];
+		[_exchangeBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_change_phonenumber"] forState:UIControlStateNormal];
 		[_exchangeBtn addTarget:self action:@selector(changeAction:) forControlEvents:UIControlEventTouchUpInside];
 		_exchangeBtn.hidden = !_canSwitchSubs;
 	}
@@ -1158,8 +1159,9 @@
 	
 	// 按钮
 	NSDictionary *balIconDic = [propsDic.balIcon firstObject];
-	NSString *balIconSrc = [balIconDic objectForKey:@"src"];
-	[self.loadBalanceBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_add")];
+	NSString *balIconSrc = [balIconDic objectForKey:@"src"];  
+	[self.loadBalanceBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_add"]];
+
 }
 
 - (void)loadBalanceAction {
@@ -1242,7 +1244,7 @@
 - (UIButton *)loadBalanceBtn {
 	if (!_loadBalanceBtn) {
 		_loadBalanceBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_loadBalanceBtn setImage:[UIImage imageNamed:@"ic_add"] forState:UIControlStateNormal];
+		[_loadBalanceBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_add"] forState:UIControlStateNormal];
 		_loadBalanceBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		[_loadBalanceBtn addTarget:self action:@selector(loadBalanceAction) forControlEvents:UIControlEventTouchUpInside];
 	}
@@ -1353,7 +1355,7 @@
 	// 按钮
 	NSDictionary *balIconDic = [propsDic.balIcon firstObject];
 	NSString *balIconSrc = [balIconDic objectForKey:@"src"];
-	[self.toViewBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_add")];
+	[self.toViewBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_add"]];
 }
 
 - (void)loadBalanceAction {
@@ -1435,7 +1437,7 @@
 - (UIButton *)toViewBtn {
 	if (!_toViewBtn) {
 		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_toViewBtn setImage:[UIImage imageNamed:@"ic_add"] forState:UIControlStateNormal];
+		[_toViewBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_add"] forState:UIControlStateNormal];
 		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		[_toViewBtn addTarget:self action:@selector(loadBalanceAction) forControlEvents:UIControlEventTouchUpInside];
 	}
@@ -1616,7 +1618,7 @@
 	// 按钮
 	NSDictionary *billIconDic = [propsDic.billIcon firstObject];
 	NSString *billIconSrc = [billIconDic objectForKey:@"src"];
-	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_to_view")];
+	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"]];
 }
 
 - (void)toViewAction {
@@ -1714,7 +1716,7 @@
 - (UIButton *)toViewBtn {
 	if (!_toViewBtn) {
 		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
+		[_toViewBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"] forState:UIControlStateNormal];
 		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		[_toViewBtn addTarget:self action:@selector(toViewAction) forControlEvents:UIControlEventTouchUpInside];
 	}
@@ -1825,7 +1827,7 @@
 	// 按钮
 	NSDictionary *billIconDic = [propsDic.billIcon firstObject];
 	NSString *billIconSrc = [billIconDic objectForKey:@"src"];
-	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_to_view")];
+	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"]];
 	// 当showPoints为N时，渲染balOrBillLinkColor，为Y渲染pointsColor
 	if ([propsDic.showPoints isEqualToString:@"Y"]) {
 		self.viewBillLab.textColor = [UIColor hjp_colorWithHex:propsDic.pointsColor];
@@ -1902,7 +1904,7 @@
 - (UIButton *)toViewBtn {
 	if (!_toViewBtn) {
 		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_toViewBtn setImage:[UIImage imageNamed:@"btn_pay_my_bill"] forState:UIControlStateNormal];
+		[_toViewBtn setImage:[[HJImageManager shareInstance] getImageByName:@"btn_pay_my_bill"] forState:UIControlStateNormal];
 		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		[_toViewBtn addTarget:self action:@selector(toViewAction) forControlEvents:UIControlEventTouchUpInside];
 	}
@@ -2015,7 +2017,7 @@
 	NSDictionary *billIconDic = [propsDic.billIcon firstObject];
 	NSString *billIconSrc = [billIconDic objectForKey:@"src"];
     [[RTLHelper sharedInstance].needReverseImgs addObject:billIconSrc];
-	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_to_view")];
+	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"]];
 }
 
 #pragma mark - lazy load
@@ -2057,7 +2059,7 @@
 - (UIButton *)toViewBtn {
 	if (!_toViewBtn) {
 		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
+		[_toViewBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"] forState:UIControlStateNormal];
 		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		[_toViewBtn addTarget:self action:@selector(toViewAction) forControlEvents:UIControlEventTouchUpInside];
 	}
@@ -2162,7 +2164,7 @@
 	// 金币按钮
 	NSDictionary *pointsAmountIconDic = [propsDic.pointsAmountIcon firstObject];
 	NSString *pointsAmountIconSrc = [pointsAmountIconDic objectForKey:@"src"];
-	[self.moneyImgView dc_setImageWithURLString:pointsAmountIconSrc placeholderImage:DC_image(@"ic_money_icon")];
+	[self.moneyImgView dc_setImageWithURLString:pointsAmountIconSrc placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_money_icon"]];
 	// point值
 	NSString *pointVal = [NSString stringWithFormat:@"%@",[dic objectForKey:@"usablePoint"]];
 	self.moneyLab.text = (DC_IsStrEmpty(pointVal) || [pointVal isEqualToString:@"(null)"])?@"":pointVal;
@@ -2219,16 +2221,6 @@
 	}
 	return _moneyLab;
 }
-
-//- (UIButton *)toPointBtn {
-//	if (!_toPointBtn) {
-//		_toPointBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//		[_toPointBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
-//		_toPointBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-//		[_toPointBtn addTarget:self action:@selector(toPointAction:) forControlEvents:UIControlEventTouchUpInside];
-//	}
-//	return _toPointBtn;
-//}
 
 @end
 

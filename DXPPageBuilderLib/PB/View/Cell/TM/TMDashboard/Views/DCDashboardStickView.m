@@ -16,6 +16,7 @@
 #import "DCSubsListModel.h"
 #import "UIImageView+PBSDWebImage.h"
 #import "UIButton+PBSDWebImage.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface DCDashboardStickView ()
 
@@ -380,7 +381,7 @@
 	if (!_arrowImgView) {
 		_arrowImgView = [[UIImageView alloc] init];
 		_arrowImgView.userInteractionEnabled = YES;
-		_arrowImgView.image = DC_image(@"ic_arrow_Img");
+		_arrowImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_arrow_Img"];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenPopDashboardView:)];
         [_arrowImgView addGestureRecognizer:tap];
 	}
@@ -510,7 +511,7 @@
 	// 按钮
 	NSDictionary *balIconDic = [propsDic.balIcon firstObject];
 	NSString *balIconSrc = [balIconDic objectForKey:@"src"];
-	[self.toViewBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_add")];
+	[self.toViewBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_add"]];
 }
 
 - (void)toViewAction {
@@ -592,7 +593,7 @@
 - (UIButton *)toViewBtn {
 	if (!_toViewBtn) {
 		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
+		[_toViewBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"] forState:UIControlStateNormal];
 		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		[_toViewBtn addTarget:self action:@selector(toViewAction) forControlEvents:UIControlEventTouchUpInside];
 	}
@@ -701,7 +702,7 @@
 	// 按钮
 	NSDictionary *balIconDic = [propsDic.balIcon firstObject];
 	NSString *balIconSrc = [balIconDic objectForKey:@"src"];
-	[self.toViewBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_add")];
+	[self.toViewBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_add"]];
 }
 
 #pragma mark - lazy load
@@ -746,7 +747,7 @@
 - (UIButton *)toViewBtn {
 	if (!_toViewBtn) {
 		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
+		[_toViewBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"] forState:UIControlStateNormal];
 		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		[_toViewBtn addTarget:self action:@selector(toViewAction:) forControlEvents:UIControlEventTouchUpInside];
 	}
@@ -857,7 +858,7 @@
 	// 按钮
 	NSDictionary *balIconDic = [propsDic.billIcon firstObject];
 	NSString *balIconSrc = [balIconDic objectForKey:@"src"];
-	[self.toViewBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_add")];
+	[self.toViewBtn dc_setImageWithURL:balIconSrc forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_add"]];
 	
 }
 
@@ -903,7 +904,7 @@
 - (UIButton *)toViewBtn {
 	if (!_toViewBtn) {
 		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
+		[_toViewBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"] forState:UIControlStateNormal];
 		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		[_toViewBtn addTarget:self action:@selector(toViewAction:) forControlEvents:UIControlEventTouchUpInside];
 	}
@@ -1039,7 +1040,7 @@
 	// 按钮
 	NSDictionary *billIconDic = [propsDic.billIcon firstObject];
 	NSString *billIconSrc = [billIconDic objectForKey:@"src"];
-	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_to_view")];
+	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"]];
 	// 当showPoints为N时，渲染balOrBillLinkColor，为Y渲染pointsColor
 	if ([propsDic.showPoints isEqualToString:@"Y"]) {
 		self.viewDetailLab.textColor = [UIColor hjp_colorWithHex:propsDic.pointsColor];
@@ -1127,7 +1128,7 @@
 - (UIButton *)toViewBtn {
 	if (!_toViewBtn) {
 		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
+		[_toViewBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"] forState:UIControlStateNormal];
 		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		[_toViewBtn addTarget:self action:@selector(toViewAction:) forControlEvents:UIControlEventTouchUpInside];
 	}
@@ -1211,7 +1212,7 @@
 	
 	NSDictionary *billIconDic = [propsDic.billIcon firstObject];
 	NSString *billIconSrc = [billIconDic objectForKey:@"src"];
-	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:DC_image(@"ic_to_view")];
+	[self.toViewBtn dc_setImageWithURL:billIconSrc forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"]];
 	
 }
 
@@ -1288,7 +1289,7 @@
 - (UIButton *)toViewBtn {
 	if (!_toViewBtn) {
 		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
+		[_toViewBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_to_view"] forState:UIControlStateNormal];
 		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		[_toViewBtn addTarget:self action:@selector(toViewAction) forControlEvents:UIControlEventTouchUpInside];
 	}
@@ -1388,7 +1389,7 @@
 	// 金币按钮
 	NSDictionary *pointsAmountIconDic = [propsDic.pointsAmountIcon firstObject];
 	NSString *pointsAmountIconSrc = [pointsAmountIconDic objectForKey:@"src"];
-	[self.moneyImgView dc_setImageWithURLString:pointsAmountIconSrc placeholderImage:DC_image(@"ic_money_icon")];
+	[self.moneyImgView dc_setImageWithURLString:pointsAmountIconSrc placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_money_icon"]];
 	// point值
 	NSString *pointVal = [NSString stringWithFormat:@"%@",[dic objectForKey:@"usablePoint"]];
 	self.pointLab.text = DC_IsStrEmpty(pointVal)?@"":pointVal;
@@ -1421,7 +1422,7 @@
 - (UIImageView *)moneyImgView {
 	if (!_moneyImgView) {
 		_moneyImgView = [[UIImageView alloc] init];
-		_moneyImgView.image = DC_image(@"ic_money_icon");
+		_moneyImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_money_icon"];
 	}
 	return _moneyImgView;
 }
@@ -1435,17 +1436,5 @@
 	}
 	return _pointLab;
 }
-
-
-
-//- (UIButton *)toViewBtn {
-//	if (!_toViewBtn) {
-//		_toViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//		[_toViewBtn setImage:[UIImage imageNamed:@"ic_to_view"] forState:UIControlStateNormal];
-//		_toViewBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-//		[_toViewBtn addTarget:self action:@selector(toViewAction:) forControlEvents:UIControlEventTouchUpInside];
-//	}
-//	return _toViewBtn;
-//}
 
 @end

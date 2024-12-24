@@ -12,7 +12,7 @@
 #import "DCDashboardView.h"
 #import <DXPFontManagerLib/FontManager.h>
 #import "UIImageView+PBSDWebImage.h"
-
+#import <DXPManagerLib/HJImageManager.h>
 
 static CGFloat iconHW = 30; //每个icon宽高 对应375
 static CGFloat iconTitleMidM = 10; //每个icon和文本对应间距
@@ -164,7 +164,7 @@ static CGFloat iconTitleH = 30; //每个icon底部文本高度
     [contentView addSubview:iconImageView];
     
     if (item.isAll) {
-        iconImageView.image = [UIImage imageNamed:@"icon_color_all"];
+        iconImageView.image = [[HJImageManager shareInstance] getImageByName:@"icon_color_all"];
     }else {
         NSURL *url = [NSURL URLWithString:[item.iconUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];
         [iconImageView dc_setImageWithURLString:[item.iconUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];

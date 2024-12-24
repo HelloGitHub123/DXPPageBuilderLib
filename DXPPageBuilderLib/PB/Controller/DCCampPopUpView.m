@@ -12,6 +12,7 @@
 #import <SDWebImage/SDWebImage.h>
 #import "DCPB.h"
 #import "UIImageView+PBSDWebImage.h"
+#import <DXPManagerLib/HJImageManager.h>
  
 @interface DCCampPopUpView()
 @property (nonatomic, strong) UIView * bgView;
@@ -105,7 +106,7 @@
 }
 - (UIImageView *)closeImgView{
     if (!_closeImgView) {
-        _closeImgView = [[UIImageView alloc] initWithImage:DC_image(@"pb_popup_close")];
+        _closeImgView = [[UIImageView alloc] initWithImage:[[HJImageManager shareInstance] getImageByName:@"pb_popup_close"]];
         _closeImgView.userInteractionEnabled = YES;
 		__weak __typeof(&*self)weakSelf = self;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithActionBlock:^(id  _Nonnull sender) {

@@ -6,6 +6,7 @@
 //
 
 #import "DCSuspensionButton.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface DCSuspensionButton () {
     CGRect gFrame;

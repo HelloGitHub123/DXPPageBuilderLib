@@ -17,6 +17,7 @@
 #import "UIImageView+PBSDWebImage.h"
 #import "UIButton+PBSDWebImage.h"
 #import "DCSubsListModel.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 // ****************** Model ******************
 @implementation DCTMDashboardCellModel
@@ -196,7 +197,7 @@
    
     if(bgImgView && !DC_IsStrEmpty(cellModel.props.themeType)) {
         NSString *imgStr = [NSString stringWithFormat:@"db_bg_%@_top",cellModel.props.themeType];
-        bgImgView.image = [UIImage imageNamed:imgStr];
+        bgImgView.image = [[HJImageManager shareInstance] getImageByName:imgStr];
     }
 }
 - (void)registerSimAction {
@@ -241,7 +242,7 @@
         
         // 激活图片
         UIImageView *registerImgView = [UIImageView new];
-        registerImgView.image = [UIImage imageNamed:@"db_sim_buy_bg"];
+        registerImgView.image = [[HJImageManager shareInstance] getImageByName:@"db_sim_buy_bg"];
         [_registerSimView addSubview:registerImgView];
         [registerImgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(@16);
@@ -279,7 +280,7 @@
         
         // 图片
         UIImageView *buySim = [UIImageView new];
-        buySim.image = [UIImage imageNamed:@"db_sim_buy_bg"];
+        buySim.image = [[HJImageManager shareInstance] getImageByName:@"db_sim_buy_bg"];
         [_openAccountView addSubview:buySim];
         [buySim mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(@16);
@@ -369,7 +370,7 @@
     }];
     
     UIImageView *alphaImgView = [UIImageView new];
-    alphaImgView.image = [UIImage imageNamed:@"pb_tm_db_mask1"];
+    alphaImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_db_mask1"];
     self.alphaImgView = alphaImgView;
     [self addSubview:alphaImgView];
     [alphaImgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -447,7 +448,6 @@
 		[self.dotView removeFromSuperview];
     }
     // 设置主题
-//    self.gifImgView.image = [UIImage imageNamed:@"db_gif"];
     [self setThemeType:cellModel];
     [self.topInfoView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@ ([@"3"  isEqualToString:cellModel.props.themeType] ?   6  : 0));
@@ -564,7 +564,7 @@
         
         // 设置颜色
         if([@"image" isEqualToString:cellModel.props.dashCardBgType]) {
-            [self.alphaImgView dc_setImageWithURLString:cellModel.props.dashCardBgImg.src placeholderImage:DC_image(@"pb_download_speed") completed:nil];
+            [self.alphaImgView dc_setImageWithURLString:cellModel.props.dashCardBgImg.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"pb_download_speed"] completed:nil];
         }
         if([@"Color" isEqualToString:cellModel.props.dashCardBgType] && !DC_IsStrEmpty(cellModel.props.circleCardColor)){
             self.alphaImgView.backgroundColor = [UIColor colorWithHexString:cellModel.props.circleCardColor];
@@ -572,7 +572,7 @@
         }
         
         if([@"image" isEqualToString:cellModel.props.dashBgType]) {
-            [self.bgImgView1 dc_setImageWithURLString:cellModel.props.dashBgImg.src placeholderImage:DC_image(@"pb_download_speed") completed:nil];
+            [self.bgImgView1 dc_setImageWithURLString:cellModel.props.dashBgImg.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"pb_download_speed"] completed:nil];
         }
         if([@"Color" isEqualToString:cellModel.props.dashBgType] && !DC_IsStrEmpty(cellModel.props.circleDashBgColor)){
             self.bgImgView1.backgroundColor = [UIColor colorWithHexString:cellModel.props.circleDashBgColor];
@@ -581,7 +581,7 @@
         
         
         if([@"image" isEqualToString:cellModel.props.dashBottomBgType]) {
-            [self.bgImgView2 dc_setImageWithURLString:cellModel.props.dashBottomBgImg.src placeholderImage:DC_image(@"pb_download_speed") completed:nil];
+            [self.bgImgView2 dc_setImageWithURLString:cellModel.props.dashBottomBgImg.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"pb_download_speed"] completed:nil];
         }
         
         if([@"Color" isEqualToString:cellModel.props.dashBottomBgType] && !DC_IsStrEmpty(cellModel.props.circleBottomBgColor)){
@@ -604,9 +604,9 @@
         }
     }else {
         if(!DC_IsStrEmpty(cellModel.props.themeType)) {
-            self.bgImgView1.image = [UIImage imageNamed:[NSString stringWithFormat:@"db_bg_%@_top",cellModel.props.themeType]];
-            self.bgImgView2.image = [UIImage imageNamed:[NSString stringWithFormat:@"db_bg_%@_down",cellModel.props.themeType]];
-            self.alphaImgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"pb_tm_db_mask%@",cellModel.props.themeType]];
+            self.bgImgView1.image = [[HJImageManager shareInstance] getImageByName:[NSString stringWithFormat:@"db_bg_%@_top",cellModel.props.themeType]];
+            self.bgImgView2.image = [[HJImageManager shareInstance] getImageByName:[NSString stringWithFormat:@"db_bg_%@_down",cellModel.props.themeType]];
+            self.alphaImgView.image = [[HJImageManager shareInstance] getImageByName:[NSString stringWithFormat:@"pb_tm_db_mask%@",cellModel.props.themeType]];
         }
     }
 }
@@ -624,7 +624,7 @@
         // 背景图
         UIImageView *bgImgView = [UIImageView new];
         bgImgView.tag = 999;
-        bgImgView.image = [UIImage imageNamed:@"pb_tm_db_bg1"];
+        bgImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_db_bg1"];
         _bgImgView1 = bgImgView;
        
     }
@@ -636,7 +636,7 @@
         // 背景图
         UIImageView *bgImgView = [UIImageView new];
         bgImgView.tag = 999;
-        bgImgView.image = [UIImage imageNamed:@"pb_tm_db_bg1_down"];
+        bgImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_db_bg1_down"];
         _bgImgView2 = bgImgView;
        
     }
@@ -655,7 +655,7 @@
         UIImageView *phoneImg = [UIImageView new];
         
         // phone img
-        phoneImg.image = [UIImage imageNamed:@"pb_tm_phone_tag"];
+        phoneImg.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_phone_tag"];
         self.phoneIcon = phoneImg;
         [_topInfoView addSubview:phoneImg];
         
@@ -684,7 +684,7 @@
         // change 按钮
         UIButton *changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         self.changeBtn = changeBtn;
-        [changeBtn setBackgroundImage:[UIImage imageNamed:@"pb_tm_change_tag"] forState:UIControlStateNormal];
+        [changeBtn setBackgroundImage:[[HJImageManager shareInstance] getImageByName:@"pb_tm_change_tag"] forState:UIControlStateNormal];
         [changeBtn addTarget:self action:@selector(exchageBtnAction) forControlEvents:UIControlEventTouchUpInside];
         [_topInfoView addSubview:changeBtn];
         [changeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -741,7 +741,7 @@
         
         // point
         UIImageView *pointTag = [UIImageView new];
-        pointTag.image = [UIImage imageNamed:@"pb_tm_point_Tag"];
+        pointTag.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_point_Tag"];
         [rightContainer addSubview:pointTag];
         [pointTag mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(@5);
@@ -1276,19 +1276,19 @@
     // 上传
     NSArray <UploadIconItem *>*uploadIconList = propsDic.uploadIcon;
     if (DC_IsArrEmpty(uploadIconList)) {
-        self.rightBottomView.imgView.image = DC_image(@"pb_uploadload_speed");
+        self.rightBottomView.imgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_uploadload_speed"];
     } else {
         UploadIconItem *item = [uploadIconList objectAtIndex:0];
-        [self.rightBottomView.imgView dc_setImageWithURLString:item.src placeholderImage:DC_image(@"pb_uploadload_speed") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [self.rightBottomView.imgView dc_setImageWithURLString:item.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"pb_uploadload_speed"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         }];
     }
     // 下载
     NSArray <DownloadIconItem *>*downloadIconList = propsDic.downloadIcon;
     if (DC_IsArrEmpty(downloadIconList)) {
-        self.leftBottomView.imgView.image = DC_image(@"pb_download_speed");
+        self.leftBottomView.imgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_download_speed"];
     } else {
         DownloadIconItem *item = [downloadIconList objectAtIndex:0];
-        [self.leftBottomView.imgView dc_setImageWithURLString:item.src placeholderImage:DC_image(@"pb_download_speed") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [self.leftBottomView.imgView dc_setImageWithURLString:item.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"pb_download_speed"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         }];
     }
     
@@ -1310,10 +1310,10 @@
             // 重设图标
             NSArray <UploadIconItem *>*uploadIconList = propsDic.uploadIcon;
             if (DC_IsArrEmpty(uploadIconList)) {
-                self.leftBottomView.imgView.image = DC_image(@"pb_uploadload_speed");
+                self.leftBottomView.imgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_uploadload_speed"];
             } else {
                 UploadIconItem *item = [uploadIconList objectAtIndex:0];
-                [self.leftBottomView.imgView dc_setImageWithURLString:item.src placeholderImage:DC_image(@"pb_uploadload_speed") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+                [self.leftBottomView.imgView dc_setImageWithURLString:item.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"pb_uploadload_speed"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
                 }];
             }
         } else if ([upLoadVal isEqualToString:@"0"]) {
@@ -1346,13 +1346,13 @@
         self.topbannerView.alpha = [propsDic.accountInfoBgColorOpacity floatValue]/100;
     }
     if (DC_IsArrEmpty(accountIconList)) {
-        self.topbannerView.imgView.image = DC_image(@"pb_topBanner_icon");
+        self.topbannerView.imgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_topBanner_icon"];
     } else {
         AccountIconItem *item = [accountIconList objectAtIndex:0];
-        [self.topbannerView.imgView dc_setImageWithURLString:item.src placeholderImage:DC_image(@"pb_topBanner_icon") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+        [self.topbannerView.imgView dc_setImageWithURLString:item.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"pb_topBanner_icon"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         }];
         
-        self.topbannerView.swithImgView.image = DC_image(@"pb_topbanner_Switch");
+        self.topbannerView.swithImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_topbanner_Switch"];
         self.topbannerView.swithImgView.hidden = NO;
         // 如果只有一个，那么隐藏切换按钮
         NSArray *subList = [DXPPBDataManager shareInstance].subsListModel.subsList;
@@ -1394,9 +1394,9 @@
     if ([[propsDic.bgType lowercaseString] isEqualToString:@"image"]) {
         // 背景图片
         if (DC_IsStrEmpty(propsDic.bgImg.src)) {
-            _mainImgView.image = DC_image(@"pb_FWB_Main");
+            _mainImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_FWB_Main"];
         } else {
-            [self.mainImgView dc_setImageWithURLString:propsDic.bgImg.src placeholderImage:DC_image(@"pb_FWB_Main") completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            [self.mainImgView dc_setImageWithURLString:propsDic.bgImg.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"pb_FWB_Main"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
             }];
         }
     } else {
@@ -1771,7 +1771,7 @@
 - (UIImageView *)iconImgView {
 	if (!_iconImgView) {
 		_iconImgView = [[UIImageView alloc] init];
-		_iconImgView.image = DC_image(@"ic_point_logo");
+		_iconImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_point_logo"];
 	}
 	return _iconImgView;
 }
@@ -1789,7 +1789,7 @@
 - (UIImageView *)arrowImgView {
 	if (!_arrowImgView) {
 		_arrowImgView = [[UIImageView alloc] init];
-		_arrowImgView.image = DC_image(@"ic_point_detail");
+		_arrowImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_point_detail"];
 	}
 	return _arrowImgView;
 }
@@ -2073,13 +2073,13 @@
 	
 	// 最上面的数据
     NSDictionary *phoneIconDic = [propsDic.phoneIcon firstObject];
-	[self.iconImgView dc_setImageWithURLString:[phoneIconDic objectForKey:@"src"] placeholderImage:DC_image(@"ic_phonenumber_icon")];
+	[self.iconImgView dc_setImageWithURLString:[phoneIconDic objectForKey:@"src"] placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_phonenumber_icon"]];
 	
 	NSDictionary *changeIconDic = [propsDic.changeIcon firstObject];
-	[self.changeBtn dc_setImageWithURL:[changeIconDic objectForKey:@"src"] forState:UIControlStateNormal placeholderImage:DC_image(@"ic_change_phonenumber")];
+	[self.changeBtn dc_setImageWithURL:[changeIconDic objectForKey:@"src"] forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_change_phonenumber"]];
 	
 	NSDictionary *pointsIconDic = [propsDic.pointsIcon firstObject];
-	[self.pointView.iconImgView dc_setImageWithURLString:[pointsIconDic objectForKey:@"src"] placeholderImage:DC_image(@"ic_point_logo")];
+	[self.pointView.iconImgView dc_setImageWithURLString:[pointsIconDic objectForKey:@"src"] placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_point_logo"]];
 	
 	self.phoneNumberLab.text = DC_IsStrEmpty([dic objectForKey:@"num"]) ? @"" : [dic objectForKey:@"num"];
 	self.phoneNumberLab.textColor =  [UIColor colorWithHexString:propsDic.phoneNumberColor];
@@ -2158,7 +2158,7 @@
 - (UIImageView *)iconImgView {
 	if (!_iconImgView) {
 		_iconImgView = [[UIImageView alloc] init];
-		_iconImgView.image = DC_image(@"ic_phonenumber_icon");
+		_iconImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_phonenumber_icon"];
 	}
 	return _iconImgView;
 }
@@ -2177,7 +2177,7 @@
 - (UIButton *)changeBtn {
 	if (!_changeBtn) {
 		_changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_changeBtn setImage:[UIImage imageNamed:@"ic_change_phonenumber"] forState:UIControlStateNormal];
+		[_changeBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_change_phonenumber"] forState:UIControlStateNormal];
 		[_changeBtn addTarget:self action:@selector(changeAction:) forControlEvents:UIControlEventTouchUpInside];
 	}
 	return _changeBtn;

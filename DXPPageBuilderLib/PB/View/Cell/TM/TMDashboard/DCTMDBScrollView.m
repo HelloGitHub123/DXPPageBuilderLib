@@ -11,6 +11,7 @@
 #import "DCPB.h"
 #import <DXPFontManagerLib/FontManager.h>
 #import "UIImageView+PBSDWebImage.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 // ******************自定义view   滚动区域******************
 @interface DCTMDBScrollView() <iCarouselDataSource, iCarouselDelegate>
@@ -433,13 +434,13 @@
                     }
                 }
             }else {
-                self.bgImgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"pb_tm_progress%@_data",themeType]];
-                self.logoImgView.image = [UIImage imageNamed:@"pb_tm_icon_data"];
+                self.bgImgView.image = [[HJImageManager shareInstance] getImageByName:[NSString stringWithFormat:@"pb_tm_progress%@_data",themeType]];
+                self.logoImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_icon_data"];
                 
             }
            
             if (![themeType  isEqualToString:@"3"]) {
-                self.unlimitedImgView.image = [UIImage imageNamed:@"pb_progress_data_unlimited"];
+                self.unlimitedImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_progress_data_unlimited"];
             }
 //            self.typeLbl.text = @"Remaining Data";
 			self.typeLbl.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_remaining_data"];
@@ -459,11 +460,11 @@
                     }
                 }
             }else {
-                self.bgImgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"pb_tm_progress%@_sms",themeType]];
-                self.logoImgView.image = [UIImage imageNamed:@"pb_tm_icon_sms"];
+                self.bgImgView.image = [[HJImageManager shareInstance] getImageByName:[NSString stringWithFormat:@"pb_tm_progress%@_sms",themeType]];
+                self.logoImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_icon_sms"];
             }
             if (![themeType  isEqualToString:@"3"]) {
-                self.unlimitedImgView.image = [UIImage imageNamed:@"pb_progress_sms_unlimited"];
+                self.unlimitedImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_progress_sms_unlimited"];
             }
 //            self.typeLbl.text = @"SMS";
 			self.typeLbl.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_dashboard_sms"];
@@ -483,11 +484,11 @@
                     }
                 }
             }else {
-                self.bgImgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"pb_tm_progress%@_voice",themeType]];
-                self.logoImgView.image = [UIImage imageNamed:@"pb_tm_icon_voice"];
+                self.bgImgView.image = [[HJImageManager shareInstance] getImageByName:[NSString stringWithFormat:@"pb_tm_progress%@_voice",themeType]];
+                self.logoImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_icon_voice"];
             }
             if (![themeType  isEqualToString:@"3"]) {
-                self.unlimitedImgView.image = [UIImage imageNamed:@"pb_progress_voice_unlimited"];
+                self.unlimitedImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_progress_voice_unlimited"];
             }
 //            self.typeLbl.text = @"Remaining Voice";
 			self.typeLbl.text = [[HJLanguageManager shareInstance] getTextByKey:@"lb_remaining_voice"];
@@ -498,7 +499,7 @@
     }
     
     if ([themeType isEqualToString:@"3"]) {
-        self.unlimitedImgView.image = [UIImage imageNamed:@"pb_tm_u"];
+        self.unlimitedImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_u"];
     }
 }
 
@@ -507,7 +508,7 @@
 - (UIImageView *)bgImgView {
     if(!_bgImgView){
         _bgImgView = [UIImageView new];
-        _bgImgView.image = [UIImage imageNamed:@"pb_tm_bg_data"];
+        _bgImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_bg_data"];
     }
     return _bgImgView;
 }
@@ -515,7 +516,7 @@
 - (UIImageView *)logoImgView {
     if(!_logoImgView) {
         _logoImgView = [UIImageView new];
-        _logoImgView.image = [UIImage imageNamed:@"pb_tm_icon_data"];
+        _logoImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_icon_data"];
     }
     return _logoImgView;
 }

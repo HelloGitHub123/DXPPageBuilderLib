@@ -13,6 +13,7 @@
 #import <DXPToolsLib/HJTool.h>
 #import "PbTools.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface DCGeneralSelectedCell()
 @property (nonatomic, strong) UIView *content;
@@ -86,9 +87,8 @@
     UIImageView *checkImgV = [UIImageView new];
     [self.content addSubview:checkImgV];
 
-    checkImgV.image = [UIImage imageNamed:[model.accNbr isEqualToString:[DXPPBDataManager shareInstance].currentInfoModel.currentAccNbr]?  @"radio_yes" : @"radio_no"];
+    checkImgV.image = [[HJImageManager shareInstance] getImageByName:[model.accNbr isEqualToString:[DXPPBDataManager shareInstance].currentInfoModel.currentAccNbr]?  @"radio_yes" : @"radio_no"];
 
-//    checkImgV.image = [UIImage imageNamed:[model.accNbr isEqualToString:infoModel.currentAccNbrr]?  @"radio_yes" : @"radio_no"];
     [checkImgV mas_makeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@20);
         make.trailing.equalTo(@-18);

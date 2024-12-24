@@ -10,6 +10,7 @@
 #import <SDWebImage/UIView+WebCache.h>
 #import <Masonry/Masonry.h>
 #import "UIImageView+PBSDWebImage.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface HJVideoView ()
 
@@ -46,7 +47,7 @@
 
 #pragma mark -- mathod
 - (void)setVideoCoverImage:(NSString *)videoURL {
-    [_coverImageView dc_setImageWithURLString:videoURL placeholderImage:[UIImage imageNamed:@"ic_video_coverImage"]];
+    [_coverImageView dc_setImageWithURLString:videoURL placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_video_coverImage"]];
 }
 
 #pragma mark -- lazy load
@@ -65,7 +66,7 @@
 - (UIButton *)playBtn {
     if (!_playBtn) {
         _playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_playBtn setBackgroundImage:[UIImage imageNamed:@"ic_video_play"] forState:UIControlStateNormal];
+        [_playBtn setBackgroundImage:[[HJImageManager shareInstance] getImageByName:@"ic_video_play"] forState:UIControlStateNormal];
         [_playBtn addTarget:self action:@selector(handleTapGesture:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _playBtn;

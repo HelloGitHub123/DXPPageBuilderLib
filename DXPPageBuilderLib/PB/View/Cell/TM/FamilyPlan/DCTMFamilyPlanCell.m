@@ -7,6 +7,7 @@
 
 #import "DCTMFamilyPlanCell.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 CGFloat itemH = 62;
 CGFloat marginH = 4;
@@ -144,7 +145,7 @@ CGFloat marginH = 4;
 
 - (void)bindViewWith:(DCPBBundleSubsList *)subModel {
     self.phoneLbl.text = subModel.accNbr;
-    self.tagImgView.image = [UIImage imageNamed: [subModel.primaryFlag isEqualToString:@"Y"]  ?  @"family_plan_principal" : @"family_plan_secondary" ];
+    self.tagImgView.image = [[HJImageManager shareInstance] getImageByName: [subModel.primaryFlag isEqualToString:@"Y"]  ?  @"family_plan_principal" : @"family_plan_secondary" ];
     self.typeLbl.text =  [subModel.primaryFlag isEqualToString:@"Y"]  ?  @"  Principal  " : @"  Supplementary  ";
     [subModel.balSummaryList enumerateObjectsUsingBlock:^(DCPBBalSummaryList * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         if(1== obj.unitTypeId){
@@ -159,7 +160,7 @@ CGFloat marginH = 4;
 - (UIImageView *)tagImgView {
     if(!_tagImgView) {
         _tagImgView = [UIImageView new];
-        _tagImgView.image = [UIImage imageNamed:@"family_plan_principal"];
+        _tagImgView.image = [[HJImageManager shareInstance] getImageByName:@"family_plan_principal"];
     }
     return _tagImgView;
 }

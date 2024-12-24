@@ -9,6 +9,7 @@
 #import "DCTopLabel.h"
 #import "MJExtension.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 // ****************** Model ******************
 @implementation DCMeetingCellModel
@@ -126,7 +127,7 @@
 - (UIView *)getItemView:(NSInteger)count tag:(NSInteger)tag image:(NSString*)img type:(NSString*)type total:(NSInteger)total {
     // 背景图片
     UIImageView *contentView = [[UIImageView alloc] init];
-    contentView.image = [UIImage imageNamed:img];
+    contentView.image = [[HJImageManager shareInstance] getImageByName:img];
     contentView.userInteractionEnabled = YES;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(itemClickAction:)];

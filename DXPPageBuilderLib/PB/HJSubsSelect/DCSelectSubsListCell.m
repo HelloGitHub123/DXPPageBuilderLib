@@ -14,6 +14,7 @@
 #import <DXPManagerLib/HJLanguageManager.h>
 #import "DCPB.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface DCSelectSubsListCell(){
     BOOL showStatusTag ;
@@ -106,7 +107,7 @@
     [self.contentView addSubview:_titleLab];
     
     _arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(DC_DCP_SCREEN_WIDTH-54, 16, 24, 24)];
-    _arrowView.image = DC_image(@"ic_select_text");
+    _arrowView.image = [[HJImageManager shareInstance] getImageByName:@"ic_select_text"];
     [self.contentView addSubview:_arrowView];
     
     _lineView = [[UIView alloc] initWithFrame:CGRectMake(16, 55, DC_DCP_SCREEN_WIDTH-32, 1)];
@@ -239,7 +240,7 @@
     self.bundleModel = model;
     self.lineView.hidden = NO;
     self.bundleNameLabel.text = model.bundleOfferName;
-    self.statusIV.image =  DC_image(@"family_plan_bundle");
+    self.statusIV.image = [[HJImageManager shareInstance] getImageByName:@"family_plan_bundle"];
     self.bgView.backgroundColor = DC_UIColorFromRGB(0xF2F8FB);
 }
 
@@ -254,19 +255,19 @@
         _selectIV.image = [[HJImageManager shareInstance] getImageByName:@"radio_no"];
     }
     
-    _statusIV.image =  [UIImage imageNamed: [model.primaryFlag isEqualToString:@"Y"]  ?  @"family_plan_principal" : @"family_plan_secondary"];
+    _statusIV.image =  [[HJImageManager shareInstance] getImageByName: [model.primaryFlag isEqualToString:@"Y"]  ?  @"family_plan_principal" : @"family_plan_secondary"];
     
     if([model.serviceTypeCode isEqualToString:@"MOBILE"]){
         if([model.state isEqualToString:@"A"]){///active 状态
             if([model.primaryFlag isEqualToString:@"Y"]){///主卡
-                _statusIV.image = DC_image(@"family_plan_principal");
+                _statusIV.image = [[HJImageManager shareInstance] getImageByName:@"family_plan_principal"];
             }else if([model.primaryFlag isEqualToString:@"N"]){///副卡
-                _statusIV.image = DC_image(@"family_plan_secondary");
+                _statusIV.image = [[HJImageManager shareInstance] getImageByName:@"family_plan_secondary"];
             }else{//独立卡
-                _statusIV.image = DC_image(@"family_plan_principal");
+                _statusIV.image = [[HJImageManager shareInstance] getImageByName:@"family_plan_principal"];
             }
         }else{///非激活状态
-            _statusIV.image = DC_image(@"ic_state_blocked");
+            _statusIV.image = [[HJImageManager shareInstance] getImageByName:@"ic_state_blocked"]);
         }
         
         _paidFlagLabel.backgroundColor = DC_UIColorFromRGB(0xebebeb);
@@ -315,11 +316,11 @@
         }
         
     }else if([model.serviceTypeCode isEqualToString:@"BROADBAND"]){
-        _statusIV.image = DC_image(@"ic_broadband");
+        _statusIV.image = [[HJImageManager shareInstance] getImageByName:@"ic_broadband"];
     }else if([model.serviceTypeCode isEqualToString:@"IPTV"]){
-        _statusIV.image = DC_image(@"ic_iptv");
+        _statusIV.image = [[HJImageManager shareInstance] getImageByName:@"ic_iptv"];
     }else if([model.serviceTypeCode isEqualToString:@"FWA"]){
-        _statusIV.image = DC_image(@"family_plan_principal");
+        _statusIV.image = [[HJImageManager shareInstance] getImageByName:@"family_plan_principal"];
         
         NSString * paidStr = [[HJLanguageManager shareInstance] getTextByKey:@"lb_fwa"];
         if (showPaidFlagTag) {
@@ -334,7 +335,7 @@
             make.top.mas_equalTo(_numberLabel.mas_bottom).offset(5);
         }];
     }else if([model.serviceTypeCode isEqualToString:@"FIXED_LINE"]){
-        _statusIV.image = DC_image(@"ic_fixed_line");
+        _statusIV.image = [[HJImageManager shareInstance] getImageByName:@"ic_fixed_line"];
     }
     
     

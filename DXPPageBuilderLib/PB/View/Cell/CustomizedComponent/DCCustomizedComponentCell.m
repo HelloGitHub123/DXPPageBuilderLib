@@ -8,6 +8,7 @@
 #import "DCCustomizedComponentCell.h"
 #import "DCMacroHeader.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 // ****************** Model ******************
 @implementation DCCustomizedComponentCellModel
@@ -283,7 +284,7 @@
 - (UIImageView *)iconImgView {
 	if (!_iconImgView) {
 		_iconImgView = [[UIImageView alloc] init];
-		_iconImgView.image = DC_image(@"ic_warnings");
+		_iconImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_warnings"];
 	}
 	return _iconImgView;
 }
@@ -303,7 +304,7 @@
 - (UIImageView *)enterImgView {
 	if (!_enterImgView) {
 		_enterImgView = [[UIImageView alloc] init];
-		_enterImgView.image = DC_image(@"ic_enterDetail");
+		_enterImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_enterDetail"];
 		_enterImgView.userInteractionEnabled = YES;
 		
 		UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAdAction)];
@@ -382,7 +383,7 @@
 - (UIImageView *)imgView {
 	if (!_imgView) {
 		_imgView = [[UIImageView alloc] init];
-		_imgView.image = DC_image(@"ic_verified");
+		_imgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_verified"];
 	}
 	return _imgView;
 }
@@ -506,7 +507,7 @@
 - (UIImageView *)iconImgView {
 	if (!_iconImgView) {
 		_iconImgView = [[UIImageView alloc] init];
-		_iconImgView.image = DC_image(@"ic_logo_hawala");
+		_iconImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_logo_hawala"];
 	}
 	return _iconImgView;
 }
@@ -539,7 +540,7 @@
 - (UIImageView *)enterImgView {
 	if (!_enterImgView) {
 		_enterImgView = [[UIImageView alloc] init];
-		_enterImgView.image = DC_image(@"ic_to_view");
+		_enterImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_to_view"];
 		
 		_enterImgView.userInteractionEnabled = YES;
 		

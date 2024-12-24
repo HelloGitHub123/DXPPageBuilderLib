@@ -13,6 +13,7 @@
 #import <DXPManagerLib/HJLanguageManager.h>
 #import "DCPB.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 static NSString *DCGeneralSelectedCellId = @"DCGeneralSelectedCell";
 static NSString *DCGeneralSelectedGroupCellId = @"DCGeneralSelectedGroupCell";
@@ -207,7 +208,7 @@ static NSString *DCGeneralSelectedGroupCellId = @"DCGeneralSelectedGroupCell";
 - (UIButton *)closeBtn {
     if (!_closeBtn) {
         _closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_closeBtn setImage:DC_image(@"ic_close") forState:UIControlStateNormal];
+        [_closeBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_close"] forState:UIControlStateNormal];
         [_closeBtn addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
     }
     return _closeBtn;

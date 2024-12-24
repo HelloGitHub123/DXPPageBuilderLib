@@ -15,6 +15,7 @@
 #import "Masonry.h"
 #import "DCPB.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 static SJEdgeControlButtonItemTag const SJTestCustomItemTagVoice = 1001;
 static SJEdgeControlButtonItemTag const SJTestCustomItemTag = 103;
@@ -216,7 +217,7 @@ static SJEdgeControlButtonItemTag const SJTestCustomItemTag = 103;
         //        }
     };
     // 添加声音按钮
-    SJEdgeControlButtonItem *item = [[SJEdgeControlButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_video_noVoice"] target:self action:@selector(changeVoiceState:) tag:SJTestCustomItemTagVoice];
+    SJEdgeControlButtonItem *item = [[SJEdgeControlButtonItem alloc] initWithImage:[[HJImageManager shareInstance] getImageByName:@"ic_video_noVoice"] target:self action:@selector(changeVoiceState:) tag:SJTestCustomItemTagVoice];
     [_player.defaultEdgeControlLayer.bottomAdapter addItem:item];
     // 交换时间位置
     [_player.defaultEdgeControlLayer.bottomAdapter exchangeItemForTag:SJEdgeControlLayerBottomItem_DurationTime withItemForTag:SJEdgeControlLayerBottomItem_Progress];
@@ -252,11 +253,11 @@ static SJEdgeControlButtonItemTag const SJTestCustomItemTag = 103;
     SJEdgeControlButtonItem *item = (SJEdgeControlButtonItem *)sender;
     if (__isMuted) {
         // 设置有声音的状态
-        item.image = [UIImage imageNamed:@"ic_video_vioce"];
+        item.image = [[HJImageManager shareInstance] getImageByName:@"ic_video_vioce"];
         _player.muted = NO;
     } else {
         // 设置静音的状态
-        item.image = [UIImage imageNamed:@"ic_video_noVoice"];
+        item.image = [[HJImageManager shareInstance] getImageByName:@"ic_video_noVoice"];
         _player.muted = YES;
     }
     __isMuted = !__isMuted;
@@ -386,7 +387,6 @@ static SJEdgeControlButtonItemTag const SJTestCustomItemTag = 103;
 		_suspensionButton.titleLabel.font = [FontManager setBoldFontSize:14];
         [_suspensionButton setTitleColor:DC_UIColorFromRGB(0x3e3e3e) forState:UIControlStateNormal];
         [_suspensionButton addTarget:self action:@selector(suspensionButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-//        [_suspensionButton setImage:[UIImage imageNamed:@"ic_video_arrow"] forState:UIControlStateNormal];
     
 		CGSize size = [self.picturesItem.videoCTAName sizeWithAttributes:@{NSFontAttributeName:[FontManager setBoldFontSize:14]}];
         [_suspensionButton setTitle:self.picturesItem.videoCTAName forState:UIControlStateNormal];

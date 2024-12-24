@@ -11,6 +11,7 @@
 #import "DCPBMenuItemModel.h"
 #import <DXPFontManagerLib/FontManager.h>
 #import "UIImageView+PBSDWebImage.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 @implementation DCDashboardViewModel
 
@@ -124,7 +125,7 @@
     [contentView addSubview:iconImageView];
     
     if (item.isAll) {
-        iconImageView.image = [UIImage imageNamed:@"icon_color_all"];
+        iconImageView.image = [[HJImageManager shareInstance] getImageByName:@"icon_color_all"];
     }else {
         [iconImageView dc_setImageWithURLString:[item.iconUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];
     }

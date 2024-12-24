@@ -12,6 +12,7 @@
 #import "HJSDCycleScrollView.h"
 #import "HJMultiCountdownPostIndicatorView.h"
 #import "UIImageView+PBSDWebImage.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 #define BtnMoreWidth    100  // more 按钮宽度
 #define MidIntervalSpace  10 // 控件之间的间隔
@@ -339,7 +340,7 @@
 
 
         NSURL *url = [NSURL URLWithString:[item.src stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];;
-        [imgView dc_setImageWithURLString:[item.src stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] placeholderImage:[UIImage imageNamed:@"nadata"]];
+        [imgView dc_setImageWithURLString:[item.src stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] placeholderImage:[[HJImageManager shareInstance] getImageByName:@"nadata"]];
         [self.scrollView addSubview:imgView];
         CGFloat xVal = (i == 0) ? 0: i*(wVal) + MidIntervalSpace*i;
         iwidth = iwidth + wVal;
@@ -379,7 +380,7 @@
     imgView.userInteractionEnabled = YES;
     [imgView addGestureRecognizer:tap];
     NSURL *url = [NSURL URLWithString:item.src];
-    [imgView dc_setImageWithURLString:item.src placeholderImage:[UIImage imageNamed:@"nadata"]];
+    [imgView dc_setImageWithURLString:item.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"nadata"]];
     [self.baseContainer addSubview:imgView];
     CGFloat height = (DC_DCP_SCREEN_WIDTH - self.cellModel.props.horizontalOutterMargin*2) / 750 * item.height; // 按比例计算高度
     [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -402,7 +403,7 @@
         imgView.userInteractionEnabled = YES;
         [imgView addGestureRecognizer:tap];
         NSURL *url = [NSURL URLWithString:item.src];
-        [imgView dc_setImageWithURLString:item.src placeholderImage:[UIImage imageNamed:@"nadata"]];
+        [imgView dc_setImageWithURLString:item.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"nadata"]];
         [self.baseContainer addSubview:imgView];
         CGFloat height = (DC_DCP_SCREEN_WIDTH - self.cellModel.props.horizontalOutterMargin*2) / 750 * item.height; // 按比例计算高度
         CGFloat xVal = i * ((DC_DCP_SCREEN_WIDTH - self.cellModel.props.horizontalOutterMargin*2 - MidIntervalSpace)/2  + MidIntervalSpace);
@@ -427,7 +428,7 @@
         imgView.userInteractionEnabled = YES;
         [imgView addGestureRecognizer:tap];
         NSURL *url = [NSURL URLWithString:item.src];
-        [imgView dc_setImageWithURLString:item.src placeholderImage:[UIImage imageNamed:@"nadata"]];
+        [imgView dc_setImageWithURLString:item.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"nadata"]];
         [self.baseContainer addSubview:imgView];
         CGFloat height = (DC_DCP_SCREEN_WIDTH - self.cellModel.props.horizontalOutterMargin*2) / 750 * item.height; // 按比例计算高度
         CGFloat xVal = i * (DC_DCP_SCREEN_WIDTH - MidIntervalSpace*3)/3 + MidIntervalSpace * (i+1);
@@ -459,7 +460,7 @@
             imgView.userInteractionEnabled = YES;
             [imgView addGestureRecognizer:tap];
             NSURL *url = [NSURL URLWithString:item.src];
-            [imgView dc_setImageWithURLString:item.src placeholderImage:[UIImage imageNamed:@"nadata"]];
+            [imgView dc_setImageWithURLString:item.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"nadata"]];
             [self.baseContainer addSubview:imgView];
             
             if (i == 0) {
@@ -510,7 +511,7 @@
             imgView.userInteractionEnabled = YES;
             [imgView addGestureRecognizer:tap];
             NSURL *url = [NSURL URLWithString:item.src];
-            [imgView dc_setImageWithURLString:item.src placeholderImage:[UIImage imageNamed:@"nadata"]];
+            [imgView dc_setImageWithURLString:item.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"nadata"]];
             [self.baseContainer addSubview:imgView];
             
             if (i == 0) {

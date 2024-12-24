@@ -14,6 +14,7 @@
 #import "UIImageView+PBSDWebImage.h"
 #import "UIButton+PBSDWebImage.h"
 #import <DXPRTLHelperLib/RTLHelper.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface DCNewToolBarView()
 @property (nonatomic, strong) UIView *containerView; // 容器View
@@ -227,7 +228,7 @@
     btn.tag = 1000 +idx;
     [btn addTarget:self action:@selector(rightBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     if(self.model.content.props.pictures.count > 3 && idx == 0){
-        [btn setImage:[UIImage imageNamed:@"pb_menu"] forState:UIControlStateNormal];
+        [btn setImage:[[HJImageManager shareInstance] getImageByName:@"pb_menu"] forState:UIControlStateNormal];
     }else {
         if ([item.link isEqualToString:@"/clp_notification/index"]) {
             [RTLHelper.sharedInstance.needReverseImgs addObject:item.src];
@@ -308,7 +309,7 @@
 - (UIImageView*)sidebar {
     if (!_sidebar) {
         _sidebar = [UIImageView new];
-        _sidebar.image = [UIImage imageNamed:@"pb_tm_menu"];
+        _sidebar.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_menu"];
         _sidebar.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(menuClick)];
         [_sidebar addGestureRecognizer:tap];
@@ -319,7 +320,7 @@
 - (UIImageView*)logoView {
     if (!_logoView) {
         _logoView =  [UIImageView new];
-        _logoView.image = [UIImage imageNamed:@"pb_tm_logo"];
+        _logoView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_logo"];
         _logoView.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(logoClick)];
         [_logoView addGestureRecognizer:tap];
@@ -373,7 +374,7 @@
 - (UIImageView*)backImgView {
     if (!_backImgView) {
         _backImgView =  [UIImageView new];
-        _backImgView.image = [UIImage imageNamed:@"pb_tm_logo"];
+        _backImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_logo"];
         _backImgView.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(backClick)];
         [_backImgView addGestureRecognizer:tap];

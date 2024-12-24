@@ -14,6 +14,7 @@
 #import <DXPManagerLib/HJLanguageManager.h>
 #import "DCPB.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 static NSString *selectID = @"DCSelectSubsListCellIdentifier";
 
@@ -204,7 +205,7 @@ static NSString *selectID = @"DCSelectSubsListCellIdentifier";
     if (!_closeBtn) {
         _closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _closeBtn.frame = CGRectMake(DC_DCP_SCREEN_WIDTH-50, 18, 30, 30);
-        [_closeBtn setImage:DC_image(@"ic_close") forState:UIControlStateNormal];
+        [_closeBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_close"] forState:UIControlStateNormal];
         [_closeBtn addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
     }
     return _closeBtn;

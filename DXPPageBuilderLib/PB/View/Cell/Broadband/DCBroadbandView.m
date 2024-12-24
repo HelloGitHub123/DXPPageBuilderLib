@@ -15,6 +15,7 @@
 #import "DCPB.h"
 #import "DCSubsListModel.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface DCBroadbandView()
 @property (nonatomic, strong) UIImageView * iconIV;
@@ -93,14 +94,14 @@
         
         UIColor *switchBtnColor = [UIColor colorWithHexString:propsDic.mainIconColor];
         UIColor *switchBtnBgColor = [UIColor colorWithHexString:propsDic.mainIconColor alpha:0.2];
-        UIImage *iconImage = [UIImage svgImageNamed:@"switch" tintColor:switchBtnColor];
+        UIImage *iconImage = [[HJImageManager shareInstance] getSVGImageByName:@"switch" tintColor:propsDic.mainIconColor];
         [self.switchUserBtn setBackgroundColor:switchBtnBgColor];
         [self.switchUserBtn setImage:iconImage forState:UIControlStateNormal];
         
         if ([[DXPPBDataManager shareInstance].selectedSubsModel.serviceTypeCode isEqualToString:@"BROADBAND"]) {
             [self configAllView];
             ///如果是BROADBAND
-            _iconIV.image = [UIImage svgImageNamed:@"Broadband" tintColor:mainIconColor];
+            _iconIV.image = [[HJImageManager shareInstance] getSVGImageByName:@"Broadband" tintColor:propsDic.mainIconColor];
             
             UIColor *color = [UIColor colorWithHexString:propsDic.downloadIconColor];
             UIImage *iconBtnImage = [UIImage svgNamed:@"download" cgColor:color.CGColor];
@@ -114,7 +115,7 @@
             
             UIColor *uploadcolor = [UIColor colorWithHexString:propsDic.uploadIconColor];
             [self.uploadBtn.iconBtn setBackgroundColor:[UIColor colorWithHexString:propsDic.uploadIconBgColor]];
-            [self.uploadBtn.iconBtn setImage:[UIImage svgImageNamed:@"upload" tintColor:uploadcolor] forState:UIControlStateNormal];
+            [self.uploadBtn.iconBtn setImage:[[HJImageManager shareInstance] getSVGImageByName:@"upload" tintColor:propsDic.uploadIconColor] forState:UIControlStateNormal];
 			self.uploadBtn.titleLabel.text = [[HJLanguageManager shareInstance] getTextByKey:@"btn_fixed_upload"];
             _uploadBtn.backgroundColor =  [UIColor colorWithHexString:propsDic.uploadBgColor];
             self.uploadBtn.speedLabel.text = DC_IsStrEmpty(upLoadVal)?@"":upLoadVal;
@@ -153,11 +154,11 @@
         }else{
             [self configView];
             if ([[DXPPBDataManager shareInstance].selectedSubsModel.serviceTypeCode isEqualToString:@"IPTV"]){
-                _iconIV.image = [UIImage svgImageNamed:@"IPTV" tintColor:mainIconColor];
+                _iconIV.image = [[HJImageManager shareInstance] getSVGImageByName:@"IPTV" tintColor:propsDic.mainIconColor];
             }else  if ([[DXPPBDataManager shareInstance].selectedSubsModel.serviceTypeCode isEqualToString:@"FIXED_LINE"]){
-                _iconIV.image = [UIImage svgImageNamed:@"VOBB" tintColor:mainIconColor];
+                _iconIV.image = [[HJImageManager shareInstance] getSVGImageByName:@"VOBB" tintColor:propsDic.mainIconColor];
             }else{
-                _iconIV.image = [UIImage svgImageNamed:@"Mobile" tintColor:mainIconColor];
+                _iconIV.image = [[HJImageManager shareInstance] getSVGImageByName:@"Mobile" tintColor:propsDic.mainIconColor];
             }
         }
         

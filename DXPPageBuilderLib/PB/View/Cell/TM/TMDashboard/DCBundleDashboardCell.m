@@ -10,6 +10,7 @@
 #import <DXPFontManagerLib/FontManager.h>
 #import "UIImageView+PBSDWebImage.h"
 #import "UIButton+PBSDWebImage.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 // ****************** Model ******************
 @implementation DCBundleDashboardCellModel
@@ -266,11 +267,11 @@
     
     // 顶部
     PicturesItem *picItem = [propsDic.accountPictures firstObject];
-    [_houseImageView dc_setImageWithURLString:picItem.src placeholderImage:DC_image(@"ic_house_icon")];
+    [_houseImageView dc_setImageWithURLString:picItem.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_house_icon"]];
     _houseLabel.text = DC_IsStrEmpty(picItem.iconName)?@"":picItem.iconName;
     
     PicturesItem *exchangeItem = [propsDic.accountChangePictures firstObject];
-    [_changeBtn dc_setImageWithURL:exchangeItem.src forState:UIControlStateNormal placeholderImage:DC_image(@"ic_change_number")];
+    [_changeBtn dc_setImageWithURL:exchangeItem.src forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_change_number"]];
     
     _line1Label.backgroundColor = [UIColor colorWithHexString:propsDic.lineColor];
     
@@ -316,8 +317,8 @@
     PicturesItem *bundleItem = [propsDic.dashLeftPictures firstObject];
     PicturesItem *billItem = [propsDic.dashRightPictures firstObject];
     
-    [_myBundleBtn dc_setImageWithURL:bundleItem.src forState:UIControlStateNormal placeholderImage:DC_image(@"ic_mybundle_btn")];
-    [_myBillBtn dc_setImageWithURL:billItem.src forState:UIControlStateNormal placeholderImage:DC_image(@"ic_mybill_btn")];
+    [_myBundleBtn dc_setImageWithURL:bundleItem.src forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_mybundle_btn"]];
+    [_myBillBtn dc_setImageWithURL:billItem.src forState:UIControlStateNormal placeholderImage:[[HJImageManager shareInstance] getImageByName:@"ic_mybill_btn"]];
 }
 
 #pragma mark - Click
@@ -377,7 +378,7 @@
 - (UIButton *)changeBtn {
     if (!_changeBtn) {
         _changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_changeBtn setImage:[UIImage imageNamed:@"ic_change_number"] forState:UIControlStateNormal];
+        [_changeBtn setImage:[[HJImageManager shareInstance] getImageByName:@"ic_change_number"] forState:UIControlStateNormal];
         [_changeBtn addTarget:self action:@selector(changeAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _changeBtn;

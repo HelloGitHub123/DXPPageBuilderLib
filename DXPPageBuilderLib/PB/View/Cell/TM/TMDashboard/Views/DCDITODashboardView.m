@@ -16,6 +16,7 @@
 #import "UIImageView+PBSDWebImage.h"
 #import "UIColor+YYAdd.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface DCDITODashboardView ()<UIScrollViewDelegate,CMPopTipViewDelegate>
 
@@ -429,7 +430,7 @@
 	// view detail
 	NSDictionary *dic1 = [propsDic.viewDetailPic firstObject];
 	NSString *src = [dic1 valueForKey:@"src"];
-	[self.detailBtn dc_setImageWithURLString:src placeholderImage:DC_image(@"")];
+	[self.detailBtn dc_setImageWithURLString:src placeholderImage:[[HJImageManager shareInstance] getImageByName:@""]];
 }
 
 // 详情跳转
@@ -684,7 +685,7 @@
 	if (!_arrowImgView) {
 		_arrowImgView = [[UIImageView alloc] init];
 		_arrowImgView.userInteractionEnabled = YES;
-		_arrowImgView.image = DC_image(@"ic_arrow_up_Img");
+		_arrowImgView.image = [[HJImageManager shareInstance] getImageByName:@"ic_arrow_up_Img"];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenPopDashboardView:)];
         [_arrowImgView addGestureRecognizer:tap];
 	}

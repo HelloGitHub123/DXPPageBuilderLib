@@ -9,6 +9,7 @@
 #import <Masonry/Masonry.h>
 #import "DCPB.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface DCGeneralSelectedGroupCell()
 @property (nonatomic, strong) UIView *content;
@@ -84,7 +85,7 @@
     
     // 图片
     UIImageView *iconImg = [UIImageView new];
-    iconImg.image =  [UIImage imageNamed: [model.primaryFlag isEqualToString:@"Y"]  ?  @"family_plan_principal" : @"family_plan_secondary" ];
+    iconImg.image =  [[HJImageManager shareInstance] getImageByName: [model.primaryFlag isEqualToString:@"Y"]  ?  @"family_plan_principal" : @"family_plan_secondary" ];
     
     [contentView addSubview:iconImg];
     [iconImg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -168,7 +169,7 @@
     }];
 
 
-    checkImgV.image = [UIImage imageNamed:[model.accNbr isEqualToString:[DXPPBDataManager shareInstance].currentInfoModel.currentAccNbr]?  @"radio_yes" : @"radio_no"];
+    checkImgV.image = [[HJImageManager shareInstance] getImageByName:[model.accNbr isEqualToString:[DXPPBDataManager shareInstance].currentInfoModel.currentAccNbr]?  @"radio_yes" : @"radio_no"];
     
     UIView *bottomLine = [UIView new];
     bottomLine.backgroundColor = [UIColor hjp_colorWithHex:@"#f2f2f2"];

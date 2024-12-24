@@ -17,6 +17,7 @@ NSInteger DCDitoVideoCell_Video_Detail_tag = 9999;
 #import "DCFloorBaseVC.h"
 #import <DXPFontManagerLib/FontManager.h>
 #import "UIImageView+PBSDWebImage.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 // ****************** Model ******************
 @implementation DCDitoVideoCellModel
@@ -224,7 +225,7 @@ NSInteger DCDitoVideoCell_Video_Detail_tag = 9999;
         [videoView addGestureRecognizer:tap];
     }else {
         UIImageView *playBtnImg = [UIImageView new];
-        [playBtnImg setImage:[UIImage imageNamed:@"video-play"]];
+        [playBtnImg setImage:[[HJImageManager shareInstance] getImageByName:@"video-play"]];
         [videoView addSubview:playBtnImg];
         [playBtnImg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.height.equalTo(@44);
@@ -361,7 +362,7 @@ NSInteger DCDitoVideoCell_Video_Detail_tag = 9999;
         UIImageView *playBtnImg = [UIImageView new];
         playBtnImg.tag = DCDitoVideoCell_Video_Detail_tag;
         
-        [playBtnImg setImage:[UIImage imageNamed:@"video-play"]];
+        [playBtnImg setImage:[[HJImageManager shareInstance] getImageByName:@"video-play"]];
         [_videoView addSubview:playBtnImg];
         [playBtnImg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.width.height.equalTo(@44);

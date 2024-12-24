@@ -10,6 +10,7 @@
 #import "MJExtension.h"
 #import <DXPFontManagerLib/FontManager.h>
 #import "UIImageView+PBSDWebImage.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 CGFloat paddingH = 8;
 CGFloat oneItemW = 92;
@@ -128,7 +129,7 @@ CGFloat indicatorMarginTop = 15.0;
     [contentView addSubview:iconImageView];
     
     if([item.src isEqualToString:@"Icon_More"]) {
-        iconImageView.image = [UIImage imageNamed:@"Icon_More"];
+        iconImageView.image = [[HJImageManager shareInstance] getImageByName:@"Icon_More"];
     } else{
         [iconImageView dc_setImageWithURLString:[item.src stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];
     }

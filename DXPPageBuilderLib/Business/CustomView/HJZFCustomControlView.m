@@ -15,6 +15,7 @@
 #import "UIImageView+ZFCache.h"
 #import "DCPB.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface HJZFCustomControlView () <ZFSliderViewDelegate>
 
@@ -553,8 +554,8 @@
 - (UIButton *)mutedBtn {
     if (!_mutedBtn) {
         _mutedBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_mutedBtn setImage:[UIImage imageNamed:@"voice_muted"] forState:UIControlStateNormal];
-        [_mutedBtn setImage:[UIImage imageNamed:@"voice_muted_no"] forState:UIControlStateSelected];
+        [_mutedBtn setImage:[[HJImageManager shareInstance] getImageByName:@"voice_muted"] forState:UIControlStateNormal];
+        [_mutedBtn setImage:[[HJImageManager shareInstance] getImageByName:@"voice_muted_no"] forState:UIControlStateSelected];
     }
     return _mutedBtn;
 }

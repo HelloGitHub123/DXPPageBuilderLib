@@ -10,6 +10,8 @@
 #import "HJSDCycleModel.h"
 #import "UIImageView+WebCache.h"
 #import "NSTimer+HJBlocksSupport.h"
+#import <DXPManagerLib/HJImageManager.h>
+
 //默认定时器时间
 static CGFloat const DefaultTime = 3.0f;
 static NSString * const reusedID = @"ShowBannerCell";
@@ -235,7 +237,6 @@ static NSString * const reusedID = @"ShowBannerCell";
         self.itemDidScrollOperationBlock(item.index);
     }
 
-    //    self.imageView.image = [UIImage imageNamed:model.picture];
     if(_isRepeat){
             //如果是最后一张图
             if (_currentIndex == self.models.count - 1 ) {

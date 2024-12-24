@@ -7,6 +7,7 @@
 
 #import "DCTMDBCircleContainerView.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface DCTMDBCircleContainerView()
 @property (nonatomic, strong) UIImageView *bgImgView1;
@@ -61,7 +62,7 @@
     }];
     
     UIImageView *alphaImgView = [UIImageView new];
-    alphaImgView.image = [UIImage imageNamed:@"pb_tm_db_mask1"];
+    alphaImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_db_mask1"];
     self.alphaImgView = alphaImgView;
     [self addSubview:alphaImgView];
     [alphaImgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -192,9 +193,9 @@
 - (void)setThemeType:(DCTMDashboardCellModel *)cellModel {
     NSString *num = @"1";
     if(!DC_IsStrEmpty(cellModel.props.themeType)) {
-        self.bgImgView1.image = [UIImage imageNamed:[NSString stringWithFormat:@"db_bg_%@_top",cellModel.props.themeType]];
-        self.bgImgView2.image = [UIImage imageNamed:[NSString stringWithFormat:@"db_bg_%@_down",cellModel.props.themeType]];
-        self.alphaImgView.image = [UIImage imageNamed:[NSString stringWithFormat:@"pb_tm_db_mask%@",cellModel.props.themeType]];
+        self.bgImgView1.image = [[HJImageManager shareInstance] getImageByName:[NSString stringWithFormat:@"db_bg_%@_top",cellModel.props.themeType]];
+        self.bgImgView2.image = [[HJImageManager shareInstance] getImageByName:[NSString stringWithFormat:@"db_bg_%@_down",cellModel.props.themeType]];
+        self.alphaImgView.image = [[HJImageManager shareInstance] getImageByName:[NSString stringWithFormat:@"pb_tm_db_mask%@",cellModel.props.themeType]];
     }
 }
 
@@ -211,7 +212,7 @@
         // 背景图
         UIImageView *bgImgView = [UIImageView new];
         bgImgView.tag = 999;
-        bgImgView.image = [UIImage imageNamed:@"pb_tm_db_bg1"];
+        bgImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_db_bg1"];
         _bgImgView1 = bgImgView;
        
     }
@@ -223,7 +224,7 @@
         // 背景图
         UIImageView *bgImgView = [UIImageView new];
         bgImgView.tag = 999;
-        bgImgView.image = [UIImage imageNamed:@"pb_tm_db_bg1_down"];
+        bgImgView.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_db_bg1_down"];
         _bgImgView2 = bgImgView;
        
     }
@@ -236,7 +237,7 @@
         UIImageView *phoneImg = [UIImageView new];
         
         // phone img
-        phoneImg.image = [UIImage imageNamed:@"pb_tm_phone_tag"];
+        phoneImg.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_phone_tag"];
         self.phoneIcon = phoneImg;
         [_topInfoView addSubview:phoneImg];
         [phoneImg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -261,7 +262,7 @@
         // change 按钮
         UIButton *changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         self.changeBtn = changeBtn;
-        [changeBtn setBackgroundImage:[UIImage imageNamed:@"pb_tm_change_tag"] forState:UIControlStateNormal];
+        [changeBtn setBackgroundImage:[[HJImageManager shareInstance] getImageByName:@"pb_tm_change_tag"] forState:UIControlStateNormal];
         [changeBtn addTarget:self action:@selector(exchageBtnAction) forControlEvents:UIControlEventTouchUpInside];
         [_topInfoView addSubview:changeBtn];
         [changeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -287,7 +288,7 @@
         
         // point
         UIImageView *pointTag = [UIImageView new];
-        pointTag.image = [UIImage imageNamed:@"pb_tm_point_Tag"];
+        pointTag.image = [[HJImageManager shareInstance] getImageByName:@"pb_tm_point_Tag"];
         [rightContainer addSubview:pointTag];
         [pointTag mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(@5);

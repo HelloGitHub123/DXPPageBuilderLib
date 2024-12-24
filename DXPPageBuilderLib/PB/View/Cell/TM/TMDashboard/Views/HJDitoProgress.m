@@ -12,6 +12,7 @@
 #import "DCPB.h"
 #import <DXPManagerLib/HJLanguageManager.h>
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 @implementation HJDitoProgressModel
 - (instancetype)init {
@@ -436,7 +437,7 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(infoTapAction:)];
         [_bottomView addGestureRecognizer:tap];
         
-        UIImage *img = [UIImage imageNamed:@"pb_db_warn"];
+        UIImage *img = [[HJImageManager shareInstance] getImageByName:@"pb_db_warn"];
         //img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         UIImageView *image = [[UIImageView alloc]initWithImage:img];
         image.tag = 1000;

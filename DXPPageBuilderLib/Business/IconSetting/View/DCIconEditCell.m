@@ -10,6 +10,7 @@
 #import "DCPBMenuItemModel.h"
 #import <DXPFontManagerLib/FontManager.h>
 #import "UIImageView+PBSDWebImage.h"
+#import <DXPManagerLib/HJImageManager.h>
 
 @implementation DCIconEditCellModel
 
@@ -44,7 +45,7 @@
         make.centerX.equalTo(self.contentView.mas_centerX);
         make.top.equalTo(@28);
     }];
-    self.iconImageView.image = [UIImage imageNamed:@"telcoIcon"];
+    self.iconImageView.image = [[HJImageManager shareInstance] getImageByName:@"telcoIcon"];
     
     [self.tagImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.iconImageView.mas_trailing);
@@ -52,7 +53,7 @@
         make.width.height.equalTo(@16);
        
     }];
-    self.tagImageView.image = [UIImage imageNamed:@"littleAddBtn"];
+    self.tagImageView.image = [[HJImageManager shareInstance] getImageByName:@"littleAddBtn"];
     
     [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.contentView.mas_centerX);
@@ -69,12 +70,12 @@
     self.tagImageView.hidden = !model.isEditing;
     
     if (model.isShow) {
-        _tagImageView.image = [UIImage imageNamed:@"db_icon_del"];
+        _tagImageView.image = [[HJImageManager shareInstance] getImageByName:@"db_icon_del"];
         if (model.isFixed) {
-            _tagImageView.image = [UIImage imageNamed:@"db_icon_fixed"];
+            _tagImageView.image = [[HJImageManager shareInstance] getImageByName:@"db_icon_fixed"];
         }
     }else {
-        _tagImageView.image = [UIImage imageNamed:@"db_icon_add"];
+        _tagImageView.image = [[HJImageManager shareInstance] getImageByName:@"db_icon_add"];
     }
     
     [self.iconImageView dc_setImageWithURLString:[data.icon stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]?:@""];

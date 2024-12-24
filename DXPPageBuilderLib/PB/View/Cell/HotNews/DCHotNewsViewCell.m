@@ -93,7 +93,7 @@
     PicturesItem *picItem = [cellModel.props.pictures objectAtIndex:0];
     CGFloat width = picItem.height  > 0 ? HotNewsViewHeight /  picItem.height *  picItem.width : HotNewsViewHeight;
     NSURL *url = [NSURL URLWithString:picItem.src?:@""];
-    [self.noticeImgView dc_setImageWithURLString:picItem.src?:@"" placeholderImage:[UIImage imageNamed:@"news"]];
+    [self.noticeImgView dc_setImageWithURLString:picItem.src?:@"" placeholderImage:[[HJImageManager shareInstance] getImageByName:@"news"]];
     
    
    [self.noticeImgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -154,7 +154,7 @@
     PicturesItem *picItem = [self.cellModel.props.pictures objectAtIndex:0];
     itemView.textLabel.text = dataItem.text;
     NSURL *url = [NSURL URLWithString:picItem.src];
-    [itemView.imgView dc_setImageWithURLString:picItem.src placeholderImage:[UIImage imageNamed:@"nadata"]];
+    [itemView.imgView dc_setImageWithURLString:picItem.src placeholderImage:[[HJImageManager shareInstance] getImageByName:@"nadata"]];
     itemView.rowIndex = index;
 }
 

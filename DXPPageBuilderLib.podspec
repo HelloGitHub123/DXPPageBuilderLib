@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "DXPPageBuilderLib"
-  spec.version      = "1.0.12"
+  spec.version      = "1.0.13"
   spec.summary      = "DXP PageBuilder Manager."
 
   # This description is used to generate tags and improve search results.
@@ -95,7 +95,7 @@ Pod::Spec.new do |spec|
   # spec.public_header_files = "Classes/**/*.h"
 
   spec.resource_bundles = {
-    'DXPPageBuilderLib' => ['DXPPageBuilderLib/Resources/*.png']
+    'DXPPageBuilderLib' => ['DXPPageBuilderLib/Resources/*.*']
   }
 
 

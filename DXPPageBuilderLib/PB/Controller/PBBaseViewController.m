@@ -9,6 +9,7 @@
 #import "PBBaseViewController.h"
 #import "DCPB.h"
 #import <DXPFontManagerLib/FontManager.h>
+#import <DXPManagerLib/HJImageManager.h>
 
 @interface PBBaseViewController ()
 
@@ -144,7 +145,7 @@
 
 - (void)setBackImgName:(NSString *)backImgName {
 	_backImgName = backImgName;
-	[_backBtn1 setImage:[UIImage imageNamed:backImgName] forState:UIControlStateNormal];
+	[_backBtn1 setImage:[[HJImageManager shareInstance] getImageByName:backImgName] forState:UIControlStateNormal];
 }
 
 - (void)naviBackAction:(id)sender {
@@ -189,7 +190,7 @@
 	if (!_backBtn1) {
 		_backBtn1 = [UIButton buttonWithType:UIButtonTypeCustom];
 		_backBtn1.frame = CGRectMake(0, 0, 24,24);
-		[_backBtn1 setImage:[UIImage imageNamed:@"ic_bar_back"] forState:UIControlStateNormal];
+		[_backBtn1 setImage:[[HJImageManager shareInstance] getImageByName:@"ic_bar_back"] forState:UIControlStateNormal];
 		[_backBtn1 addTarget:self action:@selector(naviBackAction:) forControlEvents:UIControlEventTouchUpInside];
 	}
 	return _backBtn1;
