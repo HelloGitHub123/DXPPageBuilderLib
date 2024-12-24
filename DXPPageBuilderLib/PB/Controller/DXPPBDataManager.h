@@ -11,6 +11,7 @@
 #import "DCPBMyProfileModel.h"
 #import "DCSubsDetailModel.h"
 #import "DCSignInResponseModel.h"
+#import <DXPPageBuilderLib/DCPageBuildingViewController.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,9 +33,29 @@ NS_ASSUME_NONNULL_BEGIN
 // 不管group 还是 list，将所有的订户整合
 @property (nonatomic, strong) NSMutableArray *totalSubsArr;
 // 侧边栏
-@property (nonatomic, strong) NSMutableArray *sidebarMenuList;
+//@property (nonatomic, strong) NSMutableArray *sidebarMenuList;
 // 底部TabBar
-@property (nonatomic, strong) NSMutableArray *bottomMenuList;
+//@property (nonatomic, strong) NSMutableArray *bottomMenuList;
+
+// 是否支持游客模式 默认支持 Y
+@property (nonatomic, assign) BOOL isSupportTouristMode;
+// propty 配置  和客户绑定（relType=E） 和订户绑定（relType=F）
+@property (nonatomic, copy) NSString *relType;
+// 登录后的token
+@property (nonatomic, copy) NSString *loginToken;
+// 登录后用户信息mobile
+@property (nonatomic, copy) NSString *mobile;
+// 需要修改密码
+@property (nonatomic, copy) void (^onNeedChangePasswordBlock)(DCPBCurrentInfoModel *currentInfoModel);
+// 创建成功后，展示PB
+@property (nonatomic, copy) void (^showPBBlock)(UIView *pbView);
+
+// 请求用户信息
+- (void)queryUserInfo;
+// 刷新当前订户列表
+- (void)refreshSubsListWhenOpenSimSuccess;
+
+- (void)queryDataAfterLoginSuccess;
 
 @end
 
