@@ -267,7 +267,7 @@
                 _statusIV.image = [[HJImageManager shareInstance] getImageByName:@"family_plan_principal"];
             }
         }else{///非激活状态
-            _statusIV.image = [[HJImageManager shareInstance] getImageByName:@"ic_state_blocked"]);
+            _statusIV.image = [[HJImageManager shareInstance] getImageByName:@"ic_state_blocked"];
         }
         
         _paidFlagLabel.backgroundColor = DC_UIColorFromRGB(0xebebeb);
