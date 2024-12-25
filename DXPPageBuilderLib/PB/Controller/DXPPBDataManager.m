@@ -15,6 +15,7 @@
 #import "DXPPBConfigManager.h"
 #import "DCMenuModel.h"
 #import <DXPToolsLib/HJTool.h>
+#import <DXPPageBuilderLib/DCPageBuildingViewController.h>
 
 typedef void(^FinishMyProfileBlock) (void);
 

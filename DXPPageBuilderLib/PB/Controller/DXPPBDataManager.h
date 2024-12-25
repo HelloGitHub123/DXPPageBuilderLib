@@ -11,9 +11,10 @@
 #import "DCPBMyProfileModel.h"
 #import "DCSubsDetailModel.h"
 #import "DCSignInResponseModel.h"
-#import <DXPPageBuilderLib/DCPageBuildingViewController.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+//@class DCPageBuildingViewController;
 
 @interface DXPPBDataManager : NSObject
 
