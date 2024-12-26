@@ -365,7 +365,7 @@ static DXPPBDataManager *manager = nil;
 		
 		
 	};
-	pageBuildVC.pageCode = @"XLHomepage";
+	pageBuildVC.pageCode =  self.pageCode; //@"XLHomepage";
 	pageBuildVC.floorNavType = DCFloorNavType_CLP;
 	
 	//	if ([self topViewController]) {

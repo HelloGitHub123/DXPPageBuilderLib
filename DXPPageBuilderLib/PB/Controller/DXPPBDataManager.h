@@ -46,6 +46,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *loginToken;
 // 登录后用户信息mobile
 @property (nonatomic, copy) NSString *mobile;
+// pageCode
+@property (nonatomic, copy) NSString *pageCode;
 // 需要修改密码
 @property (nonatomic, copy) void (^onNeedChangePasswordBlock)(DCPBCurrentInfoModel *currentInfoModel);
 // 创建成功后，展示PB
