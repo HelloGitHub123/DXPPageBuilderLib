@@ -360,21 +360,21 @@ static DXPPBDataManager *manager = nil;
 	
 	//	[[NSNotificationCenter defaultCenter] postNotificationName:@"GotoTabBarControllerNotification" object:nil];
 	
-	DCPageBuildingViewController *pageBuildVC = [[DCPageBuildingViewController alloc] init];
-	pageBuildVC.onPbItemClickBlock = ^(NSString * _Nonnull link, int linkType, UIViewController * _Nonnull fromVC, NSString * _Nonnull title, NSString * _Nonnull needLogin, id  _Nonnull coustomData) {
-		
-		
-	};
-	pageBuildVC.pageCode =  self.pageCode; //@"XLHomepage";
-	pageBuildVC.floorNavType = DCFloorNavType_CLP;
+//	DCPageBuildingViewController *pageBuildVC = [[DCPageBuildingViewController alloc] init];
+//	pageBuildVC.onPbItemClickBlock = ^(NSString * _Nonnull link, int linkType, UIViewController * _Nonnull fromVC, NSString * _Nonnull title, NSString * _Nonnull needLogin, id  _Nonnull coustomData) {
+//		
+//		
+//	};
+//	pageBuildVC.pageCode =  self.pageCode; //@"XLHomepage";
+//	pageBuildVC.floorNavType = DCFloorNavType_CLP;
 	
 	//	if ([self topViewController]) {
 	//		[[self topViewController] addChildViewController:pageBuildVC];
 	//		[[self topViewController].view addSubview:pageBuildVC.view];
 	//	}
-	if (self.showPBBlock) {
-		self.showPBBlock(pageBuildVC.view);
-	}
+//	if (self.showPBBlock) {
+//		self.showPBBlock(pageBuildVC.view);
+//	}
 }
 
 #pragma mark -- 获取当前栈顶控制器
